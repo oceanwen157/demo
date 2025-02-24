@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "ext-curl": "*",
         "ext-json": "*",
         "deeplcom/deepl-php": "^1.11",
         "encore/laravel-admin": "^1.8",
@@ -15,7 +16,7 @@
         "guzzlehttp/guzzle": "^7.9",
         "infyomlabs/adminlte-templates": "8.0.x-dev",
         "infyomlabs/laravel-generator": "8.0.x-dev",
-        "infyomlabs/swagger-generator": "dev-master",
+        "infyomlabs/swagger-generator": "2.0",
         "jaeger/querylist": "^4.2",
         "jenssegers/agent": "^2.6",
         "kakuilan/swaggervel": "^0.0.3",
