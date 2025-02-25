@@ -34,11 +34,11 @@ class QorLanguagesController extends AdminController
         $grid->column('title', __('标题'));
         $grid->column('path', __('路径'));
         $grid->column('create_at', __('创建时间'))->display(function(){
-            return date('Y-m-d H:i',$this->create_at);
-        });;
+            return date('y-m-d H:i',$this->create_at);
+        });
         $grid->column('update_at', __('更新时间'))->display(function(){
-            return date('Y-m-d H:i',$this->update_at);
-        });;
+            return date('y-m-d H:i',$this->update_at);
+        });
 
         $grid->actions(function($actions){
             $actions->disableEdit();
@@ -61,13 +61,13 @@ class QorLanguagesController extends AdminController
         $show = new Show(QorLanguages::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('sort', __('Sort'));
+        $show->field('sort', __('admin.Sort'));
         $show->field('tag', __('Tag'));
         $show->field('code', __('Code'));
         $show->field('title', __('Title'));
         $show->field('path', __('Path'));
-        $show->field('create_at', __('Create at'));
-        $show->field('update_at', __('Update at'));
+        $show->field('create_at', __('admin.Create at'));
+        $show->field('update_at', __('admin.Update at'));
 
         return $show;
     }
@@ -81,13 +81,13 @@ class QorLanguagesController extends AdminController
     {
         $form = new Form(new QorLanguages());
 
-        $form->switch('sort', __('Sort'));
+        $form->switch('sort', __('admin.Sort'));
         $form->text('tag', __('Tag'));
         $form->text('code', __('Code'));
         $form->text('title', __('Title'));
         $form->text('path', __('Path'));
-        $form->number('create_at', __('Create at'));
-        $form->number('update_at', __('Update at'));
+        $form->number('create_at', __('admin.Create at'));
+        $form->number('update_at', __('admin.Update at'));
 
         return $form;
     }
