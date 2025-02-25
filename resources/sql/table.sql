@@ -27,7 +27,7 @@ insert  into `qor_languages`(`id`,`sort`,`tag`,`code`,`title`,`path`,`create_at`
 (9,9,'vi','vi','Tiếng Việt','vi',1740398335,1740398335),
 (10,10,'id','id','Bahasa Indonesia','id',1740398335,1740398335),
 (11,11,'pt','pt','Português','pt',1740398335,1740398335),
-(12,0,'tlph','tl-PH','Tagalog','tlph',1740398335,1740398335);
+(12,12,'tlph','tl-PH','Tagalog','tlph',1740398335,1740398335);
 
 
 DROP TABLE IF EXISTS `qor_categories`;

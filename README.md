@@ -20,7 +20,7 @@ location / {
 
 ### 管理后台
 
-- 地址 xxx.com/admin
+- 地址 xxx.com/myadmin
 - 账号和密码 admin / admin
 
 ### 命令行
