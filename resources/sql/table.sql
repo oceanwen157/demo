@@ -34,6 +34,7 @@ DROP TABLE IF EXISTS `qor_categories`;
 CREATE TABLE `qor_categories`
 (
     `id`            int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `sort`          smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序:ASC',
     `letter`        char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      NOT NULL DEFAULT '' COMMENT '首字母',
     `origin_name`   varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '原名',
     `title_en`      varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-英文',
@@ -60,6 +61,7 @@ DROP TABLE IF EXISTS `qor_pstars`;
 CREATE TABLE `qor_pstars`
 (
     `id`            int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `sort`          smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序:ASC',
     `letter`        char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      NOT NULL DEFAULT '' COMMENT '首字母',
     `origin_name`   varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '原名',
     `title_en`      varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-英文',
@@ -86,6 +88,7 @@ DROP TABLE IF EXISTS `qor_sources`;
 CREATE TABLE `qor_sources`
 (
     `id`          int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `sort`        smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序:ASC',
     `letter`      char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      NOT NULL DEFAULT '' COMMENT '首字母',
     `origin_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '原名',
     `title_en`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-英文',

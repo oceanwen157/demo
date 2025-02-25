@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * @OA\Schema(
+ * App\Models\QorLanguages
+ *
+ * @OA\Schema (
  *      schema="QorLanguages",
  *      required={"sort", "tag", "code", "title", "path", "create_at", "update_at"},
  *      @OA\Property(
@@ -70,6 +72,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *          format="int32"
  *      )
  * )
+ * @property int $id
+ * @property int $sort 排序:ASC
+ * @property string $tag 标识
+ * @property string $code 国际编码
+ * @property string $title 标题
+ * @property string $path 路径
+ * @property int $create_at 创建时间
+ * @property int $update_at 更新时间
+ * @method static \Illuminate\Database\Eloquent\Builder|QorLanguages newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorLanguages newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorLanguages query()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorLanguages whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorLanguages whereCreateAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorLanguages whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorLanguages wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorLanguages whereSort($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorLanguages whereTag($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorLanguages whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorLanguages whereUpdateAt($value)
+ * @mixin \Eloquent
  */
 class QorLanguages extends Model
 {

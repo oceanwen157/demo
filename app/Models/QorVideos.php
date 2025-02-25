@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * @OA\Schema(
+ * App\Models\QorVideos
+ *
+ * @OA\Schema (
  *      schema="QorVideos",
  *      required={"cid", "pid", "sid", "duration_num", "view_num", "vote_num", "origin_name", "cover_ori", "cover_new", "source", "duration_desc", "view_desc", "vote_desc", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "play_url", "create_at", "update_at"},
  *      @OA\Property(
@@ -223,6 +225,68 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *          format="int32"
  *      )
  * )
+ * @property int $id
+ * @property int $cid 分类ID
+ * @property int $pid 明星ID
+ * @property int $sid 来源ID
+ * @property int $duration_num 时长量,秒
+ * @property int $view_num 浏览量
+ * @property int $vote_num 投票数
+ * @property string $origin_name 原名
+ * @property string $cover_ori 封面-原地址
+ * @property string $cover_new 封面-经下载后上传的地址
+ * @property string $source 来源名
+ * @property string $duration_desc 时长描述
+ * @property string $view_desc 浏览量描述
+ * @property string $vote_desc 投票描述
+ * @property string $title_en 标题-英文
+ * @property string $title_cn 标题-简体中文
+ * @property string $title_tw 标题-繁体中文
+ * @property string $title_ja 标题-日文
+ * @property string $title_ko 标题-韩文
+ * @property string $title_ms 标题-马来文
+ * @property string $title_th 标题-泰文
+ * @property string $title_de 标题-德文
+ * @property string $title_vi 标题-越南文
+ * @property string $title_id 标题-印尼文
+ * @property string $title_pt 标题-葡萄牙文
+ * @property string $title_tlph 标题-菲律宾文
+ * @property string $play_url 播放地址
+ * @property int $create_at 创建时间
+ * @property int $update_at 更新时间
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos query()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereCid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereCoverNew($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereCoverOri($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereCreateAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereDurationDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereDurationNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereOriginName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos wherePid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos wherePlayUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereSid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereSource($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleCn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleDe($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleEn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleJa($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleKo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleMs($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitlePt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleTh($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleTlph($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleTw($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleVi($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereUpdateAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereViewDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereViewNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereVoteDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereVoteNum($value)
+ * @mixin \Eloquent
  */
 class QorVideos extends Model
 {

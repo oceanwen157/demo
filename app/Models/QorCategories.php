@@ -7,12 +7,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * @OA\Schema(
+ * App\Models\QorCategories
+ *
+ * @OA\Schema (
  *      schema="QorCategories",
- *      required={"letter", "origin_name", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "route_path", "quantity_desc", "create_at", "update_at"},
+ *      required={"sort", "letter", "origin_name", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "route_path", "quantity_desc", "create_at", "update_at"},
  *      @OA\Property(
  *          property="id",
  *          description="id",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @OA\Property(
+ *          property="sort",
+ *          description="排序:ASC",
  *          readOnly=$FIELD_READ_ONLY$,
  *          nullable=$FIELD_NULLABLE$,
  *          type="integer",
@@ -147,6 +157,50 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *          format="int32"
  *      )
  * )
+ * @property int $id
+ * @property int $sort 排序:ASC
+ * @property string $letter 首字母
+ * @property string $origin_name 原名
+ * @property string $title_en 标题-英文
+ * @property string $title_cn 标题-简体中文
+ * @property string $title_tw 标题-繁体中文
+ * @property string $title_ja 标题-日文
+ * @property string $title_ko 标题-韩文
+ * @property string $title_ms 标题-马来文
+ * @property string $title_th 标题-泰文
+ * @property string $title_de 标题-德文
+ * @property string $title_vi 标题-越南文
+ * @property string $title_id 标题-印尼文
+ * @property string $title_pt 标题-葡萄牙文
+ * @property string $title_tlph 标题-菲律宾文
+ * @property string $route_path 路由路径
+ * @property string $quantity_desc 数量描述
+ * @property int $create_at 创建时间
+ * @property int $update_at 更新时间
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories query()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereCreateAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereLetter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereOriginName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereQuantityDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereRoutePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereSort($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitleCn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitleDe($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitleEn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitleJa($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitleKo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitleMs($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitlePt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitleTh($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitleTlph($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitleTw($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitleVi($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereUpdateAt($value)
+ * @mixin \Eloquent
  */
 class QorCategories extends Model
 {
@@ -160,6 +214,7 @@ class QorCategories extends Model
 
 
     public $fillable = [
+        'sort',
         'letter',
         'origin_name',
         'title_en',
@@ -187,6 +242,7 @@ class QorCategories extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'sort' => 'integer',
         'letter' => 'string',
         'origin_name' => 'string',
         'title_en' => 'string',
@@ -213,20 +269,21 @@ class QorCategories extends Model
      * @var array
      */
     public static $rules = [
-        'letter' => 'required|string|max:1',
+        'sort' => '',
+        'letter' => 'string|max:1',
         'origin_name' => 'required|string|max:128',
         'title_en' => 'required|string|max:128',
-        'title_cn' => 'required|string|max:128',
-        'title_tw' => 'required|string|max:128',
-        'title_ja' => 'required|string|max:128',
-        'title_ko' => 'required|string|max:128',
-        'title_ms' => 'required|string|max:128',
-        'title_th' => 'required|string|max:128',
-        'title_de' => 'required|string|max:128',
-        'title_vi' => 'required|string|max:128',
-        'title_id' => 'required|string|max:128',
-        'title_pt' => 'required|string|max:128',
-        'title_tlph' => 'required|string|max:128',
+        'title_cn' => 'string|max:128',
+        'title_tw' => 'string|max:128',
+        'title_ja' => 'string|max:128',
+        'title_ko' => 'string|max:128',
+        'title_ms' => 'string|max:128',
+        'title_th' => 'string|max:128',
+        'title_de' => 'string|max:128',
+        'title_vi' => 'string|max:128',
+        'title_id' => 'string|max:128',
+        'title_pt' => 'string|max:128',
+        'title_tlph' => 'string|max:128',
         'route_path' => 'required|string|max:64',
         'quantity_desc' => 'string|max:64',
         'create_at' => 'integer',

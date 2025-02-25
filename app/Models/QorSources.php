@@ -7,12 +7,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * @OA\Schema(
+ * App\Models\QorSources
+ *
+ * @OA\Schema (
  *      schema="QorSources",
- *      required={"letter", "origin_name", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "create_at", "update_at"},
+ *      required={"sort", "letter", "origin_name", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "create_at", "update_at"},
  *      @OA\Property(
  *          property="id",
  *          description="id",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @OA\Property(
+ *          property="sort",
+ *          description="排序:ASC",
  *          readOnly=$FIELD_READ_ONLY$,
  *          nullable=$FIELD_NULLABLE$,
  *          type="integer",
@@ -133,10 +143,49 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *          format="int32"
  *      )
  * )
+ * @property int $id
+ * @property int $sort 排序:ASC
+ * @property string $letter 首字母
+ * @property string $origin_name 原名
+ * @property string $title_en 标题-英文
+ * @property string $title_cn 标题-简体中文
+ * @property string $title_tw 标题-繁体中文
+ * @property string $title_ja 标题-日文
+ * @property string $title_ko 标题-韩文
+ * @property string $title_ms 标题-马来文
+ * @property string $title_th 标题-泰文
+ * @property string $title_de 标题-德文
+ * @property string $title_vi 标题-越南文
+ * @property string $title_id 标题-印尼文
+ * @property string $title_pt 标题-葡萄牙文
+ * @property string $title_tlph 标题-菲律宾文
+ * @property int $create_at 创建时间
+ * @property int $update_at 更新时间
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources query()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereCreateAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereLetter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereOriginName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereSort($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleCn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleDe($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleEn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleJa($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleKo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleMs($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitlePt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleTh($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleTlph($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleTw($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleVi($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereUpdateAt($value)
+ * @mixin \Eloquent
  */
 class QorSources extends Model
 {
-    use SoftDeletes;
 
     use HasFactory;
 
@@ -146,10 +195,8 @@ class QorSources extends Model
     const UPDATED_AT = 'updated_at';
 
 
-    protected $dates = ['deleted_at'];
-
-
     public $fillable = [
+        'sort',
         'letter',
         'origin_name',
         'title_en',
@@ -175,6 +222,7 @@ class QorSources extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'sort' => 'integer',
         'letter' => 'string',
         'origin_name' => 'string',
         'title_en' => 'string',
@@ -199,7 +247,8 @@ class QorSources extends Model
      * @var array
      */
     public static $rules = [
-        'letter' => 'required|string|max:1',
+        'sort' => 'required',
+        'letter' => 'string|max:1',
         'origin_name' => 'required|string|max:128',
         'title_en' => 'required|string|max:128',
         'title_cn' => 'string|max:128',
