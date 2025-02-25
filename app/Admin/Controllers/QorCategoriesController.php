@@ -2,21 +2,21 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\QorPstars;
+use App\Models\QorCategories;
 use App\Services\QorDataService;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class QorPstarsController extends AdminController
+class QorCategoriesController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = 'QorPstars';
+    protected $title = 'QorCategories';
 
     /**
      * Make a grid builder.
@@ -25,7 +25,7 @@ class QorPstarsController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new QorPstars());
+        $grid = new Grid(new QorCategories());
 
         $grid->column('id', __('Id'));
         $grid->column('sort', __('admin.Sort'));
@@ -63,7 +63,7 @@ class QorPstarsController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(QorPstars::findOrFail($id));
+        $show = new Show(QorCategories::findOrFail($id));
 
         $show->field('id', __('Id'));
         $show->field('sort', __('admin.Sort'));
@@ -83,6 +83,8 @@ class QorPstarsController extends AdminController
         $show->field('title_tlph', __('admin.Title tlph'));
         $show->field('route_path', __('admin.Route path'));
         $show->field('quantity_desc', __('admin.Quantity desc'));
+        $show->field('create_at', __('admin.Create at'));
+        $show->field('update_at', __('admin.Update at'));
 
         return $show;
     }
@@ -94,7 +96,7 @@ class QorPstarsController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new QorPstars());
+        $form = new Form(new QorCategories());
 
         $form->number('sort', __('admin.Sort'));
         $form->text('letter', __('admin.Letter'))->rules('required');
