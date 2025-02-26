@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @OA\Schema (
  *      schema="QorVideos",
- *      required={"cid", "pid", "sid", "duration_num", "view_num", "vote_num", "origin_name", "cover_ori", "cover_new", "source", "duration_desc", "view_desc", "vote_desc", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "play_url", "create_at", "update_at"},
+ *      required={"is_hot", "trans_status", "cid", "pid", "sid", "duration_num", "view_num", "vote_num", "origin_name", "cover_ori", "cover_new", "source", "duration_desc", "view_desc", "vote_desc", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "play_url", "create_at", "update_at"},
  *      @OA\Property(
  *          property="id",
  *          description="id",
@@ -19,6 +19,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *          nullable=$FIELD_NULLABLE$,
  *          type="integer",
  *          format="int32"
+ *      ),
+ *      @OA\Property(
+ *          property="is_hot",
+ *          description="是否热门:0否1是",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="boolean"
+ *      ),
+ *      @OA\Property(
+ *          property="trans_status",
+ *          description="翻译状态:0待翻译,1翻译中,2翻译完成",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="boolean"
  *      ),
  *      @OA\Property(
  *          property="cid",
@@ -226,6 +240,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *      )
  * )
  * @property int $id
+ * @property bool $is_hot 是否热门:0否1是
+ * @property bool $trans_status 翻译状态:0待翻译,1翻译中,2翻译完成
  * @property int $cid 分类ID
  * @property int $pid 明星ID
  * @property int $sid 来源ID
@@ -256,6 +272,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $update_at 更新时间
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos query()
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereCid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereCoverNew($value)
@@ -264,6 +281,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereDurationDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereDurationNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereIsHot($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereOriginName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos wherePid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos wherePlayUrl($value)
@@ -281,11 +299,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleTlph($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleTw($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleVi($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTransStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereUpdateAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereViewDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereViewNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereVoteDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereVoteNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos withoutTrashed()
  * @mixin \Eloquent
  */
 class QorVideos extends Model
@@ -295,11 +316,16 @@ class QorVideos extends Model
 
     public $table = 'qor_videos';
 
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
+    const CREATED_AT = 'create_at';
+    const UPDATED_AT = 'update_at';
+
+    protected $dateFormat = 'U';
+
 
 
     public $fillable = [
+        'is_hot',
+        'trans_status',
         'cid',
         'pid',
         'sid',
@@ -337,6 +363,8 @@ class QorVideos extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'is_hot' => 'integer',
+        'trans_status' => 'integer',
         'cid' => 'integer',
         'pid' => 'integer',
         'sid' => 'integer',
@@ -373,31 +401,33 @@ class QorVideos extends Model
      * @var array
      */
     public static $rules = [
+        'is_hot' => 'integer',
+        'trans_status' => 'integer',
         'cid' => 'integer',
         'pid' => 'integer',
         'sid' => 'integer',
         'duration_num' => 'integer',
         'view_num' => 'integer',
         'vote_num' => 'integer',
-        'origin_name' => 'required|string|max:255',
-        'cover_ori' => 'required|string|max:255',
-        'cover_new' => 'required|string|max:255',
+        'origin_name' => 'string|max:255',
+        'cover_ori' => 'string|max:255',
+        'cover_new' => 'string|max:255',
         'source' => 'string|max:64',
         'duration_desc' => 'string|max:32',
         'view_desc' => 'string|max:32',
         'vote_desc' => 'string|max:32',
         'title_en' => 'required|string|max:128',
-        'title_cn' => 'required|string|max:128',
-        'title_tw' => 'required|string|max:128',
-        'title_ja' => 'required|string|max:128',
-        'title_ko' => 'required|string|max:128',
-        'title_ms' => 'required|string|max:128',
-        'title_th' => 'required|string|max:128',
-        'title_de' => 'required|string|max:128',
-        'title_vi' => 'required|string|max:128',
-        'title_id' => 'required|string|max:128',
-        'title_pt' => 'required|string|max:128',
-        'title_tlph' => 'required|string|max:128',
+        'title_cn' => 'string|max:128',
+        'title_tw' => 'string|max:128',
+        'title_ja' => 'string|max:128',
+        'title_ko' => 'string|max:128',
+        'title_ms' => 'string|max:128',
+        'title_th' => 'string|max:128',
+        'title_de' => 'string|max:128',
+        'title_vi' => 'string|max:128',
+        'title_id' => 'string|max:128',
+        'title_pt' => 'string|max:128',
+        'title_tlph' => 'string|max:128',
         'play_url' => 'required|string|max:255',
         'create_at' => 'integer',
         'update_at' => 'integer'

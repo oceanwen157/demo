@@ -131,7 +131,7 @@ class QorSourcesController extends AdminController
             if ($chkRow && $chkRow->id != intval($form->model()->id)) {
                 $error = new MessageBag([
                     'title' => '提示',
-                    'message' => "该来源 :{$titleEn} 已存在，请换一个",
+                    'message' => "该来源英文标题:{$titleEn}已存在，请换一个",
                 ]);
                 return back()->with(compact('error'))->withInput();
             }

@@ -301,7 +301,7 @@ class QorPstars extends Model
         'sort' => 'integer',
         'letter' => 'string|max:1',
         'origin_name' => 'string|max:128',
-        'title_en' => 'string|max:128',
+        'title_en' => 'required|string|max:128',
         'title_cn' => 'string|max:128',
         'title_tw' => 'string|max:128',
         'title_ja' => 'string|max:128',
