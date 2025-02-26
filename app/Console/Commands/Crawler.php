@@ -13,13 +13,13 @@ class Crawler extends Command
 {
     const BASE_URL = 'https://www.qorno.com';
 
-    const IMG_API = 'https://upload-movie-outside.yesebo.net/?mod=index&code=imageUpload';
-
     const REQUEST_BATCH_SIZE = 5000;
 
     const MAX_CONCURRENT_REQUESTS = 20;
 
-    const REQUEST_DELAY = 0.2;
+    const UPLOAD_IMG_API = 'https://upload-outside.yesebo.net/api/system/image';
+
+    const UPLOAD_SIGN_KEY = '8ThqREd2YlAB7zIvGp1dOhlRvdz956jd';
 
     protected $signature = 'crawler:run';
 
@@ -27,6 +27,16 @@ class Crawler extends Command
     public function __construct()
     {
         parent::__construct();
+    }
+
+    public function handle()
+    {
+        //var_dump(self::getImgPath());
+        //var_dump(self::getPornstars());
+        //var_dump(self::getRedirectUrl('https://www.qorno.com/out/?l=3AASPM4TEyRnq0huT2lGQlBsTkhTAtmOaHR0cHM6Ly93d3cuNHdhbmsuY29tL3ZpZGVvcy8xNDE0MzEvaS1tLWdvaW5nLXRvLWdpdmUteW91LW15LWJ1dHQtdG9kYXkvP3V0bV9zb3VyY2U9YXdtJnV0bV9tZWRpdW09YXdtdHJhZmZpYyZ1dG1fY2FtcGFpZ249NHdhbmsmc3ViaWQxPTcwMDAwMc0DpKJ0YwHNCCKncG9wdWxhcs0DQNkweyJhbGwiOiIiLCJvcmllbnRhdGlvbiI6InN0cmFpZ2h0IiwicHJpY2luZyI6IiJ9zQT1zme8sdaoY2F0ZWdvcnnOAAjXIsDZfFt7IjEiOiJyWXQyVnRlcDVVWSJ9LHsiMiI6IlBxSHE3emxaSDhDIn0seyIzIjoiT0ZwbndJUXFXYncifSx7Ii0xIjoiSllvdFd5UFV1SGcifSx7Ii0yIjoiRlVGTmNaeEpFUTAifSx7Ii0zIjoiNDlrRFNLTE81M1QifV0%3D&c=ddb6f8f4&v=3&'));
+        //var_dump(self::getAllCategoryVideos(['10-inch-cock']));
+        //var_dump(self::getCategoryVideos());
+        //var_dump(self::getCategories());
     }
 
     public static function getCategories()
@@ -238,12 +248,83 @@ class Crawler extends Command
         return $totalPage;
     }
 
-    public function handle()
+    public static function makeUploadSign($array, $signKey = ''): string
     {
-        var_dump(self::getPornstars());
-        //var_dump(self::getRedirectUrl('https://www.qorno.com/out/?l=3AASPM4TEyRnq0huT2lGQlBsTkhTAtmOaHR0cHM6Ly93d3cuNHdhbmsuY29tL3ZpZGVvcy8xNDE0MzEvaS1tLWdvaW5nLXRvLWdpdmUteW91LW15LWJ1dHQtdG9kYXkvP3V0bV9zb3VyY2U9YXdtJnV0bV9tZWRpdW09YXdtdHJhZmZpYyZ1dG1fY2FtcGFpZ249NHdhbmsmc3ViaWQxPTcwMDAwMc0DpKJ0YwHNCCKncG9wdWxhcs0DQNkweyJhbGwiOiIiLCJvcmllbnRhdGlvbiI6InN0cmFpZ2h0IiwicHJpY2luZyI6IiJ9zQT1zme8sdaoY2F0ZWdvcnnOAAjXIsDZfFt7IjEiOiJyWXQyVnRlcDVVWSJ9LHsiMiI6IlBxSHE3emxaSDhDIn0seyIzIjoiT0ZwbndJUXFXYncifSx7Ii0xIjoiSllvdFd5UFV1SGcifSx7Ii0yIjoiRlVGTmNaeEpFUTAifSx7Ii0zIjoiNDlrRFNLTE81M1QifV0%3D&c=ddb6f8f4&v=3&'));
-        //var_dump(self::getAllCategoryVideos(['10-inch-cock']));
-        //var_dump(self::getCategoryVideos());
-        //var_dump(self::getCategories());
+        if (empty($array)) {
+            return '';
+        }
+        ksort($array);
+
+        $arr_temp = array();
+        foreach ($array as $key => $val) {
+            if ($key == 'data') {
+                $valTemp = str_replace(' ', '+', $val);
+                $arr_temp[] = $key . '=' . $valTemp;
+            } else {
+                $arr_temp[] = $key . '=' . $val;
+            }
+        }
+        $string = implode('&', $arr_temp);
+
+        if (empty($signKey)) {
+            $signKey = self::UPLOAD_SIGN_KEY;
+        }
+        $string = $string . $signKey;
+
+        $res = md5(hash('sha256', $string));
+
+        return $res;
+    }
+
+    public static function getImgPath()
+    {
+        $data = [
+            'sourceId' => md5(uniqid(mt_rand(), true)),
+            'synchronous' => 1,
+            'sourceUrl' => 'https://c1.ttcache.com/thumbnail/2gM7xnsiUPa/288x162/14_240.jpg',
+        ];
+        $sign = self::makeUploadSign($data);
+
+        $params = array_merge($data, ['sign' => $sign]);
+        $res = self::curlPost(self::UPLOAD_IMG_API, $params);
+        if (!empty($res[1])) {
+            $arr = json_decode($res[1], 1);
+            if (!empty($arr['data']['url'])) {
+                return $arr['data']['url'];
+            }
+        }
+
+        return '';
+    }
+
+    public static function curlPost(string $url, array $params, int $timeout = 60): array
+    {
+        $res = [];
+        if (empty($url)) {
+            return $res;
+        }
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+
+        $response = curl_exec($ch);
+        $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if (curl_errno($ch)) {
+            return [$code, ''];
+        }
+
+        @curl_close($ch);
+        $resp = strval($response);
+        //var_dump('--------------curl req:', $url, $params);
+        //var_dump('--------------curl res:', $code, $resp);
+
+        return [$code, $resp];
     }
 }
