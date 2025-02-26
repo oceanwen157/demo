@@ -29,7 +29,7 @@ class Crawler extends Command
         parent::__construct();
     }
 
-    public static function getCategorys()
+    public static function getCategories()
     {
         $path = '/a-z';
         $rules = [
@@ -42,7 +42,24 @@ class Crawler extends Command
         $data = QueryList::Query(self::BASE_URL.$path, $rules)->data;
 
         return  array_map(function ($item) {
-            return $item['category'];
+            return trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($item['category'])), '-');
+        }, $data);
+    }
+
+    public static function getPornstars()
+    {
+        $path = '/pornstar';
+        $rules = [
+            'category' => [
+                '.category-group .category-title',
+                'text'
+            ]
+        ];
+        
+        $data = QueryList::Query(self::BASE_URL.$path, $rules)->data;
+
+        return  array_map(function ($item) {
+            return trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($item['category'])), '-');
         }, $data);
     }
 
@@ -223,11 +240,10 @@ class Crawler extends Command
 
     public function handle()
     {
-        var_dump(self::getRedirectUrl('https://www.qorno.com/out/?l=3AASPM4TEyRnq0huT2lGQlBsTkhTAtmOaHR0cHM6Ly93d3cuNHdhbmsuY29tL3ZpZGVvcy8xNDE0MzEvaS1tLWdvaW5nLXRvLWdpdmUteW91LW15LWJ1dHQtdG9kYXkvP3V0bV9zb3VyY2U9YXdtJnV0bV9tZWRpdW09YXdtdHJhZmZpYyZ1dG1fY2FtcGFpZ249NHdhbmsmc3ViaWQxPTcwMDAwMc0DpKJ0YwHNCCKncG9wdWxhcs0DQNkweyJhbGwiOiIiLCJvcmllbnRhdGlvbiI6InN0cmFpZ2h0IiwicHJpY2luZyI6IiJ9zQT1zme8sdaoY2F0ZWdvcnnOAAjXIsDZfFt7IjEiOiJyWXQyVnRlcDVVWSJ9LHsiMiI6IlBxSHE3emxaSDhDIn0seyIzIjoiT0ZwbndJUXFXYncifSx7Ii0xIjoiSllvdFd5UFV1SGcifSx7Ii0yIjoiRlVGTmNaeEpFUTAifSx7Ii0zIjoiNDlrRFNLTE81M1QifV0%3D&c=ddb6f8f4&v=3&'));
+        var_dump(self::getPornstars());
+        //var_dump(self::getRedirectUrl('https://www.qorno.com/out/?l=3AASPM4TEyRnq0huT2lGQlBsTkhTAtmOaHR0cHM6Ly93d3cuNHdhbmsuY29tL3ZpZGVvcy8xNDE0MzEvaS1tLWdvaW5nLXRvLWdpdmUteW91LW15LWJ1dHQtdG9kYXkvP3V0bV9zb3VyY2U9YXdtJnV0bV9tZWRpdW09YXdtdHJhZmZpYyZ1dG1fY2FtcGFpZ249NHdhbmsmc3ViaWQxPTcwMDAwMc0DpKJ0YwHNCCKncG9wdWxhcs0DQNkweyJhbGwiOiIiLCJvcmllbnRhdGlvbiI6InN0cmFpZ2h0IiwicHJpY2luZyI6IiJ9zQT1zme8sdaoY2F0ZWdvcnnOAAjXIsDZfFt7IjEiOiJyWXQyVnRlcDVVWSJ9LHsiMiI6IlBxSHE3emxaSDhDIn0seyIzIjoiT0ZwbndJUXFXYncifSx7Ii0xIjoiSllvdFd5UFV1SGcifSx7Ii0yIjoiRlVGTmNaeEpFUTAifSx7Ii0zIjoiNDlrRFNLTE81M1QifV0%3D&c=ddb6f8f4&v=3&'));
         //var_dump(self::getAllCategoryVideos(['10-inch-cock']));
         //var_dump(self::getCategoryVideos());
-        //var_dump(self::getCategorys());
-        //$this->info("Hello World!");
-        return 0;
+        //var_dump(self::getCategories());
     }
 }
