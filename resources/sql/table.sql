@@ -34,6 +34,7 @@ DROP TABLE IF EXISTS `qor_categories`;
 CREATE TABLE `qor_categories`
 (
     `id`            int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `is_hot`        tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否热门:0否1是',
     `sort`          smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序:ASC',
     `letter`        char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      NOT NULL DEFAULT '' COMMENT '首字母',
     `origin_name`   varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '原名',
@@ -61,6 +62,7 @@ DROP TABLE IF EXISTS `qor_pstars`;
 CREATE TABLE `qor_pstars`
 (
     `id`            int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `is_hot`        tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否热门:0否1是',
     `sort`          smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序:ASC',
     `letter`        char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      NOT NULL DEFAULT '' COMMENT '首字母',
     `origin_name`   varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '原名',
@@ -113,6 +115,7 @@ DROP TABLE IF EXISTS `qor_videos`;
 CREATE TABLE `qor_videos`
 (
     `id`            int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `is_hot`        tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否热门:0否1是',
     `cid`           int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '分类ID',
     `pid`           int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '明星ID',
     `sid`           int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '来源ID',
