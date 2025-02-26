@@ -122,4 +122,10 @@ return [
     'Quantity desc' => '数量描述',
     'Create at' => '创建时间',
     'Update at' => '更新时间',
+    'Is hot' => '是否热门',
+    'Trans status' => '翻译状态',
+    'Tag'=>'标识',
+    'Code'=>'代码',
+    'Title'=>'标题',
+    'Path'=>'路径',
 ];
