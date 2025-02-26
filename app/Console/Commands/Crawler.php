@@ -36,41 +36,53 @@ class Crawler extends Command
         //var_dump(self::getRedirectUrl('https://www.qorno.com/out/?l=3AASPM4TEyRnq0huT2lGQlBsTkhTAtmOaHR0cHM6Ly93d3cuNHdhbmsuY29tL3ZpZGVvcy8xNDE0MzEvaS1tLWdvaW5nLXRvLWdpdmUteW91LW15LWJ1dHQtdG9kYXkvP3V0bV9zb3VyY2U9YXdtJnV0bV9tZWRpdW09YXdtdHJhZmZpYyZ1dG1fY2FtcGFpZ249NHdhbmsmc3ViaWQxPTcwMDAwMc0DpKJ0YwHNCCKncG9wdWxhcs0DQNkweyJhbGwiOiIiLCJvcmllbnRhdGlvbiI6InN0cmFpZ2h0IiwicHJpY2luZyI6IiJ9zQT1zme8sdaoY2F0ZWdvcnnOAAjXIsDZfFt7IjEiOiJyWXQyVnRlcDVVWSJ9LHsiMiI6IlBxSHE3emxaSDhDIn0seyIzIjoiT0ZwbndJUXFXYncifSx7Ii0xIjoiSllvdFd5UFV1SGcifSx7Ii0yIjoiRlVGTmNaeEpFUTAifSx7Ii0zIjoiNDlrRFNLTE81M1QifV0%3D&c=ddb6f8f4&v=3&'));
         //var_dump(self::getAllCategoryVideos(['10-inch-cock']));
         //var_dump(self::getCategoryVideos());
-        //var_dump(self::getCategories());
+        var_dump(self::getCategories());
     }
 
-    public static function getCategories()
+    public static function getCategories($type = 'category')
     {
-        $path = '/a-z';
+        $path = ($type == 'category') ? '/a-z' : '/pornstar';
         $rules = [
-            'category' => [
-                '.category-group .category-title',
-                'text'
-            ]
+            'href' => ['a.anchor-link', 'href'],
+            'title' => ['span.category-title', 'text'],
+            'badges' => ['span.badge-xsm', 'text', '', function ($content) {
+                return $content;
+            }]
         ];
-        
-        $data = QueryList::Query(self::BASE_URL.$path, $rules)->data;
+    
+    
+        return QueryList::Query(self::BASE_URL . $path, $rules, '.category')->getData(function ($item) {
+            $badges = $item['badges'];
+            $age_badge = '';
+            $count_badge = '';
+    
+            if (is_array($badges)) {
+                if (count($badges) > 1) {
+                    $age_badge = $badges[0];
+                    $count_badge = $badges[1];
+                } else {
+                    $count_badge = $badges[0];
+                }
+            } elseif (is_string($badges)) {
+                if (strpos($badges, '18+') === 0) {
+                    $age_badge = '18+';
+                    $count_badge = trim(str_replace('18+', '', $badges));
+                } else {
+                    $count_badge = $badges;
+                }
+            }
+    
+            return [
+                'href' => $item['href'],
+                'title' => $item['title'],
+                'age_badge' => $age_badge,
+                'count_badge' => $count_badge
+            ];
+        });
 
-        return  array_map(function ($item) {
-            return trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($item['category'])), '-');
-        }, $data);
-    }
-
-    public static function getPornstars()
-    {
-        $path = '/pornstar';
-        $rules = [
-            'category' => [
-                '.category-group .category-title',
-                'text'
-            ]
-        ];
-        
-        $data = QueryList::Query(self::BASE_URL.$path, $rules)->data;
-
-        return  array_map(function ($item) {
-            return trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($item['category'])), '-');
-        }, $data);
+        // return  array_map(function ($item) {
+        //     return trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($item['category'])), '-');
+        // }, $data);
     }
 
     public static function getAllCategoryVideos($categories)
