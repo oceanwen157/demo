@@ -35,6 +35,7 @@ CREATE TABLE `qor_categories`
 (
     `id`            int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `is_hot`        tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否热门:0否1是',
+    `trans_status`  tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '翻译状态:0待翻译,1翻译中,2翻译完成',
     `sort`          smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序:ASC',
     `letter`        char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      NOT NULL DEFAULT '' COMMENT '首字母',
     `origin_name`   varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '原名',
@@ -63,6 +64,7 @@ CREATE TABLE `qor_pstars`
 (
     `id`            int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `is_hot`        tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否热门:0否1是',
+    `trans_status`  tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '翻译状态:0待翻译,1翻译中,2翻译完成',
     `sort`          smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序:ASC',
     `letter`        char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      NOT NULL DEFAULT '' COMMENT '首字母',
     `origin_name`   varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '原名',
@@ -89,24 +91,26 @@ CREATE TABLE `qor_pstars`
 DROP TABLE IF EXISTS `qor_sources`;
 CREATE TABLE `qor_sources`
 (
-    `id`          int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `sort`        smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序:ASC',
-    `letter`      char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      NOT NULL DEFAULT '' COMMENT '首字母',
-    `origin_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '原名',
-    `title_en`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-英文',
-    `title_cn`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-简体中文',
-    `title_tw`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-繁体中文',
-    `title_ja`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-日文',
-    `title_ko`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-韩文',
-    `title_ms`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-马来文',
-    `title_th`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-泰文',
-    `title_de`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-德文',
-    `title_vi`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-越南文',
-    `title_id`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-印尼文',
-    `title_pt`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-葡萄牙文',
-    `title_tlph`  varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-菲律宾文',
-    `create_at`   int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-    `update_at`   int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+    `id`           int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `is_hot`       tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否热门:0否1是',
+    `trans_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '翻译状态:0待翻译,1翻译中,2翻译完成',
+    `sort`         smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序:ASC',
+    `letter`       char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      NOT NULL DEFAULT '' COMMENT '首字母',
+    `origin_name`  varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '原名',
+    `title_en`     varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-英文',
+    `title_cn`     varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-简体中文',
+    `title_tw`     varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-繁体中文',
+    `title_ja`     varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-日文',
+    `title_ko`     varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-韩文',
+    `title_ms`     varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-马来文',
+    `title_th`     varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-泰文',
+    `title_de`     varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-德文',
+    `title_vi`     varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-越南文',
+    `title_id`     varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-印尼文',
+    `title_pt`     varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-葡萄牙文',
+    `title_tlph`   varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-菲律宾文',
+    `create_at`    int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+    `update_at`    int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '来源站点表';
 
@@ -116,6 +120,7 @@ CREATE TABLE `qor_videos`
 (
     `id`            int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `is_hot`        tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否热门:0否1是',
+    `trans_status`  tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '翻译状态:0待翻译,1翻译中,2翻译完成',
     `cid`           int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '分类ID',
     `pid`           int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '明星ID',
     `sid`           int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '来源ID',
