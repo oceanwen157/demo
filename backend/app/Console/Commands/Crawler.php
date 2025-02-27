@@ -34,6 +34,7 @@ class Crawler extends Command
 
     public function handle()
     {
+        //var_dump(self::getImgPath());exit;
         $data = self::getAllCategoryVideos(
             [
                 [
@@ -121,10 +122,10 @@ class Crawler extends Command
         $client = new Client(['timeout' => 10]);
 
         $rules = [
-            'duration' => ['span.item-meta-container span.badge.float-right', 'text', '-span.font-bold.italic'],
-            'cover_image' => ['img.item-image', 'src'],
+            'durationDesc' => ['span.item-meta-container span.badge.float-right', 'text', '-span.font-bold.italic'],
+            'coverOri' => ['img.item-image', 'src'],
             'source' => ['div.item-source-rating-container a.item-source', 'text', '-i'],
-            'play_link' => ['a.item-link.rate-link:first', 'href'],
+            'playUrl' => ['a.item-link.rate-link:first', 'href'],
             'title' => ['div.item-footer a.item-title', 'text']
         ];
         $range = '.content-block .cards-container .card';
@@ -167,10 +168,8 @@ class Crawler extends Command
                             
                             $item['routeOri'] = $arr[0];
                             $item['quantityDesc'] = $arr[3];
-                            $item['coverOri'] = $item['cover_image'];
-                            //$item['coverNew'] = self::getImgPath($item['cover_image']);
-                            $item['coverNew'] = 'xxxxxx';
-                            $item['playUrl'] = $item['play_link'];
+                            $item['coverNew'] = self::getImgPath($item['coverOri']);
+                            //$item['playUrl'] = self::getRedirectUrl(self::BASE_URL.$item['playUrl']);
                             
                             if ($star) {
                                 $item['star'] = $arr[1];
@@ -333,12 +332,12 @@ class Crawler extends Command
         return $res;
     }
 
-    public static function getImgPath()
+    public static function getImgPath($url)
     {
         $data = [
             'sourceId' => md5(uniqid(mt_rand(), true)),
             'synchronous' => 1,
-            'sourceUrl' => 'https://c1.ttcache.com/thumbnail/2gM7xnsiUPa/288x162/14_240.jpg',
+            'sourceUrl' => $url,
         ];
         $sign = self::makeUploadSign($data);
 
