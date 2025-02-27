@@ -1,0 +1,11 @@
+.git/
+.svn/
+.idea/
+.project/
+.settings/
+.vscode/
+.hbuilderx/
+*.log
+*.DS_Store
+*.zip
+.user.ini
