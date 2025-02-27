@@ -108,6 +108,37 @@ class QorDataService extends ServiceBase
 
 
     /**
+     * 将数量描述转为数值
+     * @param string $quantity 如 45K
+     * @return int
+     */
+    public static function quantityDesc2Number(string $quantity): int
+    {
+        $quantity = strtolower(trim($quantity));
+        $quantity = str_replace('k', '', $quantity);
+        $num = intval($quantity) * 1000;
+        return $num;
+    }
+
+
+    /**
+     * hms时长字符串转为秒数
+     * @param string $str 时长,如 11:22:33
+     * @return int
+     */
+    public static function hmsToSeconds(string $str): int
+    {
+        if (empty($str)) {
+            return 0;
+        }
+
+        $arr = explode(':', $str);
+        $res = ($arr[0] ?? 0) * 3600 + ($arr[1] ?? 0) * 60 + ($arr[2] ?? 0);
+        return $res;
+    }
+
+
+    /**
      * 新增来源站点,并返回记录ID;若记录已存在,则返回该记录的ID.为0时,是失败.
      * @param string $name 来源名称
      * @return int
@@ -193,7 +224,6 @@ class QorDataService extends ServiceBase
 
         $letter = substr($name, 0, 1);
         $newRoute = self::makeRoute($route);
-
         $data = [
             'letter' => $letter,
             'origin_name' => $name,
