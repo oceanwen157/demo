@@ -1,0 +1,11 @@
+.hides {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: auto;
+    display: block;
+}
+/* desktop */
+@media (min-width: 1024px) {
+
+}

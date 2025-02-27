@@ -1,0 +1,110 @@
+/**
+ * desc: 通用协助样式
+ * date: 2023.03.20
+ */
+
+:root {
+	--default-screen-max-width: 110.0rem;
+	--default-screen-min-width: 37.5rem;
+	
+	/* 头部导航 start */
+	--van-nav-bar-title-text-color:#ffffff;
+	--van-nav-bar-title-font-size: 1.8rem;
+	--van-nav-bar-height: 4.4rem;
+	--van-nav-bar-background: #111118;
+	--van-border-width: 0;
+	--van-padding-md: 1.0rem;
+	--van-nav-bar-z-index: 10;
+	/* 头部导航 start */
+
+	/* 底部菜单 start */
+	--van-tabbar-height: 6.0rem;
+	--van-tabbar-item-font-size: 1.0rem;
+	--van-tabbar-item-text-color: #909090;
+	--van-tabbar-background: #221f3a;
+	--van-tabbar-item-active-color: #909090;
+	--van-tabbar-item-active-background: #221f3a;
+	--van-tabbar-z-index: 10;
+	/* 底部菜单 end */
+}
+
+* {
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body {
+	color: #cccccc;
+	font-size: 1.3rem;
+    font-weight: normal;
+    
+    line-height: 1.52;
+    
+    font-family: PingFangSC，"Microsoft Yahei", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Segoe UI, Arial, Roboto, "PingFang SC", "Hiragino Sans GB", sans-serif; 
+	background-color: var(--base-background);
+}
+
+img:not(.loading) {
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* 容器 start */
+#xqbj-container {
+	max-width: var(--default-screen-max-width);
+	min-width: var(--default-screen-min-width);
+	margin: 0 auto;
+}
+/* 容器 end */
+
+
+
+
+
+
+
+/* 滚动条 start */
+#mobile div {
+    scrollbar-width: none;
+    scrollbar-color: transparent;
+}
+#mobile div::-webkit-scrollbar {
+    background-color: transparent;
+}
+#mobile div::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+#desktop div {
+    /* scrollbar-width: inherit; */
+    scrollbar-width: none;
+    scrollbar-color: #0c0b22;
+}
+#desktop div::-webkit-scrollbar-track {
+    
+}
+#desktop div::-webkit-scrollbar {
+    display: block;
+    width: var(--desktop-scrollbar-width);
+    height: 0.6rem;
+    padding: 1.0rem;
+    margin: 1.0rem;
+    border-radius: var(--desktop-scrollbar-border-radius);
+    background-color: var(--desktop-scrollbar-background-color);
+}
+#desktop div::-webkit-scrollbar-thumb {
+    padding: 1.0rem;
+    margin: 1.0rem;
+    border-radius: var(--desktop-scrollbar-border-radius);
+    background-color: var(--desktop-scrollbar-thumb-background-color);
+}
+#desktop div.noscrollbar::-webkit-scrollbar {
+    display: none;
+}
+/* 滚动条 end */
+
+
+
+

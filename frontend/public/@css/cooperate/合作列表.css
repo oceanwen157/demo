@@ -1,0 +1,17 @@
+.rounded-b {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.network-card>a .logo-dark {
+    max-height: unset;
+}
+.network-grid-logo img {
+    padding-right: 0;
+    padding-left: 0;
+}
+/* desktop */
+@media (min-width: 1024px) {
+
+}

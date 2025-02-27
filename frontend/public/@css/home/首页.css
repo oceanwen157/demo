@@ -1,0 +1,53 @@
+.main-container {
+ 
+}
+.xqbj-tags .xqbj-tags-group .xqbj-tags-group-right .van-tabs .van-tab .van-tab__text{
+    font-size: 1.2rem;
+    color: var(--tag-text);
+}
+.xqbj-tags .xqbj-tags-group .xqbj-tags-group-right .van-tabs .van-tab.van-tab--active .van-tab__text {
+    color: var(--tag-text-active);
+    font-weight: 200;
+}
+
+.label-tag {
+    background: #fff;
+    font-size: 1.2rem;
+    color: var(--p-text-color);
+    padding: 1rem;
+    margin: 0.6rem 0;
+    text-align: center;
+}
+.label-tag .label-span {
+    color: #3276ff;
+    margin: 0;
+}
+
+/* desktop */
+@media (min-width: 1024px) {
+    .xqbj-tags .xqbj-tags-group .xqbj-tags-group-right .van-tabs .van-tab .van-tab__text{
+        font-size: 0.8rem;
+    }
+    .van-tabs.van-tabs--line{
+        display: none;
+    }
+    .xqbj-tags .van-tabs.van-tabs--line{
+        display: block;
+    }
+    .bubble-group-round .van-floating-bubble {
+        /* right: 10rem; */
+        right: 0;
+    }
+    .label-tag {
+        background: #fff;
+        font-size: 1.2rem;
+        color: var(--p-text-color);
+        padding: 1rem;
+        margin: 0.6rem 0;
+        text-align: center;
+    }
+    .label-tag .label-span {
+        color: #3276ff;
+        margin: 0;
+    }
+}

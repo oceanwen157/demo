@@ -1,0 +1,32 @@
+/**
+ * desc: 样式索引入口
+ * date: 2023.03.20
+ */
+ @import url('font-awesome.min.css');
+ /* @import url('bootstrap.min.css'); */
+ /* @import url('bootstrap-icons.min.css'); */
+ /* @import url('swiper-bundle.min.css'); */
+ @import url('vant.css');
+ @import url('swiper.css');
+ /* @import url('wangeditor.css'); */
+
+ /* 适配 */
+ /* @import url('adaptation.css'); */
+ /* @import url('adaptation.m.0.css'); */
+ /* @import url('adaptation.m.600.css'); */
+ /* @import url('adaptation.m.1200.css'); */
+ 
+ /* 主题 */
+ @import url('adaptation.t.dark.css');
+ /* @import url('adaptation.t.light.css'); */
+ 
+ /* 图标 */
+ /* @import url('adaptation.i.0.css'); */
+ /* @import url('adaptation.i.600.css'); */
+ /* @import url('adaptation.i.1200.css'); */
+ 
+ /* 通用 */
+ @import url('0214/app.css');
+ @import url('main.css');
+ /* @import url('common.css'); */
+ /* @import url('inputform.css'); */

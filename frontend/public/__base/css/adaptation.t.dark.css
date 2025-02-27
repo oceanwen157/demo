@@ -1,0 +1,11 @@
+/* 主题切换/夜间模式 */
+
+html.dark,:root {
+    --primary-color: #ef4444;
+    --primary-text: #fff;
+    --primary-fill: #ef4444;
+    --primary-active-text: #ef4444;
+    --primary-hover-fill: #f87171;
+    --primary-active-fill: #fca5a5
+}
+
