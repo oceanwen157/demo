@@ -299,8 +299,7 @@ class QorDataService extends ServiceBase
      * ];
      * @return int
      */
-    public
-    function addVideoInfo(array $param = []): int
+    public function addVideoInfo(array $param = []): int
     {
         extract($param);
         $title = trim($title ?? '');
@@ -312,9 +311,18 @@ class QorDataService extends ServiceBase
         $source = trim($source ?? '');
         $durationDesc = trim($durationDesc ?? '');
         $voteDesc = trim($voteDesc ?? '');
+        
+        $ageLimit = intval($ageLimit ?? '');
+        $gender = intval($gender ?? '');
+        $quantityDesc = trim($quantityDesc ?? '');
+        $routeOri = trim($routeOri ?? '');
 
         if (empty($title)) {
             $this->setErrorInfo('title 不能为空');
+            return 0;
+        }
+        if (empty($routeOri)) {
+            $this->setErrorInfo('routeOri 不能为空');
             return 0;
         }
         if (empty($coverOri)) {
@@ -336,10 +344,10 @@ class QorDataService extends ServiceBase
         }
 
         //添加分类
-        $cid = self::addCategory($category);
+        $cid = self::addCategory($category, $routeOri, $quantityDesc, $ageLimit);
 
         //添加明星
-        $pid = self::addPstar($star);
+        $pid = self::addPstar($star, $routeOri,$quantityDesc, $gender);
 
         //添加来源
         $sid = self::addSource($source);
@@ -386,5 +394,5 @@ class QorDataService extends ServiceBase
         return $res;
     }
 
-
+    
 }

@@ -8,6 +8,7 @@ use GuzzleHttp\Pool;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Exception\RequestException;
+use App\Services\QorDataService;
 
 class Crawler extends Command
 {
@@ -23,25 +24,54 @@ class Crawler extends Command
 
     protected $signature = 'crawler:run';
 
+    private static $qorSvc;
 
     public function __construct()
     {
         parent::__construct();
+        self::$qorSvc = new QorDataService();
     }
 
     public function handle()
     {
+        $data = self::getAllCategoryVideos(
+            [
+                [
+                    'href' => '/category/10-inch-cock',
+                    'title' => '10+ Inch Cock',
+                    'age_badge' => '',
+                    'count_badge' => '581K'
+                ]
+            ]
+        );
+
+        foreach($data as $v) {
+            var_dump(self::$qorSvc->addVideoInfo($v));
+        }
+
+        exit;
+        
+        //self::$qorSvc->addCategory();
         //var_dump(self::getImgPath());
         //var_dump(self::getPornstars());
         //var_dump(self::getRedirectUrl('https://www.qorno.com/out/?l=3AASPM4TEyRnq0huT2lGQlBsTkhTAtmOaHR0cHM6Ly93d3cuNHdhbmsuY29tL3ZpZGVvcy8xNDE0MzEvaS1tLWdvaW5nLXRvLWdpdmUteW91LW15LWJ1dHQtdG9kYXkvP3V0bV9zb3VyY2U9YXdtJnV0bV9tZWRpdW09YXdtdHJhZmZpYyZ1dG1fY2FtcGFpZ249NHdhbmsmc3ViaWQxPTcwMDAwMc0DpKJ0YwHNCCKncG9wdWxhcs0DQNkweyJhbGwiOiIiLCJvcmllbnRhdGlvbiI6InN0cmFpZ2h0IiwicHJpY2luZyI6IiJ9zQT1zme8sdaoY2F0ZWdvcnnOAAjXIsDZfFt7IjEiOiJyWXQyVnRlcDVVWSJ9LHsiMiI6IlBxSHE3emxaSDhDIn0seyIzIjoiT0ZwbndJUXFXYncifSx7Ii0xIjoiSllvdFd5UFV1SGcifSx7Ii0yIjoiRlVGTmNaeEpFUTAifSx7Ii0zIjoiNDlrRFNLTE81M1QifV0%3D&c=ddb6f8f4&v=3&'));
-        //var_dump(self::getAllCategoryVideos(['10-inch-cock']));
+        var_dump(self::getAllCategoryVideos(
+            [
+                [
+                    'href' => '/category/10-inch-cock',
+                    'title' => '10+ Inch Cock',
+                    'age_badge' => '',
+                    'count_badge' => '581K'
+                ]
+            ]
+        ));
         //var_dump(self::getCategoryVideos());
-        var_dump(self::getCategories());
+        //var_dump(self::getCategories());
     }
 
-    public static function getCategories($type = 'category')
+    public static function getCategories($star = false)
     {
-        $path = ($type == 'category') ? '/a-z' : '/pornstar';
+        $path = $star ? '/pornstar' : '/a-z';
         $rules = [
             'href' => ['a.anchor-link', 'href'],
             'title' => ['span.category-title', 'text'],
@@ -85,7 +115,7 @@ class Crawler extends Command
         // }, $data);
     }
 
-    public static function getAllCategoryVideos($categories)
+    public static function getAllCategoryVideos($categories, $star = false)
     {
         $dataAll = [];
         $client = new Client(['timeout' => 10]);
@@ -101,16 +131,16 @@ class Crawler extends Command
 
         $allRequests = [];
         foreach ($categories as $category) {
-            $firstPageUrl = sprintf(self::BASE_URL . '/category/%s', $category);
+            $firstPageUrl = sprintf(self::BASE_URL . $category['href']);
             $response = $client->get($firstPageUrl);
             $html = (string)$response->getBody();
-            $maxPage = self::detectMaxPage($html);
+            $maxPage = 1;//self::detectMaxPage($html);
 
             for ($page = 1; $page <= $maxPage; $page++) {
-                $path = ($page == 1) ? '/category/%s' : '/category/%s?page=%d';
-                $url = sprintf(self::BASE_URL . $path, $category, $page);
+                $path = ($page == 1) ? $category['href'] : $category['href']."?page=$page";
+                $url = self::BASE_URL . $path;
                 
-                $key = "{$category}_page_{$page}";
+                $key = "{$category['href']}_{$category['title']}_{$category['age_badge']}_{$category['count_badge']}_{$page}";
                 $allRequests[$key] = new Request('GET', $url);
             }
         }
@@ -128,14 +158,29 @@ class Crawler extends Command
             $pool = new Pool($client, $requests(), [
                 'concurrency' => self::MAX_CONCURRENT_REQUESTS,
                 'options' => ['delay' => rand(100, 500)],
-                'fulfilled' => function ($response, $key) use (&$dataAll, $rules, $range) {
+                'fulfilled' => function ($response, $key) use (&$dataAll, $rules, $range, $star) {
                     $html = (string)$response->getBody();
                     $data = QueryList::Query($html, $rules, $range, '', 'utf-8')->data;
                     if (!empty($data)) {
                         foreach ($data as &$item) {
-                            [$category] = explode('_page_', $key);
-                            $item['category'] = $category;
+                            $arr = explode('_', $key);
+                            
+                            $item['routeOri'] = $arr[0];
+                            $item['quantityDesc'] = $arr[3];
+                            $item['coverOri'] = $item['cover_image'];
+                            //$item['coverNew'] = self::getImgPath($item['cover_image']);
+                            $item['coverNew'] = 'xxxxxx';
+                            $item['playUrl'] = $item['play_link'];
+                            
+                            if ($star) {
+                                $item['star'] = $arr[1];
+                                $item['gender'] = (strpos($arr[1], '♂') !== false) ? 1 : 0;
+                            } else {
+                                $item['category'] = $arr[1];
+                                $item['ageLimit'] = intval($arr[2]);
+                            }
                         }
+
                         $dataAll = array_merge($dataAll, $data);
                     }
 
