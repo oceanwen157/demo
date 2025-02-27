@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @OA\Schema (
  *      schema="QorCategories",
- *      required={"is_hot", "trans_status", "sort", "letter", "origin_name", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "route_path", "quantity_desc", "create_at", "update_at"},
+ *      required={"is_hot", "trans_status", "gender", "age_limit", "sort", "letter", "origin_name", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "route_path", "quantity_desc", "create_at", "update_at"},
  *      @OA\Property(
  *          property="id",
  *          description="id",
@@ -30,6 +30,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *      @OA\Property(
  *          property="trans_status",
  *          description="翻译状态:0待翻译,1翻译中,2翻译完成",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="boolean"
+ *      ),
+ *      @OA\Property(
+ *          property="gender",
+ *          description="性别:0未知,1男性,2女性",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="boolean"
+ *      ),
+ *      @OA\Property(
+ *          property="age_limit",
+ *          description="年龄限制",
  *          readOnly=$FIELD_READ_ONLY$,
  *          nullable=$FIELD_NULLABLE$,
  *          type="boolean"
@@ -172,8 +186,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *      )
  * )
  * @property int $id
- * @property bool $is_hot 是否热门:0否1是
- * @property bool $trans_status 翻译状态:0待翻译,1翻译中,2翻译完成
+ * @property int $is_hot 是否热门:0否1是
+ * @property int $trans_status 翻译状态:0待翻译,1翻译中,2翻译完成
+ * @property int $gender 性别:0未知,1男性,2女性
+ * @property int $age_limit 年龄限制
  * @property int $sort 排序:ASC
  * @property string $letter 首字母
  * @property string $origin_name 原名
@@ -195,9 +211,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $update_at 更新时间
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|QorCategories onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories query()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereAgeLimit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereCreateAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereGender($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereIsHot($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereLetter($value)
@@ -219,8 +236,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitleVi($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTransStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereUpdateAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorCategories withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|QorCategories withoutTrashed()
  * @mixin \Eloquent
  */
 class QorCategories extends Model
@@ -236,9 +251,12 @@ class QorCategories extends Model
     protected $dateFormat = 'U';
 
 
+
     public $fillable = [
         'is_hot',
         'trans_status',
+        'gender',
+        'age_limit',
         'sort',
         'letter',
         'origin_name',
@@ -269,6 +287,8 @@ class QorCategories extends Model
         'id' => 'integer',
         'is_hot' => 'integer',
         'trans_status' => 'integer',
+        'gender' => 'integer',
+        'age_limit' => 'integer',
         'sort' => 'integer',
         'letter' => 'string',
         'origin_name' => 'string',
@@ -298,6 +318,8 @@ class QorCategories extends Model
     public static $rules = [
         'is_hot' => 'integer',
         'trans_status' => 'integer',
+        'gender' => 'integer',
+        'age_limit' => 'integer',
         'sort' => 'integer',
         'letter' => 'string|max:1',
         'origin_name' => 'string|max:128',

@@ -42,6 +42,20 @@ class QorDataService extends ServiceBase
 
 
     /**
+     * 检查路由是否合法
+     * @param $route
+     * @return bool
+     */
+    public static function checkRoute($route): bool
+    {
+        //只允许字母、数字、下划线、中划线
+        $pattern = '/^[A-Za-z0-9\_\-]+$/';
+        $res = !empty($route) && @preg_match($pattern, $route);
+        return $res;
+    }
+
+
+    /**
      * 根据语言后缀获取多语言的标题
      * @param Model $mod 数据模型
      * @param string $langSuffix 语言后缀,值有
@@ -118,11 +132,12 @@ class QorDataService extends ServiceBase
      * 新增分类,并返回记录ID;若记录已存在,则返回该记录的ID.为0时,是失败.
      * @param string $name
      * @param string $quantityDesc 数量描述,如 58K
+     * @param int $ageLimit 年龄限制
      * @return int
      * @throws Throwable
      */
     public
-    static function addCategory(string $name, string $quantityDesc = ''): int
+    static function addCategory(string $name, string $quantityDesc = '', int $ageLimit = 0): int
     {
         $name = trim($name);
         if (empty($name)) {
@@ -134,13 +149,19 @@ class QorDataService extends ServiceBase
         ])->first();
         if ($row) {
             //更新数量描述
+            $data = [];
             if (!empty($quantityDesc)) {
-                DB::transaction(function () use ($row, $quantityDesc) {
+                $data['quantity_desc'] = $quantityDesc;
+            }
+            if (!empty($ageLimit)) {
+                $data['age_limit'] = $ageLimit;
+            }
+
+            if (!empty($data)) {
+                DB::transaction(function () use ($row, $data) {
                     QorCategories::query()->where([
                         'id' => $row->id,
-                    ])->update([
-                        'quantity_desc' => $quantityDesc,
-                    ]);
+                    ])->update($data);
                 });
             }
 
@@ -149,7 +170,7 @@ class QorDataService extends ServiceBase
 
         $letter = substr($name, 0, 1);
         $route = $name;
-        if (!ValidateHelper::isAlphaNumDash($route)) {
+        if (!self::checkRoute($route)) {
             $route = StringHelper::randString(8);
         }
 
@@ -158,6 +179,8 @@ class QorDataService extends ServiceBase
             'origin_name' => $name,
             'title_en' => $name,
             'route_path' => $route,
+            'quantity_desc' => $quantityDesc,
+            'age_limit' => $ageLimit,
         ];
 
         $mod = new QorCategories($data);
@@ -174,11 +197,12 @@ class QorDataService extends ServiceBase
      * 新增明星,并返回记录ID;若记录已存在,则返回该记录的ID.为0时,是失败.
      * @param string $name
      * @param string $quantityDesc 数量描述,如 58K
+     * @param int $gender 性别，0未知,1男性,2女性
      * @return int
      * @throws Throwable
      */
     public
-    static function addPstar(string $name, string $quantityDesc = ''): int
+    static function addPstar(string $name, string $quantityDesc = '', int $gender = 0): int
     {
         $name = trim($name);
         if (empty($name)) {
@@ -190,13 +214,19 @@ class QorDataService extends ServiceBase
         ])->first();
         if ($row) {
             //更新数量描述
+            $data = [];
             if (!empty($quantityDesc)) {
-                DB::transaction(function () use ($row, $quantityDesc) {
+                $data['quantity_desc'] = $quantityDesc;
+            }
+            if (!empty($gender)) {
+                $data['gender'] = $gender;
+            }
+
+            if (!empty($data)) {
+                DB::transaction(function () use ($row, $data) {
                     QorPstars::query()->where([
                         'id' => $row->id,
-                    ])->update([
-                        'quantity_desc' => $quantityDesc,
-                    ]);
+                    ])->update($data);
                 });
             }
 
@@ -205,7 +235,7 @@ class QorDataService extends ServiceBase
 
         $letter = substr($name, 0, 1);
         $route = $name;
-        if (!ValidateHelper::isAlphaNumDash($route)) {
+        if (!self::checkRoute($route)) {
             $route = StringHelper::randString(8);
         }
 
@@ -214,6 +244,8 @@ class QorDataService extends ServiceBase
             'origin_name' => $name,
             'title_en' => $name,
             'route_path' => $route,
+            'quantity_desc' => $quantityDesc,
+            'gender' => $gender,
         ];
 
         $mod = new QorPstars($data);
