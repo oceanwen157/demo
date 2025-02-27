@@ -8,6 +8,7 @@ use App\Models\QorSources;
 use App\Models\QorVideos;
 use Encore\Admin\Form;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 use Kph\Helpers\StringHelper;
 use Kph\Helpers\ValidateHelper;
 use Throwable;
@@ -41,12 +42,48 @@ class QorDataService extends ServiceBase
 
 
     /**
+     * 根据语言后缀获取多语言的标题
+     * @param Model $mod 数据模型
+     * @param string $langSuffix 语言后缀,值有
+     * - en,英文
+     * - cn,简体中文
+     * - tw,繁体中文
+     * - ja,日文
+     * - ko,韩文
+     * - ms,马来文
+     * - th,泰文
+     * - de,德文
+     * - vi,越南文
+     * - id,印尼文
+     * - pt,葡萄牙文
+     * - tlph,菲律宾文
+     * @return string
+     */
+    public static function getTitleByLang(Model $mod, string $langSuffix = ''): string
+    {
+        $default = trim($mod->title_en ?? '');
+        if (empty($langSuffix)) {
+            return $default;
+        }
+
+        $field = "title_{$langSuffix}";
+        $res = trim($mod->$field ?? '');
+        if (empty($res)) {
+            $res = $default;
+        }
+
+        return $res;
+    }
+
+
+    /**
      * 新增来源站点,并返回记录ID;若记录已存在,则返回该记录的ID.为0时,是失败.
      * @param string $name 来源名称
      * @return int
      * @throws Throwable
      */
-    public static function addSource(string $name): int
+    public
+    static function addSource(string $name): int
     {
         $name = trim($name);
         if (empty($name)) {
@@ -84,7 +121,8 @@ class QorDataService extends ServiceBase
      * @return int
      * @throws Throwable
      */
-    public static function addCategory(string $name, string $quantityDesc = ''): int
+    public
+    static function addCategory(string $name, string $quantityDesc = ''): int
     {
         $name = trim($name);
         if (empty($name)) {
@@ -139,7 +177,8 @@ class QorDataService extends ServiceBase
      * @return int
      * @throws Throwable
      */
-    public static function addPstar(string $name, string $quantityDesc = ''): int
+    public
+    static function addPstar(string $name, string $quantityDesc = ''): int
     {
         $name = trim($name);
         if (empty($name)) {
@@ -203,7 +242,8 @@ class QorDataService extends ServiceBase
      * ];
      * @return int
      */
-    public function addVideoInfo(array $param = []): int
+    public
+    function addVideoInfo(array $param = []): int
     {
         extract($param);
         $title = trim($title ?? '');

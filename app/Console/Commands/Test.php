@@ -2,6 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Models\QorCategories;
+use App\Models\QorPstars;
+use App\Models\QorSources;
+use App\Models\QorVideos;
+use App\Services\QorDataService;
 use Illuminate\Console\Command;
 
 class Test extends Command
@@ -39,6 +44,7 @@ class Test extends Command
     {
         $this->info("Hello World!");
         logInfo('just a test');
+
         return 0;
     }
 }
