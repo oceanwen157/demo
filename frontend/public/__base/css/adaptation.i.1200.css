@@ -1,0 +1,100 @@
+/* 屏幕(0px) 图标 */
+@media (min-width: 1024px) {
+	[class^="xqbj-icon-"] {
+		background-repeat: no-repeat;
+		background-size: 100% 100%;
+	}
+
+	/* 时钟(图标)  */
+	.xqbj-icon-kj-time { 	    width: 1.6rem; height: 1.6rem; background-image: var(--list-icon-time-image);}
+	/* 时钟(用户)  */
+	.xqbj-icon-kj-preview { 	width: 1.6rem; height: 1.6rem; background-image: var(--list-icon-preview-image); }
+	/* 点赞(图标)  */
+	.xqbj-icon-kj-dz { 			width: 1.6rem; height: 1.6rem; background-image: var(--list-icon-dz-image); }
+	/* 播放(图标)  */
+	.xqbj-icon-kj-play { 		width: 1.6rem; height: 1.6rem; background-image: var(--list-icon-play-image);}
+	/* 菜单(图标)  */
+	.xqbj-icon-menu {			width: 2rem; height: 2rem; background-image: var(--van-nav-menu-background); }
+	/* 菜单(图标)  */
+	/* 时钟(时钟)  */
+	.xqbj-icon-time { 	       width: 1.2rem; height: 1.2rem; background-image: var(--list-icon-time);}
+	/* 时钟(用户)  */
+	.xqbj-icon-user { 	       width: 1.2rem; height: 1.2rem; background-image: var(--list-icon-user);}
+	/* 时钟(评论)  */
+	.xqbj-icon-comm { 	       width: 1.2rem; height: 1.2rem; background-image: var(--list-icon-comm);}
+	/* 时钟(视图)  */
+	.xqbj-icon-view { 	       width: 1.2rem; height: 1.2rem; background-image: var(--list-icon-view);}
+
+	/* 签到(图标)  */
+	.xqbj-icon-sign { 			width: 5.8rem; height: 2.4rem; background-image: var(--van-nav-sign-background); }
+	/* 签到(图标)  */
+	.xqbj-icon-sign { 			width: 5.8rem; height: 2.4rem; background-image: var(--van-nav-sign-background); }
+	/* 签到(图标)  */
+	.xqbj-icon-theme { 			width: 2.2rem; height: 2.2rem; background-image: var(--list-icon-theme-image); }
+
+	/* 搜索(图标)  */
+	.xqbj-icon-search { 		width: 1.0rem; height: 1.0rem; background-image: var(--van-nav-search-image); }
+	/* tg(图标)  */
+	.xqbj-icon-tg { 			width: 1.6rem; height: 1.6rem;  background-image: url(../images/tgbtn@3x.png) }
+
+	/* 手机 */
+	.xqbj-icon-phone { 		width: 3rem; height: 3rem; background-image: url(../images/f-menu1.png); }
+	/* 客服 */
+	.xqbj-icon-connect { 		width: 3rem; height: 3rem; background-image: url(../images/f-menu2.png); }
+	/*返回顶部*/
+	.xqbj-icon-gotop2 { 		width: 3rem; height: 3rem; background-image: var(--list-icon-backtop); }
+
+	/* 小说评论  */
+	.xqbj-icon-op1 { 		width: 1rem; height: 1rem; background-image: url(../images/novel/小说介绍/op1.png); }
+	/* 小说收藏  */
+	.xqbj-icon-op2 { 		width: 1rem; height: 1rem; background-image: url(../images/novel/小说介绍/op2.png); }
+	/* 小说分享 */
+	.xqbj-icon-op3 { 		width: 1rem; height: 1rem; background-image: url(../images/novel/小说介绍/op3.png); }
+
+	/* 加载更多 */
+	.xqbj-icon-getmore { 		width: 0.65rem; height: 0.4rem; background-image: url(../images/more.png); }
+
+	/* 搜索 */
+	.xqbj-icon-search2 { 		width: 0.80rem; height: 0.80rem; background-image: url(../images/searchbtn@3x.png); }
+
+	/* 热榜 start */
+	.xqbj-icon-subscription {  margin: 0 0 0 0.1rem; width: 0.9rem; height: 0.9rem; background-image: url(../images/subscription@3x.png); }
+	.xqbj-icon-unsubscription { margin: 0 0 0 0.1rem; width: 0.9rem; height: 0.9rem; background-image: url(../images/unsubscription@3x.png); }
+	/* 热榜 end */
+
+	/* 个人中心 */
+	.xqbj-icon-user1 { 		width: 1.3rem; height: 1.3rem; background-image: url(../images/user/user1.png); }
+	.xqbj-icon-user2 { 		width: 1.3rem; height: 1.3rem; background-image: url(../images/user/user2.png); }
+	.xqbj-icon-user3 { 		width: 1.3rem; height: 1.3rem; background-image: url(../images/user/user3.png); }
+	.xqbj-icon-user4 { 		width: 1.3rem; height: 1.3rem; background-image: url(../images/user/user4.png); }
+	.xqbj-icon-user5 { 		width: 1.3rem; height: 1.3rem; background-image: url(../images/user/user5.png); }
+	.xqbj-icon-user6 { 		width: 1.3rem; height: 1.3rem; background-image: url(../images/user/user6.png); }
+	.xqbj-icon-user7 { 		width: 1.3rem; height: 1.3rem; background-image: url(../images/user/user7.png); }
+	.xqbj-icon-user8 { 		width: 1.3rem; height: 1.3rem; background-image: url(../images/user/user8.png); }
+	.xqbj-icon-user9 { 		width: 1.3rem; height: 1.3rem; background-image: url(../images/user/user9.png); }
+
+	/* 在线客服发送标签 */
+	.xqbj-icon-send { 		width: 1.35rem; height: 1.25rem; background-image: url(../images/user/send.png); }
+	.xqbj-icon-nav-image {  width: 1.5rem; height: 1.5rem; }
+	.xqbj-icon-qq 	{  width: 1.25rem; height: 1.25rem; background-image: url(../images/qq@3x.png); }
+	.xqbj-icon-sw 	{  width: 1.25rem; height: 1.25rem; background-image: url(../images/sw@3x.png); }
+	.xqbj-icon-tg 	{  width: 1.25rem; height: 1.25rem; background-image: url(../images/tg@3x.png); }
+	.xqbj-icon-wt 	{  width: 1.25rem; height: 1.25rem; background-image: url(../images/wt@3x.png); }
+
+	.xqbj-icon-empty { width: 15rem; height: 9rem; background-image: url(../images/img-no-empty.png); }
+	.xqbj-icon-guest { width: 15rem; height: 9rem; background-image: url(../images/img-no-guest.png); }
+	.xqbj-icon-nodata { width: 15rem; height: 9rem; background-image: url(../images/img-no-data.png); }
+	.xqbj-icon-connect { width: 15rem; height: 9rem; background-image: url(../images/img-no-connect.png); }
+
+	.xqbj-icon-notice { width: 1.5rem; height: 1.5rem; background-image: url(../images/icon-notice.png); }
+	
+    /* contact us */
+	.contact-icon-rank { width: 1.75rem; height: 1.75rem; }
+	.contact-icon-hot { width: 1.75rem; height: 1.75rem; }
+	.contact-icon-app { width: 1.75rem; height: 1.75rem; }
+	.contact-icon-qq { width: 1.75rem; height: 1.75rem; }
+    .contact-icon-github { width: 2rem; height: 2rem;}
+	.contact-icon-tg { width: 2rem; height: 2rem; }
+	.contact-icon-email { width: 2rem; height: 2rem; }
+	.contact-icon-x { width: 2rem; height: 2rem; }
+}

@@ -1,0 +1,299 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model as Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+/**
+ * App\Models\QorSources
+ *
+ * @OA\Schema (
+ *      schema="QorSources",
+ *      required={"is_hot", "trans_status", "sort", "letter", "origin_name", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "create_at", "update_at"},
+ *      @OA\Property(
+ *          property="id",
+ *          description="id",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @OA\Property(
+ *          property="is_hot",
+ *          description="是否热门:0否1是",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="boolean"
+ *      ),
+ *      @OA\Property(
+ *          property="trans_status",
+ *          description="翻译状态:0待翻译,1翻译中,2翻译完成",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="boolean"
+ *      ),
+ *      @OA\Property(
+ *          property="sort",
+ *          description="排序:ASC",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @OA\Property(
+ *          property="letter",
+ *          description="首字母",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="origin_name",
+ *          description="原名",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="title_en",
+ *          description="标题-英文",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="title_cn",
+ *          description="标题-简体中文",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="title_tw",
+ *          description="标题-繁体中文",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="title_ja",
+ *          description="标题-日文",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="title_ko",
+ *          description="标题-韩文",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="title_ms",
+ *          description="标题-马来文",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="title_th",
+ *          description="标题-泰文",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="title_de",
+ *          description="标题-德文",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="title_vi",
+ *          description="标题-越南文",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="title_id",
+ *          description="标题-印尼文",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="title_pt",
+ *          description="标题-葡萄牙文",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="title_tlph",
+ *          description="标题-菲律宾文",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="create_at",
+ *          description="创建时间",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @OA\Property(
+ *          property="update_at",
+ *          description="更新时间",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="integer",
+ *          format="int32"
+ *      )
+ * )
+ * @property int $id
+ * @property bool $is_hot 是否热门:0否1是
+ * @property bool $trans_status 翻译状态:0待翻译,1翻译中,2翻译完成
+ * @property int $sort 排序:ASC
+ * @property string $letter 首字母
+ * @property string $origin_name 原名
+ * @property string $title_en 标题-英文
+ * @property string $title_cn 标题-简体中文
+ * @property string $title_tw 标题-繁体中文
+ * @property string $title_ja 标题-日文
+ * @property string $title_ko 标题-韩文
+ * @property string $title_ms 标题-马来文
+ * @property string $title_th 标题-泰文
+ * @property string $title_de 标题-德文
+ * @property string $title_vi 标题-越南文
+ * @property string $title_id 标题-印尼文
+ * @property string $title_pt 标题-葡萄牙文
+ * @property string $title_tlph 标题-菲律宾文
+ * @property int $create_at 创建时间
+ * @property int $update_at 更新时间
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources query()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereCreateAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereIsHot($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereLetter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereOriginName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereSort($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleCn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleDe($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleEn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleJa($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleKo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleMs($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitlePt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleTh($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleTlph($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleTw($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTitleVi($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereTransStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources whereUpdateAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorSources withoutTrashed()
+ * @mixin \Eloquent
+ */
+class QorSources extends Model
+{
+
+    use HasFactory;
+
+    public $table = 'qor_sources';
+
+    const CREATED_AT = 'create_at';
+    const UPDATED_AT = 'update_at';
+
+    protected $dateFormat = 'U';
+
+
+    public $fillable = [
+        'is_hot',
+        'trans_status',
+        'sort',
+        'letter',
+        'origin_name',
+        'title_en',
+        'title_cn',
+        'title_tw',
+        'title_ja',
+        'title_ko',
+        'title_ms',
+        'title_th',
+        'title_de',
+        'title_vi',
+        'title_id',
+        'title_pt',
+        'title_tlph',
+        'create_at',
+        'update_at'
+    ];
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'id' => 'integer',
+        'is_hot' => 'boolean',
+        'trans_status' => 'boolean',
+        'sort' => 'integer',
+        'letter' => 'string',
+        'origin_name' => 'string',
+        'title_en' => 'string',
+        'title_cn' => 'string',
+        'title_tw' => 'string',
+        'title_ja' => 'string',
+        'title_ko' => 'string',
+        'title_ms' => 'string',
+        'title_th' => 'string',
+        'title_de' => 'string',
+        'title_vi' => 'string',
+        'title_id' => 'string',
+        'title_pt' => 'string',
+        'title_tlph' => 'string',
+        'create_at' => 'integer',
+        'update_at' => 'integer'
+    ];
+
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+    public static $rules = [
+        'is_hot' => 'integer',
+        'trans_status' => 'integer',
+        'sort' => 'integer',
+        'letter' => 'string|max:1',
+        'origin_name' => 'string|max:128',
+        'title_en' => 'required|string|max:128',
+        'title_cn' => 'string|max:128',
+        'title_tw' => 'string|max:128',
+        'title_ja' => 'string|max:128',
+        'title_ko' => 'string|max:128',
+        'title_ms' => 'string|max:128',
+        'title_th' => 'string|max:128',
+        'title_de' => 'string|max:128',
+        'title_vi' => 'string|max:128',
+        'title_id' => 'string|max:128',
+        'title_pt' => 'string|max:128',
+        'title_tlph' => 'string|max:128',
+        'create_at' => 'integer',
+        'update_at' => 'integer'
+    ];
+
+
+}

@@ -1,0 +1,67 @@
+/* 屏幕(600px) */
+@media (min-width: 640px) {
+	/* 分页控件 start */
+	.van-pagination {
+		margin: 2.49rem auto 4.9rem auto;
+		max-width: 71.0rem;
+		display: none;
+	}
+	.van-pagination .van-pagination__items {
+		display: flex;
+        align-items: center;
+        justify-content: space-between;
+	}
+	.van-pagination .van-pagination__items .van-pagination__item {
+		flex: 1 1 auto;
+		color: #ffffff;
+		margin: 0 1.13rem 0 0;
+		width: 100%;
+		height: 100%;
+		min-width: min-content;
+		max-width: max-content;
+	}
+	.van-pagination .van-pagination__items .van-pagination__item a {
+		width: 3.0rem;
+		height: 3.0rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.van-pagination .van-pagination__item.van-pagination__next a, 
+	.van-pagination .van-pagination__item.van-pagination__prev a, 
+	.van-pagination .van-pagination__item.van-pagination__jump a, 
+	.van-pagination .van-pagination__item.van-pagination__input a {
+		width: 5.18rem;
+		height: 3.18rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1.2rem;
+	}
+
+	.van-pagination .van-pagination__input input {
+		width: 5.18rem;
+		height: 3.18rem;
+		border: 0;
+		padding: 0.8rem;
+		margin: 0;
+		margin: 0 1.13rem 0 0;
+        color: var(--van-pagination-item-text-color);
+		font-size: 1.1rem;
+		text-align: center;
+		background-color: var(--van-pagination-background);
+	}
+
+	.van-pagination .van-pagination__item button {
+		color: #ffffff;
+        font-size: 1.0rem;
+	}
+
+	.van-pagination .van-pagination__items .van-pagination__item:last-child {
+		margin: 0;
+	}
+	/* 分页控件 end */
+
+	
+}

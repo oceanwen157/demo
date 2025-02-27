@@ -1,0 +1,25 @@
+.hides {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    width: 15rem;
+}
+
+@media (min-width: 1024px) {
+    .hides {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: block;
+    }
+    .network-logo {
+        padding: 1rem;
+    }
+}
+
+.network-logo {
+    padding: 0.5rem;
+}
+
+

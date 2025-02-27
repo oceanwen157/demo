@@ -1,0 +1,233 @@
+/**
+ * desc: 通用协助样式
+ * date: 2023.03.20
+ */
+ * {
+     margin: 0;
+     box-sizing: border-box;
+ }
+ 
+ html {
+     font-size: var(--base-font-size);
+     scroll-behavior: smooth;
+ }
+ 
+ body {
+     /* color: var(--body-color); */
+     /* font-size: 1.3rem; */
+     font-weight: normal;
+     line-height: 1.52;
+     /* font-family: -apple-system, BlinkMacSystemFont,
+         "PingFang SC" ， "Microsoft Yahei", -apple-system, BlinkMacSystemFont,
+         "Helvetica Neue", Helvetica, Segoe UI, Arial, Roboto, "PingFang SC",
+         "Hiragino Sans GB", sans-serif; */
+     /* background-color: var(--base-background); */
+ }
+ 
+ .defaultimg,
+ div:has(> img:not([src])),
+ div:has(> img.loading),
+ a:has(> img:not([src])),
+ a:has(> img.loading) {
+     width: 100%;
+     height: 100%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+ 
+ img {
+    width: 100%;
+    height: 100%;
+    vertical-align: initial;
+ }
+ 
+ 
+ img:not([src]),
+ img.loading {
+     content: url("../images/holder@3x.png");
+     width: 14.6rem !important;
+     height: 8.6rem;
+     max-width: 80%;
+     max-height: 80%;
+     margin: 0 auto;
+     -o-object-fit: contain;
+     object-fit: contain;
+     background-size: contain;
+     background-position: center;
+ }
+ 
+ img[src]:not(.loading) {
+     content: unset;
+     -o-object-fit: cover;
+     object-fit: cover;
+ }
+ 
+ video {
+     width: 100%;
+     height: 100%;
+     /* min-height: 10rem; */
+     border-radius: 0.5rem;
+     overflow: hidden;
+     padding: 0;
+     margin: 0;
+     box-sizing: border-box;
+ }
+ 
+ .a {
+     text-decoration: none;
+ }
+ 
+ a {
+     color: var(--a-text-color);
+     text-decoration: none;
+ }
+ 
+ a:link {
+     color: var(--a-text-color);
+     text-decoration: none;
+ }
+ 
+ a:visited {
+     /* color: #fff; */
+     text-decoration: none;
+ }
+ 
+ a:hover {
+     color: var(--a-text-color);
+     text-decoration: none;
+ }
+ 
+ a:active {
+     color: var(--a-text-color);
+     text-decoration: none;
+ }
+ 
+ 
+ /* 滚动条 start */
+ #mobile div {
+     scrollbar-width: none;
+     scrollbar-color: transparent;
+ }
+ 
+ #mobile div::-webkit-scrollbar {
+     background-color: transparent;
+ }
+ 
+ #mobile div::-webkit-scrollbar-thumb {
+     background-color: transparent;
+ }
+ 
+ #desktop div {
+     /* scrollbar-width: inherit; */
+     scrollbar-width: none;
+     scrollbar-color: #0c0b22;
+ }
+ 
+ #desktop div::-webkit-scrollbar-track {}
+ 
+ #desktop div::-webkit-scrollbar {
+     display: block;
+     width: 0rem;
+     height: 0.6rem;
+     padding: 1rem;
+     margin: 1rem;
+     border-radius: var(--desktop-scrollbar-border-radius);
+     background-color: #ededed;
+ }
+ 
+ #desktop div::-webkit-scrollbar-thumb {
+     padding: 1rem;
+     margin: 1rem;
+     border-radius: var(--desktop-scrollbar-border-radius);
+     background-color: #c7c7c7;
+ }
+ 
+ #desktop div.noscrollbar::-webkit-scrollbar {
+     display: none;
+ }
+ 
+ /* 滚动条 end */
+ 
+ 
+ /* 省略符 start */
+ .text-line-ellipsis-1 {
+     display: -webkit-box;
+     -webkit-box-orient: vertical;
+     -webkit-line-clamp: 1;
+     line-clamp: 1;
+     box-orient: vertical;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     word-break: break-all;
+ }
+ 
+ .text-line-ellipsis-2 {
+     display: -webkit-box;
+     -webkit-box-orient: vertical;
+     -webkit-line-clamp: 2;
+     line-clamp: 2;
+     box-orient: vertical;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     word-break: break-all;
+ }
+ 
+ 
+ .text-line-ellipsis-3 {
+     display: -webkit-box;
+     -webkit-box-orient: vertical;
+     -webkit-line-clamp: 3;
+     line-clamp: 3;
+     box-orient: vertical;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     word-break: break-all;
+ }
+ 
+ 
+ .text-line-ellipsis-4 {
+     display: -webkit-box;
+     -webkit-box-orient: vertical;
+     -webkit-line-clamp: 4;
+     line-clamp: 4;
+     box-orient: vertical;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     word-break: break-all;
+ }
+ /* 省略符 end */
+ 
+ 
+ /* 气泡组 start */
+ .bubble-group-round .van-floating-bubble {
+     width: 4.05rem;
+     height: 4.05rem;
+     background: var(--van-floating-bubble-background);
+     color: var(--van-floating-bubble-color);
+     border-radius: 0;
+ 
+     display: flex;
+     align-content: space-between;
+     align-items: center;
+     flex-direction: column;
+     justify-content: space-between;
+ }
+ /* 气泡组 end */
+
+
+ /* 头部设置菜单 start */
+ .settings-hook{
+    position: relative;
+}
+ /* 头部设置菜单 end */
+
+.img-footer {
+    width: 5rem;
+    height: 3rem;
+}
+
+
+ 
+ 
+ 

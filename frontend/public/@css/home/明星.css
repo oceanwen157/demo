@@ -1,0 +1,24 @@
+.main-container {}
+
+.button.button-text.button-selected {
+    color: #000;
+}
+
+.m-0 > a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+}
+.category-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    width: max-content
+}
+
+/* desktop */
+@media (min-width: 1024px) {
+
+}
