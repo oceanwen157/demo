@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @OA\Schema (
  *      schema="QorCategories",
- *      required={"is_hot", "trans_status", "gender", "age_limit", "sort", "letter", "origin_name", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "route_path", "quantity_desc", "create_at", "update_at"},
+ *      required={"is_hot", "trans_status", "gender", "age_limit", "sort", "letter", "origin_name", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "route_ori", "route_path", "quantity_desc", "create_at", "update_at"},
  *      @OA\Property(
  *          property="id",
  *          description="id",
@@ -155,6 +155,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *          type="string"
  *      ),
  *      @OA\Property(
+ *          property="route_ori",
+ *          description="采集原路由",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
  *          property="route_path",
  *          description="路由路径",
  *          readOnly=$FIELD_READ_ONLY$,
@@ -205,6 +212,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $title_id 标题-印尼文
  * @property string $title_pt 标题-葡萄牙文
  * @property string $title_tlph 标题-菲律宾文
+ * @property string $route_ori 采集原路由
  * @property string $route_path 路由路径
  * @property string $quantity_desc 数量描述
  * @property int $create_at 创建时间
@@ -220,6 +228,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereLetter($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereOriginName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereQuantityDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereRouteOri($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereRoutePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereSort($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorCategories whereTitleCn($value)
@@ -251,7 +260,6 @@ class QorCategories extends Model
     protected $dateFormat = 'U';
 
 
-
     public $fillable = [
         'is_hot',
         'trans_status',
@@ -272,6 +280,7 @@ class QorCategories extends Model
         'title_id',
         'title_pt',
         'title_tlph',
+        'route_ori',
         'route_path',
         'quantity_desc',
         'create_at',
@@ -304,6 +313,7 @@ class QorCategories extends Model
         'title_id' => 'string',
         'title_pt' => 'string',
         'title_tlph' => 'string',
+        'route_ori' => 'string',
         'route_path' => 'string',
         'quantity_desc' => 'string',
         'create_at' => 'integer',
@@ -335,7 +345,8 @@ class QorCategories extends Model
         'title_id' => 'string|max:128',
         'title_pt' => 'string|max:128',
         'title_tlph' => 'string|max:128',
-        'route_path' => 'required|string|max:64',
+        'route_ori' => 'string|max:128',
+        'route_path' => 'required|string|max:128',
         'quantity_desc' => 'string|max:64',
         'create_at' => 'integer',
         'update_at' => 'integer'

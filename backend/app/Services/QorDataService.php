@@ -43,14 +43,31 @@ class QorDataService extends ServiceBase
 
     /**
      * 检查路由是否合法
-     * @param $route
+     * @param string $route
      * @return bool
      */
-    public static function checkRoute($route): bool
+    public static function checkRoute(string $route): bool
     {
         //只允许字母、数字、下划线、中划线
         $pattern = '/^[A-Za-z0-9\_\-]+$/';
         $res = !empty($route) && @preg_match($pattern, $route);
+        return $res;
+    }
+
+
+    /**
+     * 生成路由
+     * @param string $route
+     * @return string
+     */
+    public static function makeRoute(string $route): string
+    {
+        $arr = explode('/', rtrim($route, '/'));
+        $res = trim(end($arr));
+        if (empty($res) || !self::checkRoute($res)) {
+            $res = strtolower(StringHelper::randString(8, 0));
+        }
+
         return $res;
     }
 
@@ -130,18 +147,24 @@ class QorDataService extends ServiceBase
 
     /**
      * 新增分类,并返回记录ID;若记录已存在,则返回该记录的ID.为0时,是失败.
-     * @param string $name
+     * @param string $name 名称
+     * @param string $route 路由
      * @param string $quantityDesc 数量描述,如 58K
      * @param int $ageLimit 年龄限制
      * @return int
      * @throws Throwable
      */
     public
-    static function addCategory(string $name, string $quantityDesc = '', int $ageLimit = 0): int
+    static function addCategory(string $name, string $route, string $quantityDesc = '', int $ageLimit = 0): int
     {
         $name = trim($name);
+        $route = trim($route);
+
         if (empty($name)) {
             return 0;
+        }
+        if (empty($route)) {
+            $route = $name;
         }
 
         $row = QorCategories::query()->where([
@@ -169,16 +192,14 @@ class QorDataService extends ServiceBase
         }
 
         $letter = substr($name, 0, 1);
-        $route = $name;
-        if (!self::checkRoute($route)) {
-            $route = StringHelper::randString(8);
-        }
+        $newRoute = self::makeRoute($route);
 
         $data = [
             'letter' => $letter,
             'origin_name' => $name,
             'title_en' => $name,
-            'route_path' => $route,
+            'route_ori' => $route,
+            'route_path' => $newRoute,
             'quantity_desc' => $quantityDesc,
             'age_limit' => $ageLimit,
         ];
@@ -195,18 +216,24 @@ class QorDataService extends ServiceBase
 
     /**
      * 新增明星,并返回记录ID;若记录已存在,则返回该记录的ID.为0时,是失败.
-     * @param string $name
+     * @param string $name 名称
+     * @param string $route 路由
      * @param string $quantityDesc 数量描述,如 58K
      * @param int $gender 性别，0未知,1男性,2女性
      * @return int
      * @throws Throwable
      */
     public
-    static function addPstar(string $name, string $quantityDesc = '', int $gender = 0): int
+    static function addPstar(string $name, string $route, string $quantityDesc = '', int $gender = 0): int
     {
         $name = trim($name);
+        $route = trim($route);
+
         if (empty($name)) {
             return 0;
+        }
+        if (empty($route)) {
+            $route = $name;
         }
 
         $row = QorPstars::query()->where([
@@ -234,16 +261,14 @@ class QorDataService extends ServiceBase
         }
 
         $letter = substr($name, 0, 1);
-        $route = $name;
-        if (!self::checkRoute($route)) {
-            $route = StringHelper::randString(8);
-        }
+        $newRoute = self::makeRoute($route);
 
         $data = [
             'letter' => $letter,
             'origin_name' => $name,
             'title_en' => $name,
-            'route_path' => $route,
+            'route_ori' => $route,
+            'route_path' => $newRoute,
             'quantity_desc' => $quantityDesc,
             'gender' => $gender,
         ];
