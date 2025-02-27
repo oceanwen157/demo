@@ -1,0 +1,172 @@
+/* 主题切换/明亮模式 */
+
+html, html[theme='light'] {
+	/* 基础配置 start */
+	--body-color: #fff;
+	--base-background: #f5f6fa;
+	--header-background: #fff;
+	--p-text-color: #222;
+	--a-text-color: #222;
+	--text-color: #222;
+	--text-color-f: #222;
+	--text-color-white: #fff;
+	--body-background: #f5f6fa;
+	/* 基础配置 end */
+
+	/* 左侧导航 start */
+	--menu-left-background: #f5f6fa;
+	/* 左侧导航 end */
+
+	/* 头部导航 start */
+	--van-nav-bar-title-text-color:#1a1a1a;
+	--van-nav-bar-background: #fff;
+	--van-nav-logo-background: url(../../../@images/narbartitleLight@3x.png);
+	--van-nav-menu-background: url(../images/light/icon-menu.png);
+	--van-nav-search-background: url(../../../@images/searchLight@3x.png);
+	--van-nav-sign-background: url(../../../@images/signLight@3x.png);
+	--list-icon-theme-image: url(../../../@images/icon-theme-dark@3x.png);
+	--van-nav-back-image: url(../images/light/back@3x.png);
+	--van-nav-edit-image: url(../images/icon-edit.png);
+	--van-nav-search-image: url(../images/icon-search-blue.png);
+	--van-nav-tg-image: url(../images/light/tgbtnm@3x.png);
+	--van-nav-close-image: url(../images/light/close@3x.png);
+	/* 头部导航 end */
+
+	/* 底部菜单 start */
+	--van-tabbar-item-text-color: #909090;
+	--van-tabbar-background: #fff;
+	--van-tabbar-item-active-color: #909090;
+	--van-tabbar-item-active-background: #221f3a;
+	/* 底部菜单 end */
+
+	/* 分页控件 start */
+	--van-pagination-item-default-color: #fff;
+	--van-pagination-background: #3276ff;
+	--van-pagination-item-text-color: #3276ff;
+	--van-pagination-item-text-color-active: #fff;
+	/* 分页控件 end */
+
+	/* 浮动气泡 start */
+	--van-back-top-background: #1f1f2d;
+	/* 浮动气泡 end */
+
+	/* 滚动条 start */
+	--desktop-scrollbar-background-color: #1f1f2d;
+	--desktop-scrollbar-thumb-background-color: #272839;
+	/* 滚动条 end */
+
+	/* 情报公告 start */
+	--notice-background: #ffffff;
+	--notice-text-color: #1a1a1a;
+	/* 情报公告 end */
+
+	/* 宫格菜单 start */
+	--grid-background: linear-gradient(to right, #ffffff, #ffffff), linear-gradient(90deg, transparent, #fff);
+	--grid--text-color: #1a1a1a;
+	/* 宫格菜单 end */
+
+	/* 数据列表 start */
+	--list-background: #ffffff;
+	--list-tab-title-color: #1a1a1a;
+	--list-content-state-text-color: #8c8c8c;
+	--list-detail-state-text-color: #1a1a1a;
+	--list-border-color: #e6e6e6;
+	--list-background-video-text2: #fcf0ec;
+	/* 数据列表 end */
+
+	/* 标签列表 start */
+	--primary-text-color: #3276ff;
+	--primary-text-color-selected: #fff;
+	--tag-text-color: #e56e43;
+	--tag-background-selected: linear-gradient(270deg, #e56e43, #f18228);
+	--tag-text-color-selected: #ffffff;
+	--title-background: #fcf0ec;
+	/* 标签列表 end */
+
+	/*img*/
+	--logo-image: url(../images/light/logo.png);
+	--list-icon-user: url(../icons/user@3x-light.png);
+	--list-icon-time: url(../icons/time@3x-light.png);
+	--list-icon-comm: url(../icons/comm@3x-light.png);
+	--list-icon-view: url(../icons/view@3x-light.png);
+	--list-icon-share: url(../images/share-light@3x.png);
+	--list-icon-backtop: url(../images/f-menu4.png);
+	/*img end*/
+
+	/*个人中心*/
+	--main-background: transform;
+	/*个人中心 end*/
+
+	/*其它*/
+	--text-color-ddd: #999;
+	--number-text-color: #bcbcbc;
+	--text-color-d9: #1a1a1a;
+	--box-background: #fff;
+	/*其它 end*/
+
+	--text-detail: #5a5a5a;
+	--tag-background: #3276ff;
+	--tag-text: #666;
+	--tag-text-active: #fff;
+	--img-background: #3276ff;
+	--list-text-color: #3276ff;
+	--list-p-color: #666;
+	--footer-text: #666;
+	--footer-active-text: #3276ff;
+	/*福利详情*/
+	--fl-text: #212121;
+	--fl-text2: #888888;
+	--fl-text3: #888888;
+	--fl-text-bg: #fff;
+	--fl-text-border: #3276ff;
+	--fl-border-color: #e6e6e6;
+	--fl-border-color2: #e6e6e6;
+	--fl-button-bg: #3276ff;
+	--fl-textarea-bg: #eee;
+	--fl-textarea-bg2: #fff;
+	--fl-list-bg: #fff;
+	--tags-bg: #4d88ff;
+	--tags2-bg: #4d88ff;
+	--fl-nav-active: #3276ff;
+	--fl-text-b: #999;
+	--fl-text-name: #308ee3;
+	--fl-text-say: #333;
+	--fl-text-replay: #308ee3;
+	--fl-border-comment: #e6e6e6;
+	--fl-text-share: #fff;
+	--fl-text-share-shadow: 0 0 0.5rem #4d88ff, 0 0 0.4rem #4d88ff, 0 0 2rem #4d88ff, 0 0 4rem #4d88ff, 0 0 6rem #4d88ff, 0 0 1rem #4d88ff, 0 0 9.8rem #4d88ff;
+	--menu-text-active: #ff0;
+	--list-title-color: #222222;
+	/*我发布*/
+	--publish-btn-color: #1a1a1a;
+	--publish-btn-bg: #eee;
+	--publish-btn-active-bg: #3276ff;
+	--publish-btn-avtive-color: #fff;
+	/*在线客服*/
+	--msg-bg: #eee;
+	--msg-text-color: #1a1a1a;
+	/*登录*/
+	--login-input-bg: #fff;
+	--login-input-border: #1a1a1a;
+	--login-placeholder-color: #1a1a1a;
+	/*搜索*/
+	--search-text-color: #fff;
+	--search-bg-color: #3276ff;
+
+	/*nav*/
+	--dropdown-menu-bg: #fff;
+	--dropdown-menu-border: #e6e6e6;
+	--left-menu-btn-color: #222;
+	--left-menu-btn-bg: #ffffff;
+	/*小说*/
+	--novel-title: #333;
+	--novel-a-title: #160d0d;
+	--novel-body-bg: #fff;
+	--nover-menu-popup-bg: #fff;
+	--nover-border-color: #e6e6e6;
+	--nover-menu-left-bg: #fff;
+	/*list*/
+	--list-row-text: #222;
+	--list-row-btn: #3276ff;
+	--list-tetx-color: #222;
+}

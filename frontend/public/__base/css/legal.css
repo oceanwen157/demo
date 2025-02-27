@@ -1,0 +1,109 @@
+body {
+    text-align: center;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,Liberation Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+    font-size: 1rem;
+    line-height: 1.7
+}
+
+main {
+    margin: 0 auto;
+    text-align: left;
+    padding: 0 4rem;
+    max-width: 1024px
+}
+
+
+
+h1 {
+    font-size: 2rem
+}
+
+h2 {
+    font-size: 1.5rem
+}
+
+h3 {
+    font-size: 1.25rem
+}
+
+h4 {
+    font-size: 1.125rem
+}
+
+h5,h6 {
+    font-size: 1rem
+}
+
+table {
+    border: 1px solid #dddddd;
+    border-collapse: collapse;
+    width: 100%
+}
+
+th,td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 4px 8px
+}
+
+tr:nth-child(2n) {
+    background: #f3f3f3
+}
+
+footer {
+    text-align: center
+}
+
+.p-0 {
+    padding: 0
+}
+
+.text-end {
+    text-align: end
+}
+
+.text-red {
+    color: red
+}
+
+.w-33 {
+    width: 33.3%
+}
+
+.w-90 {
+    width: 90%
+}
+
+ul.ul-li-mb-3>li {
+    margin-bottom: .75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: auto;
+    display: block;
+}
+
+ul.ul-none {
+    list-style: none
+}
+
+ul.ul-disc {
+    list-style: disc
+}
+
+ul.ul-circle {
+    list-style: circle
+}
+
+ul.ul-decimal {
+    list-style: decimal
+}
+
+ul.ul-lower-alpha {
+    list-style: lower-alpha
+}
+
+ul.ul-lower-roman {
+    list-style: lower-roman
+}
+

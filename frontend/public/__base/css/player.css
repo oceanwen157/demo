@@ -1,0 +1,42 @@
+#slidelist {
+    height: 100vh;
+}
+
+.slider-video {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.basePlayerContainer {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+/* 控制器 */
+.controls {
+
+}
+
+/* 背景图 */
+.img-background {
+    position: absolute;
+    z-index: 1001;
+    color: #ffffff;
+}
+
+/* 播放器 */
+.video-container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+/* 信息图 */
+.info-bottom {
+
+}
+
