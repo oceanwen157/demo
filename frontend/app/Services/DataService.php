@@ -149,7 +149,7 @@ class DataService extends ServiceBase
 
 
     /**
-     * 获取流行的分类,结果结构如 []Collection
+     * 获取流行的分类,结果结构如 []Collection, 其中数组键为大写字母
      * @param bool $isHot 是否热门
      * @return array
      * @throws DataNotFoundException
@@ -180,12 +180,43 @@ class DataService extends ServiceBase
     }
 
 
-    public static function getCategories()
+    /**
+     * 获取流行的明星,结果结构如 []Collection, 其中数组键为大写字母
+     * @param bool $isHot 是否热门
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public static function getPopularPstars(bool $isHot = false): array
+    {
+        $res = self::initLettersMap();
+        $qry = Pstars::order('is_hot', 'desc')->order('sort', 'asc');
+        if ($isHot) {
+            $qry->where('is_hot', 1);
+        }
+
+        //结果分组
+        $rows = $qry->limit(10000)->select();
+        foreach ($rows as $row) {
+            $letter = substr(($row->title_en ?? ''), 0, 1);
+            $letter = strtoupper($letter);
+            if (ValidateHelper::isAlpha($letter)) {
+                $res[$letter][] = $row;
+            } else {
+                $res['#'][] = $row;
+            }
+        }
+
+        return $res;
+    }
+
+    public static function getAllCategories()
     {
 
     }
 
-    public static function getPstars()
+    public static function getAllPstars()
     {
 
     }
@@ -193,4 +224,5 @@ class DataService extends ServiceBase
     public static function getVideos()
     {
     }
+
 }
