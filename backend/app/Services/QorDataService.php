@@ -128,12 +128,19 @@ class QorDataService extends ServiceBase
      */
     public static function hmsToSeconds(string $str): int
     {
+        $str = trim($str);
         if (empty($str)) {
             return 0;
         }
 
+        $res = 0;
         $arr = explode(':', $str);
-        $res = ($arr[0] ?? 0) * 3600 + ($arr[1] ?? 0) * 60 + ($arr[2] ?? 0);
+        $len = count($arr);
+        for ($i = 0; $i <= $len - 1; $i++) {
+            $num = intval(end($arr));
+            $res += $num * pow(60, $i);
+        }
+
         return $res;
     }
 
