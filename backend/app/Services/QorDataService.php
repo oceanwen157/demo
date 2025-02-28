@@ -115,8 +115,16 @@ class QorDataService extends ServiceBase
     public static function quantityDesc2Number(string $quantity): int
     {
         $quantity = strtolower(trim($quantity));
-        $quantity = str_replace('k', '', $quantity);
-        $num = intval($quantity) * 1000;
+        $base = str_replace('k', '', $quantity);
+        $base = str_replace('m', '', $base);
+
+        if (strpos($base, 'k') !== false) {
+            $num = intval($quantity) * 1000;
+        }
+        if (strpos($base, 'm') !== false) {
+            $num = intval($quantity) * 10000;
+        }
+
         return $num;
     }
 
