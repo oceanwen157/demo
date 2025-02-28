@@ -11,7 +11,7 @@ class Test extends BaseController
     public function index()
     {
         echo 'hello';
-        $res = DataService::searchVideos('sister');
+        $res = DataService::getNewVideos(20);
         var_dump($res);
         return;
     }

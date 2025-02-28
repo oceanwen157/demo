@@ -371,7 +371,7 @@ class DataService extends ServiceBase
             return $res;
         }
 
-        $qry = Db::name('videos')->where('cid', $cate->id);
+        $qry = Db::name('videos')->order('id', 'desc')->where('cid', $cate->id);
         $source = trim($source);
         if (!empty($source)) {
             $qry->where('source', $source);
@@ -415,7 +415,7 @@ class DataService extends ServiceBase
             return $res;
         }
 
-        $qry = Db::name('videos')->where('pid', $star->id);
+        $qry = Db::name('videos')->order('id', 'desc')->where('pid', $star->id);
         $source = trim($source);
         if (!empty($source)) {
             $qry->where('source', $source);
@@ -525,6 +525,54 @@ class DataService extends ServiceBase
             });
         }
 
+        $pagination = $qry->order('id', 'desc')->paginate($size);
+        $res = [
+            'paginate' => $pagination,
+            'total' => $pagination->total(),
+            'limit' => $size,
+        ];
+
+        return $res;
+    }
+
+
+    /**
+     * 获取流行的视频分页列表
+     * @param int $size 每页数量
+     * @return array
+     * @throws DbException
+     */
+    public static function getPopularVideos(int $size = 120): array
+    {
+        if ($size <= 0) {
+            $size = 120;
+        }
+
+        $qry = Db::name('videos')->order('view_num', 'desc')->order('id', 'desc');
+        $pagination = $qry->paginate($size);
+        $res = [
+            'paginate' => $pagination,
+            'total' => $pagination->total(),
+            'limit' => $size,
+        ];
+
+        return $res;
+    }
+
+
+    /**
+     * 获取最新的视频分页列表
+     * @param int $size 每页数量
+     * @return array
+     * @throws DbException
+     */
+    public static function getNewVideos(int $size = 120): array
+    {
+        if ($size <= 0) {
+            $size = 120;
+        }
+
+        $qry = Db::name('videos')->order('id', 'desc');
         $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
