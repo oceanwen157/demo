@@ -2,6 +2,7 @@
 namespace app\controller;
 
 use app\BaseController;
+use app\Services\DataService;
 use think\facade\View;
 use think\facade\App;
 use think\facade\Env;
@@ -11,6 +12,18 @@ class Home extends BaseController
 {
     public function 首页()
     {
+        
+        // $uri = Request::url();
+        // if (strpos($uri, 'out/?l=') !== false) {
+        //     $url = DataService::getRedirectUrl($uri);
+        //     if ($url) {
+        //         return redirect($url);
+        //     }
+        // }
+
+        $pagination = \think\facade\Db::table('qor_videos')->paginate(10);
+
+        View::assign('pagination', $pagination);
         return View::fetch('@pages/home/首页');
     }
 
