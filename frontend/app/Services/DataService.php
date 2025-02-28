@@ -97,6 +97,25 @@ class DataService extends ServiceBase
 
 
     /**
+     * 多语言标题字段
+     */
+    const MUL_LANG_FIELD = [
+        'title_en',
+        'title_cn',
+        'title_tw',
+        'title_ja',
+        'title_ko',
+        'title_ms',
+        'title_th',
+        'title_de',
+        'title_vi',
+        'title_id',
+        'title_pt',
+        'title_tlph',
+    ];
+
+
+    /**
      * 初始化字母集合
      * @return array
      */
@@ -119,7 +138,7 @@ class DataService extends ServiceBase
     public static function initPaginateResult(int $limit): array
     {
         return [
-            'paginate' => [], //tp模型的paginate方法结果
+            'paginate' => null, //tp的paginate方法结果
             'total' => 0, //总记录数
             'limit' => 0, //每页数量
         ];
@@ -330,17 +349,13 @@ class DataService extends ServiceBase
      * @param string $route 路由
      * @param string $source 来源
      * @param int $size 每页数量
-     * @param int $page
      * @return array
      * @throws DataNotFoundException
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getCategoryVideoPaginate(string $route, string $source = '', int $size = 120, int $page = 1): array
+    public static function getCategoryVideoPaginate(string $route, string $source = '', int $size = 120): array
     {
-        if ($page <= 0) {
-            $page = 1;
-        }
         if ($size <= 0) {
             $size = 120;
         }
@@ -378,17 +393,13 @@ class DataService extends ServiceBase
      * @param string $route 路由
      * @param string $source 来源
      * @param int $size 每页数量
-     * @param int $page
      * @return array
      * @throws DataNotFoundException
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getPstarVideoPaginate(string $route, string $source = '', int $size = 120, int $page = 1): array
+    public static function getPstarVideoPaginate(string $route, string $source = '', int $size = 120): array
     {
-        if ($page <= 0) {
-            $page = 1;
-        }
         if ($size <= 0) {
             $size = 120;
         }
@@ -410,7 +421,7 @@ class DataService extends ServiceBase
             $qry->where('source', $source);
         }
 
-        $pagination =$qry->paginate($size);
+        $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
             'total' => $pagination->total(),
@@ -421,9 +432,67 @@ class DataService extends ServiceBase
     }
 
 
-    public static function searchVideos(string $keyword = '', int $size = 120, int $page = 1): array
+    /**
+     * 根据关键词搜索分类
+     * @param string $keyword
+     * @return Collection
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public static function getCategoriesByLike(string $keyword): Collection
     {
-        return [];
+        $fields = self::MUL_LANG_FIELD;
+        array_push($fields, 'route_path');
+        $searchFields = implode('|', $fields);
+        $res = Categories::where($searchFields, 'like', "%{$keyword}%")->select();
+
+        return $res;
+    }
+
+
+    /**
+     * 根据关键词搜索明星
+     * @param string $keyword
+     * @return Collection
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public static function getPstarsByLike(string $keyword): Collection
+    {
+        $fields = self::MUL_LANG_FIELD;
+        array_push($fields, 'route_path');
+        $searchFields = implode('|', $fields);
+        $res = Pstars::where($searchFields, 'like', "%{$keyword}%")->select();
+
+        return $res;
+    }
+
+
+    public static function searchVideos(string $keyword = '', int $size = 120): array
+    {
+        if ($size <= 0) {
+            $size = 120;
+        }
+        $res = self::initPaginateResult($size);
+
+        $qry = Db::name('videos');
+
+        $keyword = trim($keyword);
+        if (!empty($keyword)) {
+//            $cate = Categories::where('route_path', $route)->find();
+//            $star = Pstars::where('route_path', $route)->find();
+        }
+
+        $pagination = $qry->paginate($size);
+        $res = [
+            'paginate' => $pagination,
+            'total' => $pagination->total(),
+            'limit' => $size,
+        ];
+
+        return $res;
     }
 
 
