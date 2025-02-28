@@ -548,7 +548,7 @@ class DataService extends ServiceBase
             $size = 120;
         }
 
-        $qry = Db::name('videos')->order('view_num', 'desc')->order('id', 'desc');
+        $qry = Db::name('videos')->where('vote_num', '>', 45)->order('id', 'desc');
         $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
