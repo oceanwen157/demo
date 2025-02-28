@@ -111,6 +111,21 @@ class DataService extends ServiceBase
 
 
     /**
+     * 初始化分页结果
+     * @param int $limit
+     * @return array
+     */
+    public static function initPaginateResult(int $limit): array
+    {
+        return [
+            'paginate' => [], //tp模型的paginate方法结果
+            'total' => 0, //总记录数
+            'limit' => 0, //每页数量
+        ];
+    }
+
+
+    /**
      * 获取语言列表
      * @return Collection
      * @throws DataNotFoundException
@@ -252,6 +267,14 @@ class DataService extends ServiceBase
         return $res;
     }
 
+
+    /**
+     * 获取全部分类,结果结构如 []Collection, 其中数组键为大写字母
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
     public static function getAllCategories(): array
     {
         $res = self::initLettersMap();
@@ -272,6 +295,14 @@ class DataService extends ServiceBase
         return $res;
     }
 
+
+    /**
+     * 获取全部明星,结果结构如 []Collection, 其中数组键为大写字母
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
     public static function getAllPstars()
     {
         $res = self::initLettersMap();
@@ -291,6 +322,95 @@ class DataService extends ServiceBase
 
         return $res;
     }
+
+
+    /**
+     * 根据路由获取某分类的视频分页列表
+     * @param string $route 路由
+     * @param int $size 每页数量
+     * @param int $page
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public static function getCategoryVideoPaginate(string $route, int $size = 120, int $page = 1): array
+    {
+        if ($page <= 0) {
+            $page = 1;
+        }
+        if ($size <= 0) {
+            $size = 120;
+        }
+        $res = self::initPaginateResult($size);
+
+        $route = trim($route);
+        if (empty($route)) {
+            return $res;
+        }
+
+        $cate = Categories::where('route_path', $route)->find();
+        if (!$cate) {
+            return $res;
+        }
+
+        $pagination = Db::name('videos')->where('cid', $cate->id)->paginate($size);
+        $res = [
+            'paginate' => $pagination,
+            'total' => $pagination->total(),
+            'limit' => $size,
+        ];
+
+        return $res;
+    }
+
+
+    /**
+     * 根据路由获取某明星的视频分页列表
+     * @param string $route 路由
+     * @param int $size 每页数量
+     * @param int $page
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public static function getPstarVideoPaginate(string $route, int $size = 120, int $page = 1): array
+    {
+        if ($page <= 0) {
+            $page = 1;
+        }
+        if ($size <= 0) {
+            $size = 120;
+        }
+        $res = self::initPaginateResult($size);
+
+        $route = trim($route);
+        if (empty($route)) {
+            return $res;
+        }
+
+        $star = Pstars::where('route_path', $route)->find();
+        if (!$star) {
+            return $res;
+        }
+
+        $pagination = Db::name('videos')->where('pid', $star->id)->paginate($size);
+        $res = [
+            'paginate' => $pagination,
+            'total' => $pagination->total(),
+            'limit' => $size,
+        ];
+
+        return $res;
+    }
+
+
+    public static function searchVideos(string $keyword = '', int $size = 120, int $page = 1): array
+    {
+        return [];
+    }
+
 
     public static function getVideos()
     {
