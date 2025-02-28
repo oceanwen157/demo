@@ -428,7 +428,7 @@ class QorVideos extends Model
         'title_id' => 'string|max:128',
         'title_pt' => 'string|max:128',
         'title_tlph' => 'string|max:128',
-        'play_url' => 'required|string|max:255',
+        'play_url' => 'required|string|max:1024',
         'create_at' => 'integer',
         'update_at' => 'integer'
     ];
