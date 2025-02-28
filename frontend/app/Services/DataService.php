@@ -18,14 +18,14 @@ use think\db\exception\ModelNotFoundException;
  */
 class DataService extends ServiceBase
 {
-    const ORIGIN_BASE_URL = 'https://www.qorno.com'; 
-    
+    const ORIGIN_BASE_URL = 'https://www.qorno.com';
+
     public static function getRedirectUrl($url)
     {
         $ch = curl_init();
-        
+
         curl_setopt_array($ch, [
-            CURLOPT_URL => self::ORIGIN_BASE_URL.$url,
+            CURLOPT_URL => self::ORIGIN_BASE_URL . $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => true,
             CURLOPT_FOLLOWLOCATION => true,
@@ -37,18 +37,18 @@ class DataService extends ServiceBase
             CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
             CURLOPT_NOBODY => true
         ]);
-        
+
         $response = curl_exec($ch);
 
         if (curl_errno($ch)) {
             throw new Exception('Curl error: ' . curl_error($ch));
         }
-        
+
         $finalUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        
+
         curl_close($ch);
-        
+
         $url = '';
         if ($httpCode == 200 && !empty($finalUrl)) {
             if (strpos($finalUrl, self::ORIGIN_BASE_URL) !== false) {
@@ -252,14 +252,44 @@ class DataService extends ServiceBase
         return $res;
     }
 
-    public static function getAllCategories()
+    public static function getAllCategories(): array
     {
+        $res = self::initLettersMap();
+        $qry = Categories::order('is_hot', 'desc')->order('sort', 'asc');
 
+        //结果分组
+        $rows = $qry->select();
+        foreach ($rows as $row) {
+            $letter = substr(($row->title_en ?? ''), 0, 1);
+            $letter = strtoupper($letter);
+            if (ValidateHelper::isAlpha($letter)) {
+                $res[$letter][] = $row;
+            } else {
+                $res['#'][] = $row;
+            }
+        }
+
+        return $res;
     }
 
     public static function getAllPstars()
     {
+        $res = self::initLettersMap();
+        $qry = Pstars::order('is_hot', 'desc')->order('sort', 'asc');
 
+        //结果分组
+        $rows = $qry->select();
+        foreach ($rows as $row) {
+            $letter = substr(($row->title_en ?? ''), 0, 1);
+            $letter = strtoupper($letter);
+            if (ValidateHelper::isAlpha($letter)) {
+                $res[$letter][] = $row;
+            } else {
+                $res['#'][] = $row;
+            }
+        }
+
+        return $res;
     }
 
     public static function getVideos()
