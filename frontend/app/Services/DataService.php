@@ -7,6 +7,7 @@ use app\model\Languages;
 use app\model\Pstars;
 use app\model\Sources;
 use app\model\Videos;
+use Kph\Helpers\ValidateHelper;
 use think\model\Collection;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
@@ -51,6 +52,21 @@ class DataService extends ServiceBase
         'Y',
         'Z',
     ];
+
+
+    /**
+     * 初始化字母集合
+     * @return array
+     */
+    public static function initLettersMap(): array
+    {
+        $res = [];
+        foreach (self::LETTERS as $letter) {
+            $res[$letter] = [];
+        }
+
+        return $res;
+    }
 
 
     /**
@@ -132,9 +148,35 @@ class DataService extends ServiceBase
     }
 
 
-    public static function getPopularCategories():array
+    /**
+     * 获取流行的分类,结果结构如 []Collection
+     * @param bool $isHot 是否热门
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public static function getPopularCategories(bool $isHot = false): array
     {
+        $res = self::initLettersMap();
+        $qry = Categories::order('is_hot', 'desc')->order('sort', 'asc');
+        if ($isHot) {
+            $qry->where('is_hot', 1);
+        }
 
+        //结果分组
+        $rows = $qry->limit(10000)->select();
+        foreach ($rows as $row) {
+            $letter = substr(($row->title_en ?? ''), 0, 1);
+            $letter = strtoupper($letter);
+            if (ValidateHelper::isAlpha($letter)) {
+                $res[$letter][] = $row;
+            } else {
+                $res['#'][] = $row;
+            }
+        }
+
+        return $res;
     }
 
 
