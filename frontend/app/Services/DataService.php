@@ -8,6 +8,7 @@ use app\model\Pstars;
 use app\model\Sources;
 use app\model\Videos;
 use Kph\Helpers\ValidateHelper;
+use think\Facade\Db;
 use think\model\Collection;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
@@ -327,6 +328,7 @@ class DataService extends ServiceBase
     /**
      * 根据路由获取某分类的视频分页列表
      * @param string $route 路由
+     * @param string $source 来源
      * @param int $size 每页数量
      * @param int $page
      * @return array
@@ -334,7 +336,7 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getCategoryVideoPaginate(string $route, int $size = 120, int $page = 1): array
+    public static function getCategoryVideoPaginate(string $route, string $source = '', int $size = 120, int $page = 1): array
     {
         if ($page <= 0) {
             $page = 1;
@@ -354,7 +356,13 @@ class DataService extends ServiceBase
             return $res;
         }
 
-        $pagination = Db::name('videos')->where('cid', $cate->id)->paginate($size);
+        $qry = Db::name('videos')->where('cid', $cate->id);
+        $source = trim($source);
+        if (!empty($source)) {
+            $qry->where('source', $source);
+        }
+
+        $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
             'total' => $pagination->total(),
@@ -368,6 +376,7 @@ class DataService extends ServiceBase
     /**
      * 根据路由获取某明星的视频分页列表
      * @param string $route 路由
+     * @param string $source 来源
      * @param int $size 每页数量
      * @param int $page
      * @return array
@@ -375,7 +384,7 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getPstarVideoPaginate(string $route, int $size = 120, int $page = 1): array
+    public static function getPstarVideoPaginate(string $route, string $source = '', int $size = 120, int $page = 1): array
     {
         if ($page <= 0) {
             $page = 1;
@@ -395,7 +404,13 @@ class DataService extends ServiceBase
             return $res;
         }
 
-        $pagination = Db::name('videos')->where('pid', $star->id)->paginate($size);
+        $qry = Db::name('videos')->where('pid', $star->id);
+        $source = trim($source);
+        if (!empty($source)) {
+            $qry->where('source', $source);
+        }
+
+        $pagination =$qry->paginate($size);
         $res = [
             'paginate' => $pagination,
             'total' => $pagination->total(),

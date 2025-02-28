@@ -11,7 +11,7 @@ class Test extends BaseController
     public function index()
     {
         echo 'hello';
-        $res = DataService::getAllCategories();
+        $res = DataService::getCategoryVideoPaginate('adorable');
         var_dump($res);
         return;
     }
