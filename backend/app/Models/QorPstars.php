@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @OA\Schema (
  *      schema="QorPstars",
- *      required={"is_hot", "trans_status", "gender", "age_limit", "sort", "letter", "origin_name", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "route_ori", "route_path", "quantity_desc", "create_at", "update_at"},
+ *      required={"is_hot", "trans_status", "gender", "age_limit", "sort", "quantity_num", "letter", "origin_name", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "route_ori", "route_path", "quantity_desc", "create_at", "update_at"},
  *      @OA\Property(
  *          property="id",
  *          description="id",
@@ -51,6 +51,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *      @OA\Property(
  *          property="sort",
  *          description="排序:ASC",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @OA\Property(
+ *          property="quantity_num",
+ *          description="数量值",
  *          readOnly=$FIELD_READ_ONLY$,
  *          nullable=$FIELD_NULLABLE$,
  *          type="integer",
@@ -198,6 +206,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $gender 性别:0未知,1男性,2女性
  * @property int $age_limit 年龄限制
  * @property int $sort 排序:ASC
+ * @property int $quantity_num 数量值
  * @property string $letter 首字母
  * @property string $origin_name 原名
  * @property string $title_en 标题-英文
@@ -228,6 +237,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|QorPstars whereLetter($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorPstars whereOriginName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorPstars whereQuantityDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorPstars whereQuantityNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorPstars whereRouteOri($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorPstars whereRoutePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorPstars whereSort($value)
@@ -260,12 +270,14 @@ class QorPstars extends Model
     protected $dateFormat = 'U';
 
 
+
     public $fillable = [
         'is_hot',
         'trans_status',
         'gender',
         'age_limit',
         'sort',
+        'quantity_num',
         'letter',
         'origin_name',
         'title_en',
@@ -299,6 +311,7 @@ class QorPstars extends Model
         'gender' => 'integer',
         'age_limit' => 'integer',
         'sort' => 'integer',
+        'quantity_num' => 'integer',
         'letter' => 'string',
         'origin_name' => 'string',
         'title_en' => 'string',
@@ -331,6 +344,7 @@ class QorPstars extends Model
         'gender' => 'integer',
         'age_limit' => 'integer',
         'sort' => 'integer',
+        'quantity_num' => 'integer',
         'letter' => 'string|max:1',
         'origin_name' => 'string|max:128',
         'title_en' => 'required|string|max:128',

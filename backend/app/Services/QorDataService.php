@@ -108,6 +108,65 @@ class QorDataService extends ServiceBase
 
 
     /**
+     * 将数量描述转为数值
+     * @param string $quantity 如 45K
+     * @return int
+     */
+    public static function quantityDesc2Number(string $quantity): int
+    {
+        $quantity = strtolower(trim($quantity));
+        $base = str_replace('k', '', $quantity);
+        $base = str_replace('m', '', $base);
+
+        if (strpos($base, 'k') !== false) {
+            $num = intval($quantity) * 1000;
+        }
+        if (strpos($base, 'm') !== false) {
+            $num = intval($quantity) * 10000;
+        }
+
+        return $num;
+    }
+
+
+    /**
+     * hms时长字符串转为秒数
+     * @param string $str 时长,如 11:22:33
+     * @return int
+     */
+    public static function hmsToSeconds(string $str): int
+    {
+        $str = trim($str);
+        if (empty($str)) {
+            return 0;
+        }
+
+        $res = 0;
+        $arr = explode(':', $str);
+        $len = count($arr);
+        for ($i = 0; $i <= $len - 1; $i++) {
+            $num = intval(end($arr));
+            $res += $num * pow(60, $i);
+        }
+
+        return $res;
+    }
+
+
+    /**
+     * 投票描述转为数值
+     * @param string $vote 投票描述,如 89%
+     * @return int
+     */
+    public static function voteDesc2Number(string $vote): int
+    {
+        $base = str_replace('%', '', $vote);
+        $res = intval($base);
+        return $res;
+    }
+
+
+    /**
      * 新增来源站点,并返回记录ID;若记录已存在,则返回该记录的ID.为0时,是失败.
      * @param string $name 来源名称
      * @return int
@@ -130,7 +189,7 @@ class QorDataService extends ServiceBase
 
         $letter = substr($name, 0, 1);
         $data = [
-            'letter' => $letter,
+            'letter' => ValidateHelper::isAlpha($letter) ? strtoupper($letter) : '',
             'origin_name' => $name,
             'title_en' => $name,
         ];
@@ -151,11 +210,12 @@ class QorDataService extends ServiceBase
      * @param string $route 路由
      * @param string $quantityDesc 数量描述,如 58K
      * @param int $ageLimit 年龄限制
+     * @param int $isHot 是否热门：0否 1是
      * @return int
      * @throws Throwable
      */
     public
-    static function addCategory(string $name, string $route, string $quantityDesc = '', int $ageLimit = 0): int
+    static function addCategory(string $name, string $route, string $quantityDesc = '', int $ageLimit = 0, int $isHot = 1): int
     {
         $name = trim($name);
         $route = trim($route);
@@ -167,6 +227,9 @@ class QorDataService extends ServiceBase
             $route = $name;
         }
 
+        $quantityDesc = trim($quantityDesc);
+        $quantityNum = self::quantityDesc2Number($quantityDesc);
+
         $row = QorCategories::query()->where([
             'origin_name' => $name,
         ])->first();
@@ -174,10 +237,14 @@ class QorDataService extends ServiceBase
             //更新数量描述
             $data = [];
             if (!empty($quantityDesc)) {
+                $data['quantity_num'] = $quantityNum;
                 $data['quantity_desc'] = $quantityDesc;
             }
             if (!empty($ageLimit)) {
                 $data['age_limit'] = $ageLimit;
+            }
+            if ($isHot) {
+                $data['is_hot'] = $isHot;
             }
 
             if (!empty($data)) {
@@ -193,15 +260,16 @@ class QorDataService extends ServiceBase
 
         $letter = substr($name, 0, 1);
         $newRoute = self::makeRoute($route);
-
         $data = [
-            'letter' => $letter,
+            'letter' => ValidateHelper::isAlpha($letter) ? strtoupper($letter) : '',
             'origin_name' => $name,
             'title_en' => $name,
             'route_ori' => $route,
             'route_path' => $newRoute,
+            'quantity_num' => $quantityNum,
             'quantity_desc' => $quantityDesc,
             'age_limit' => $ageLimit,
+            'is_hot' => $isHot ? 1 : 0,
         ];
 
         $mod = new QorCategories($data);
@@ -220,11 +288,12 @@ class QorDataService extends ServiceBase
      * @param string $route 路由
      * @param string $quantityDesc 数量描述,如 58K
      * @param int $gender 性别，0未知,1男性,2女性
+     * @param int $isHot 是否热门：0否 1是
      * @return int
      * @throws Throwable
      */
     public
-    static function addPstar(string $name, string $route, string $quantityDesc = '', int $gender = 0): int
+    static function addPstar(string $name, string $route, string $quantityDesc = '', int $gender = 0, int $isHot = 1): int
     {
         $name = trim($name);
         $route = trim($route);
@@ -236,6 +305,9 @@ class QorDataService extends ServiceBase
             $route = $name;
         }
 
+        $quantityDesc = trim($quantityDesc);
+        $quantityNum = self::quantityDesc2Number($quantityDesc);
+
         $row = QorPstars::query()->where([
             'origin_name' => $name,
         ])->first();
@@ -243,10 +315,14 @@ class QorDataService extends ServiceBase
             //更新数量描述
             $data = [];
             if (!empty($quantityDesc)) {
+                $data['quantity_num'] = $quantityNum;
                 $data['quantity_desc'] = $quantityDesc;
             }
             if (!empty($gender)) {
                 $data['gender'] = $gender;
+            }
+            if ($isHot) {
+                $data['is_hot'] = $isHot;
             }
 
             if (!empty($data)) {
@@ -264,13 +340,15 @@ class QorDataService extends ServiceBase
         $newRoute = self::makeRoute($route);
 
         $data = [
-            'letter' => $letter,
+            'letter' => ValidateHelper::isAlpha($letter) ? strtoupper($letter) : '',
             'origin_name' => $name,
             'title_en' => $name,
             'route_ori' => $route,
             'route_path' => $newRoute,
+            'quantity_num' => $quantityNum,
             'quantity_desc' => $quantityDesc,
             'gender' => $gender,
+            'is_hot' => $isHot ? 1 : 0,
         ];
 
         $mod = new QorPstars($data);
@@ -311,7 +389,7 @@ class QorDataService extends ServiceBase
         $source = trim($source ?? '');
         $durationDesc = trim($durationDesc ?? '');
         $voteDesc = trim($voteDesc ?? '');
-        
+
         $ageLimit = intval($ageLimit ?? '');
         $gender = intval($gender ?? '');
         $quantityDesc = trim($quantityDesc ?? '');
@@ -347,7 +425,7 @@ class QorDataService extends ServiceBase
         $cid = self::addCategory($category, $routeOri, $quantityDesc, $ageLimit);
 
         //添加明星
-        $pid = self::addPstar($star, $routeOri,$quantityDesc, $gender);
+        $pid = self::addPstar($star, $routeOri, $quantityDesc, $gender);
 
         //添加来源
         $sid = self::addSource($source);
@@ -357,17 +435,19 @@ class QorDataService extends ServiceBase
             'origin_name' => $title,
         ])->first();
 
+        $durationNum = self::hmsToSeconds($durationDesc);
+        $voteNum = self::voteDesc2Number($voteDesc);
         $data = [
             'cid' => $cid,
             'pid' => $pid,
             'sid' => $sid,
-            'duration_num' => 0,
-            'vote_num' => 0,
             'origin_name' => $title,
             'cover_ori' => $coverOri,
             'cover_new' => $coverNew,
             'source' => $source,
+            'duration_num' => $durationNum,
             'duration_desc' => $durationDesc,
+            'vote_num' => $voteNum,
             'vote_desc' => $voteDesc,
             'title_en' => $title,
             'play_url' => $playUrl,
@@ -394,5 +474,5 @@ class QorDataService extends ServiceBase
         return $res;
     }
 
-    
+
 }
