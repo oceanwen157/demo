@@ -197,11 +197,12 @@ class QorDataService extends ServiceBase
      * @param string $route 路由
      * @param string $quantityDesc 数量描述,如 58K
      * @param int $ageLimit 年龄限制
+     * @param int $isHot 是否热门：0否 1是
      * @return int
      * @throws Throwable
      */
     public
-    static function addCategory(string $name, string $route, string $quantityDesc = '', int $ageLimit = 0): int
+    static function addCategory(string $name, string $route, string $quantityDesc = '', int $ageLimit = 0, int $isHot = 1): int
     {
         $name = trim($name);
         $route = trim($route);
@@ -225,6 +226,9 @@ class QorDataService extends ServiceBase
             if (!empty($ageLimit)) {
                 $data['age_limit'] = $ageLimit;
             }
+            if ($isHot) {
+                $data['is_hot'] = $isHot;
+            }
 
             if (!empty($data)) {
                 DB::transaction(function () use ($row, $data) {
@@ -247,6 +251,7 @@ class QorDataService extends ServiceBase
             'route_path' => $newRoute,
             'quantity_desc' => $quantityDesc,
             'age_limit' => $ageLimit,
+            'is_hot' => $isHot ? 1 : 0,
         ];
 
         $mod = new QorCategories($data);
@@ -265,11 +270,12 @@ class QorDataService extends ServiceBase
      * @param string $route 路由
      * @param string $quantityDesc 数量描述,如 58K
      * @param int $gender 性别，0未知,1男性,2女性
+     * @param int $isHot 是否热门：0否 1是
      * @return int
      * @throws Throwable
      */
     public
-    static function addPstar(string $name, string $route, string $quantityDesc = '', int $gender = 0): int
+    static function addPstar(string $name, string $route, string $quantityDesc = '', int $gender = 0, int $isHot = 1): int
     {
         $name = trim($name);
         $route = trim($route);
@@ -292,6 +298,9 @@ class QorDataService extends ServiceBase
             }
             if (!empty($gender)) {
                 $data['gender'] = $gender;
+            }
+            if ($isHot) {
+                $data['is_hot'] = $isHot;
             }
 
             if (!empty($data)) {
@@ -316,6 +325,7 @@ class QorDataService extends ServiceBase
             'route_path' => $newRoute,
             'quantity_desc' => $quantityDesc,
             'gender' => $gender,
+            'is_hot' => $isHot ? 1 : 0,
         ];
 
         $mod = new QorPstars($data);
