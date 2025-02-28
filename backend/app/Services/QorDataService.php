@@ -227,6 +227,9 @@ class QorDataService extends ServiceBase
             $route = $name;
         }
 
+        $quantityDesc = trim($quantityDesc);
+        $quantityNum = self::quantityDesc2Number($quantityDesc);
+
         $row = QorCategories::query()->where([
             'origin_name' => $name,
         ])->first();
@@ -234,6 +237,7 @@ class QorDataService extends ServiceBase
             //更新数量描述
             $data = [];
             if (!empty($quantityDesc)) {
+                $data['quantity_num'] = $quantityNum;
                 $data['quantity_desc'] = $quantityDesc;
             }
             if (!empty($ageLimit)) {
@@ -262,6 +266,7 @@ class QorDataService extends ServiceBase
             'title_en' => $name,
             'route_ori' => $route,
             'route_path' => $newRoute,
+            'quantity_num' => $quantityNum,
             'quantity_desc' => $quantityDesc,
             'age_limit' => $ageLimit,
             'is_hot' => $isHot ? 1 : 0,
@@ -300,6 +305,9 @@ class QorDataService extends ServiceBase
             $route = $name;
         }
 
+        $quantityDesc = trim($quantityDesc);
+        $quantityNum = self::quantityDesc2Number($quantityDesc);
+
         $row = QorPstars::query()->where([
             'origin_name' => $name,
         ])->first();
@@ -307,6 +315,7 @@ class QorDataService extends ServiceBase
             //更新数量描述
             $data = [];
             if (!empty($quantityDesc)) {
+                $data['quantity_num'] = $quantityNum;
                 $data['quantity_desc'] = $quantityDesc;
             }
             if (!empty($gender)) {
@@ -336,6 +345,7 @@ class QorDataService extends ServiceBase
             'title_en' => $name,
             'route_ori' => $route,
             'route_path' => $newRoute,
+            'quantity_num' => $quantityNum,
             'quantity_desc' => $quantityDesc,
             'gender' => $gender,
             'is_hot' => $isHot ? 1 : 0,
