@@ -8,6 +8,7 @@ use think\App;
 use think\exception\ValidateException;
 use think\Validate;
 use think\facade\View;
+use app\Services\DataService;
 
 /**
  * 控制器基础类
@@ -1585,6 +1586,15 @@ abstract class BaseController
     //         win.base_url = "' . Request::domain() . '";
     //     })(document, window);
     // </script>';
+
+    View::assign('currentLang', 'English');
+
+    View::assign('__LANGUAGES__', DataService::getLanguages());
+    View::assign('__SOURCES__', DataService::getSources());
+
+    View::assign('__CATEGORIES__', DataService::getTopCategories());
+    View::assign('__PORNSTARS__', DataService::getTopPstars());
+
   }
 
   /**

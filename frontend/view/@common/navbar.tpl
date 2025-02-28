@@ -34,15 +34,11 @@
                             <div class="orientation-panel panel" data-setting="orientation">
                                 <div class="panel-content">
                                     <div class="tag-data" data-tag-name="orientation" data-persistent="0">
-                                        <a href="/home/主题#Straight" data-tag-value="straight" class="menu-item px-5 flex items-center gap-3 selected" data-label="Straight">
-                                            <i class="far flex-shrink-0 w-4 fa-check opacity-0 opacity-100"></i>繁體中文
-                                        </a>
-                                        <a href="/home/主题#Gay" data-tag-value="gay" class="menu-item px-5 flex items-center gap-3 " data-label="Gay">
-                                            <i class="far flex-shrink-0 w-4 fa-check opacity-0 "></i>简体中文
-                                        </a>
-                                        <a href="/home/主题#Gay" data-tag-value="gay" class="menu-item px-5 flex items-center gap-3 " data-label="Gay">
-                                            <i class="far flex-shrink-0 w-4 fa-check opacity-0 "></i>English
-                                        </a>
+                                        {foreach name="__LANGUAGES__" item="e" key="i" }
+                                            <a href="/home/主题#Straight" data-tag-value="straight" class="menu-item px-5 flex items-center gap-3 selected" data-label="Straight">
+                                                <i class="far flex-shrink-0 w-4 fa-check opacity-0 {if $currentLang == trim($e->title)}opacity-100{else}opacity-0{/if}"></i>{$e->title}
+                                            </a>
+                                        {/foreach}
                                     </div>
                                 </div>
                             </div>
@@ -202,31 +198,12 @@
                     分类<i class="icon-end far fa-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="all-categories">
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/主题#cum-inside">
-                        Cum Inside<span class="badge badge-text badge-xsm">3.19M</span>
-                    </a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/主题#indian">
-                        Indian<span class="badge badge-text badge-xsm">581K</span>
-                    </a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/主题#milf">
-                        MILF<span class="badge badge-text badge-xsm">9.01M</span>
-                    </a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/主题#japanese">
-                        Japanese<span class="badge badge-text badge-xsm">2.36M</span>
-                    </a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/主题#erotic">
-                        Erotic<span class="badge badge-text badge-xsm">1.6M</span>
-                    </a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/主题#real">
-                        Real<span class="badge badge-text badge-xsm">2.52M</span>
-                    </a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/主题#homemade">
-                        Homemade<span class="badge badge-text badge-xsm">3.75M</span>
-                    </a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/主题#hot-mom">
-                        Hot Mom<span class="badge badge-text badge-xsm">9.01M</span>
-                    </a>
-                    <a href="/home/明星" class="button button-secondary flex mx-2" target="_self">
+                    {foreach name="__CATEGORIES__" item="e" key="i" }
+                        <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/category/{$e->title_en}">
+                            Cum Inside<span class="badge badge-text badge-xsm">3.19M</span>
+                        </a>
+                    {/foreach}
+                    <a href="/a-z" class="button button-secondary flex mx-2" target="_self">
                         全部分类
                     </a>
                 </div>
@@ -236,32 +213,13 @@
                     色情明星<i class="icon-end far fa-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="all-categories">
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/明星">
-                        Angela White
-                        <span class="badge badge-text badge-xsm">37K</span></a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/明星">
-                        Alyx Star
-                        <span class="badge badge-text badge-xsm">7.99K</span></a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/明星">
-                        Brandi Love
-                        <span class="badge badge-text badge-xsm">29.3K</span></a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/明星">
-                        Danny D ♂
-                        <span class="badge badge-text badge-xsm">36.4K</span></a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/明星">
-                        Mia Khalifa
-                        <span class="badge badge-text badge-xsm">16.3K</span></a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/明星">
-                        Brianna Beach
-                        <span class="badge badge-text badge-xsm">4.7K</span></a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/明星">
-                        Dani Daniels
-                        <span class="badge badge-text badge-xsm">22.4K</span></a>
-                    <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/明星">
-                        Johnny Sins ♂
-                        <span class="badge badge-text badge-xsm">31.6K</span></a>
-
-                    <a href="/home/明星" class="button button-secondary flex mx-2" target="_self">
+                    {foreach name="__PORNSTARS__" item="e" key="i" }
+                        <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/pornstar/{$e->title_en}">
+                            {$e->title_en}
+                            <span class="badge badge-text badge-xsm">{$e->quantity_desc}</span>
+                        </a>
+                    {/foreach}
+                    <a href="/pornstar" class="button button-secondary flex mx-2" target="_self">
                         All pornstars
                     </a>
                 </div>
@@ -297,9 +255,9 @@
             </button>
             <div class="accordion-menu open">
                 <div class="overflow-hidden">
-                    <a class="anchor-link menu-item px-3 popular" href="/home/主题#popular" target="_self">热门视频</a>
-                    <a class="anchor-link menu-item px-3 new" href="/home/主题#new" target="_self">最新视频</a>
-                    <a class="anchor-link menu-item px-3 rating" href="/home/主题#rating" target="_self">高分视频</a>
+                    <a class="anchor-link menu-item px-3 popular" href="/popular" target="_self">热门视频</a>
+                    <a class="anchor-link menu-item px-3 new" href="/new" target="_self">最新视频</a>
+                    <a class="anchor-link menu-item px-3 rating" href="/rating" target="_self">高分视频</a>
                 </div>
             </div>
         </section>
@@ -321,8 +279,8 @@
                             </a>
                         {/if}
                     {/foreach}
-                    <a href="/home/明星" class="button button-secondary flex mx-2" target="_self">
-                        全部分类
+                    <a href="/a-z" class="button button-secondary flex mx-2" target="_self">
+                        全部分类123
                     </a>
                 </div>
             </div>
@@ -346,7 +304,7 @@
                         {/if}
                     {/foreach}
                     <a href="/home/明星#" class="button button-secondary flex mx-2" target="_self">
-                        全部明星
+                        全部明星321
                     </a>
                 </div>
             </div>

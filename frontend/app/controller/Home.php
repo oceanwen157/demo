@@ -12,7 +12,6 @@ class Home extends BaseController
 {
     public function 首页()
     {
-        
         // $uri = Request::url();
         // if (strpos($uri, 'out/?l=') !== false) {
         //     $url = DataService::getRedirectUrl($uri);
@@ -24,6 +23,31 @@ class Home extends BaseController
         $pagination = \think\facade\Db::table('qor_videos')->paginate(10);
 
         View::assign('pagination', $pagination);
+        View::assign('__OTHERCATEGORIES__', DataService::getOtherCategories());
+        View::assign('__POPULARCATEGORIES__', DataService::getPopularCategories());
+        View::assign('__POPULARSTARS__', DataService::getPopularPstars());
+        
+        
+        return View::fetch('@pages/home/首页');
+    }
+
+    public function az()
+    {
+        return View::fetch('@pages/home/首页');
+    }
+
+    public function popular()
+    {
+        return View::fetch('@pages/home/首页');
+    }
+
+    public function new()
+    {
+        return View::fetch('@pages/home/首页');
+    }
+
+    public function rating()
+    {
         return View::fetch('@pages/home/首页');
     }
 
