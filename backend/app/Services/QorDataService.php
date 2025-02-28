@@ -176,7 +176,7 @@ class QorDataService extends ServiceBase
 
         $letter = substr($name, 0, 1);
         $data = [
-            'letter' => ValidateHelper::isAlpha($letter) ? $letter : '',
+            'letter' => ValidateHelper::isAlpha($letter) ? strtoupper($letter) : '',
             'origin_name' => $name,
             'title_en' => $name,
         ];
@@ -240,7 +240,7 @@ class QorDataService extends ServiceBase
         $letter = substr($name, 0, 1);
         $newRoute = self::makeRoute($route);
         $data = [
-            'letter' => ValidateHelper::isAlpha($letter) ? $letter : '',
+            'letter' => ValidateHelper::isAlpha($letter) ? strtoupper($letter) : '',
             'origin_name' => $name,
             'title_en' => $name,
             'route_ori' => $route,
@@ -309,7 +309,7 @@ class QorDataService extends ServiceBase
         $newRoute = self::makeRoute($route);
 
         $data = [
-            'letter' => ValidateHelper::isAlpha($letter) ? $letter : '',
+            'letter' => ValidateHelper::isAlpha($letter) ? strtoupper($letter) : '',
             'origin_name' => $name,
             'title_en' => $name,
             'route_ori' => $route,
