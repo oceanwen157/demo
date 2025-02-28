@@ -584,6 +584,30 @@ class DataService extends ServiceBase
     }
 
 
+    /**
+     * 获取高分的视频分页列表
+     * @param int $size 每页数量
+     * @return array
+     * @throws DbException
+     */
+    public static function getTopRatedVideos(int $size = 120): array
+    {
+        if ($size <= 0) {
+            $size = 120;
+        }
+
+        $qry = Db::name('videos')->where('vote_num', '>', 80)->order('id', 'desc');
+        $pagination = $qry->paginate($size);
+        $res = [
+            'paginate' => $pagination,
+            'total' => $pagination->total(),
+            'limit' => $size,
+        ];
+
+        return $res;
+    }
+
+
     public static function getVideos()
     {
     }
