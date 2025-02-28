@@ -154,6 +154,19 @@ class QorDataService extends ServiceBase
 
 
     /**
+     * 投票描述转为数值
+     * @param string $vote 投票描述,如 89%
+     * @return int
+     */
+    public static function voteDesc2Number(string $vote): int
+    {
+        $base = str_replace('%', '', $vote);
+        $res = intval($base);
+        return $res;
+    }
+
+
+    /**
      * 新增来源站点,并返回记录ID;若记录已存在,则返回该记录的ID.为0时,是失败.
      * @param string $name 来源名称
      * @return int
@@ -366,7 +379,7 @@ class QorDataService extends ServiceBase
         $source = trim($source ?? '');
         $durationDesc = trim($durationDesc ?? '');
         $voteDesc = trim($voteDesc ?? '');
-        
+
         $ageLimit = intval($ageLimit ?? '');
         $gender = intval($gender ?? '');
         $quantityDesc = trim($quantityDesc ?? '');
@@ -402,7 +415,7 @@ class QorDataService extends ServiceBase
         $cid = self::addCategory($category, $routeOri, $quantityDesc, $ageLimit);
 
         //添加明星
-        $pid = self::addPstar($star, $routeOri,$quantityDesc, $gender);
+        $pid = self::addPstar($star, $routeOri, $quantityDesc, $gender);
 
         //添加来源
         $sid = self::addSource($source);
@@ -412,17 +425,19 @@ class QorDataService extends ServiceBase
             'origin_name' => $title,
         ])->first();
 
+        $durationNum = self::hmsToSeconds($durationDesc);
+        $voteNum = self::voteDesc2Number($voteDesc);
         $data = [
             'cid' => $cid,
             'pid' => $pid,
             'sid' => $sid,
-            'duration_num' => 0,
-            'vote_num' => 0,
             'origin_name' => $title,
             'cover_ori' => $coverOri,
             'cover_new' => $coverNew,
             'source' => $source,
+            'duration_num' => $durationNum,
             'duration_desc' => $durationDesc,
+            'vote_num' => $voteNum,
             'vote_desc' => $voteDesc,
             'title_en' => $title,
             'play_url' => $playUrl,
@@ -449,5 +464,5 @@ class QorDataService extends ServiceBase
         return $res;
     }
 
-    
+
 }
