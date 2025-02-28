@@ -470,6 +470,15 @@ class DataService extends ServiceBase
     }
 
 
+    /**
+     * 根据关键词搜索视频列表
+     * @param string $keyword 关键词
+     * @param int $size 每页数量
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
     public static function searchVideos(string $keyword = '', int $size = 120): array
     {
         if ($size <= 0) {
@@ -481,8 +490,39 @@ class DataService extends ServiceBase
 
         $keyword = trim($keyword);
         if (!empty($keyword)) {
-//            $cate = Categories::where('route_path', $route)->find();
-//            $star = Pstars::where('route_path', $route)->find();
+            $orWheres = []; //多个or
+
+            $cateIds = [];
+            $cates = self::getCategoriesByLike($keyword);
+            if ($cates) {
+                foreach ($cates as $cate) {
+                    $cateIds[] = $cate->id;
+                }
+            }
+            if (!empty($cateIds)) {
+                $orWheres[] = ['cid', 'in', $cateIds];
+            }
+
+            $starIds = [];
+            $stars = self::getPstarsByLike($keyword);
+            if ($stars) {
+                foreach ($stars as $star) {
+                    $starIds[] = $star->id;
+                }
+            }
+            if (!empty($starIds)) {
+                $orWheres[] = ['pid', 'in', $starIds];
+            }
+
+            //视频本身的搜索
+            $fields = self::MUL_LANG_FIELD;
+            foreach ($fields as $field) {
+                $orWheres[] = [$field, 'like', '%' . $keyword . '%'];
+            }
+
+            $qry->where(function ($query) use ($orWheres) {
+                $query->whereOr($orWheres);
+            });
         }
 
         $pagination = $qry->paginate($size);
