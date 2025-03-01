@@ -117,7 +117,7 @@ class QorDataService extends ServiceBase
         $quantity = strtolower(trim($quantity));
         $base = str_replace('k', '', $quantity);
         $base = str_replace('m', '', $base);
-
+        $num = 0;
         if (strpos($base, 'k') !== false) {
             $num = intval($quantity) * 1000;
         }
