@@ -8,7 +8,8 @@ use app\model\Pstars;
 use app\model\Sources;
 use app\model\Videos;
 use Kph\Helpers\ValidateHelper;
-use think\Facade\Db;
+use think\facade\Db;
+use think\facade\Cache;
 use think\model\Collection;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
@@ -183,7 +184,13 @@ class DataService extends ServiceBase
      */
     public static function getTopCategories(int $limit = 8): Collection
     {
-        $res = Categories::field('*')->order('is_hot', 'desc')->order('sort', 'asc')->order('id', 'asc')->limit($limit)->select();
+        $res = Categories::field('*')
+            ->order('is_hot', 'desc')
+            ->order('quantity_num', 'desc')
+            ->order('sort', 'asc')
+            ->order('id', 'asc')
+            ->limit($limit)->select();
+
         return $res;
     }
 
@@ -603,6 +610,45 @@ class DataService extends ServiceBase
             'total' => $pagination->total(),
             'limit' => $size,
         ];
+
+        return $res;
+    }
+
+
+    /**
+     * 获取首页推荐视频(每个分类对应一个视频),带缓存.数组元素结构如
+     * $res[] = [
+     * 'category' => $cate, //分类信息
+     * 'video' => $video, //视频信息
+     * ];
+     * @param int $size 视频数
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public static function getHomeVideos(int $size = 120): array
+    {
+        $key = __FUNCTION__ . $size;
+        $res = Cache::store('redis')->get($key);
+        if (empty($res)) {
+            $res = [];
+            $cates = self::getTopCategories($size);
+            foreach ($cates as $cate) {
+                $video = Videos::where('cid', $cate->id)->order('vote_num')->find();
+                if (!empty($video)) {
+                    $res[] = [
+                        'category' => $cate, //分类信息
+                        'video' => $video, //视频信息
+                    ];
+                }
+            }
+
+            if (!empty($res)) {
+                Cache::store('redis')->set($key, $res, 7200);
+            }
+        }
 
         return $res;
     }
