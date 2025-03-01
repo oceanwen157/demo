@@ -13,9 +13,11 @@ use think\facade\Route;
 Route::group('', function() {
     Route::get('', 'home/首页');
 
-    Route::get('category/[:category]', 'home/category');
+    Route::get('category/:category', 'home/category');
 
-    Route::get('pornstar[:pornstar]', 'home/明星');
+    Route::get('pornstar/:pornstar', 'home/pornstar');
+    Route::get('pornstar', 'home/pornstarCates');
+    Route::get('a-z', 'home/az');
 
     Route::get('popular', 'home/popular');
     Route::get('new', 'home/new');

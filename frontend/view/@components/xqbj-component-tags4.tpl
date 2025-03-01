@@ -7,10 +7,10 @@
             <ul class="w-full">
                 {foreach name="$e" item="o" key="i" }
                     <li class="category" data-title="{$o->title_en}">
-                        <a class="anchor-link" href="/pornstar/{$o->title_en}">
+                        <a class="anchor-link" href="{$o->route_ori}">
                             <span class="category-title">{$o->title_en}</span>
                             <span class="badge badge-xsm">{if $o->age_limit}{$o->age_limit}+{/if}</span>
-                            <span class="badge badge-text badge-xsm">{$e.quantity_desc}</span>
+                            <span class="badge badge-text badge-xsm">{$o->quantity_desc}</span>
                         </a>
                     </li>
                 {/foreach}

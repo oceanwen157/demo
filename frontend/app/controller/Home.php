@@ -32,23 +32,26 @@ class Home extends BaseController
         return View::fetch('@pages/home/首页');
     }
 
-    public function az()
+    public function category($category)
     {
-        return View::fetch('@pages/home/首页');
-    }
+        $video = DataService::getCategoryVideoPaginate($category);
+        $recommend = DataService::getHomeVideos();
 
-    public function category($category = '')
-    {
-        return View::fetch('@pages/home/首页');
+        View::assign('__RECOMMENDCATES__', $recommend['category']);
+        View::assign('pagination', $video['paginate']);
+        View::assign('navTitle', $category);
+        View::assign('total', $video['total']);
+
+        return View::fetch('@pages/home/主题');
     }
 
     public function search($keyword = '')
     {
-        $navTitle = 'Popular videos';
         $searchVideo = DataService::searchVideos($keyword);
+        $recommend = DataService::getHomeVideos();
 
+        View::assign('__RECOMMENDCATES__', $recommend['category']);
         View::assign('pagination', $searchVideo['paginate']);
-
         View::assign('navTitle', $keyword);
         View::assign('total', $searchVideo['total']);
 
@@ -107,9 +110,43 @@ class Home extends BaseController
         return View::fetch('@pages/home/主题');
     }
 
-    public function 明星()
+    public function pornstar($pornstar)
+    {
+        if ($pornstar) {
+            $video = DataService::getPstarVideoPaginate($pornstar);
+            $recommend = DataService::getHomeVideos();
+    
+            View::assign('__RECOMMENDCATES__', $recommend['category']);
+            View::assign('pagination', $video['paginate']);
+            View::assign('navTitle', $pornstar);
+            View::assign('total', $video['total']);
+
+            return View::fetch('@pages/home/主题');
+        }else{
+            $res = DataService::getAllPstars();
+
+            View::assign('navTitle', 'Pornstars');
+            View::assign('__ALLSTARS__', $res);
+            View::assign('keys', array_keys($res));
+            return View::fetch('@pages/home/明星');
+        }
+    }
+
+    public function pornstarCates()
     {
         $res = DataService::getAllPstars();
+
+        View::assign('navTitle', 'Pornstars');
+        View::assign('__ALLSTARS__', $res);
+        View::assign('keys', array_keys($res));
+        return View::fetch('@pages/home/明星');
+    }
+
+    public function az()
+    {
+        $res = DataService::getAllCategories();
+
+        View::assign('navTitle', 'Categories');
         View::assign('__ALLSTARS__', $res);
         View::assign('keys', array_keys($res));
         return View::fetch('@pages/home/明星');

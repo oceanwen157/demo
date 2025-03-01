@@ -631,7 +631,7 @@ class DataService extends ServiceBase
     public static function getHomeVideos(int $size = 120): array
     {
         $key = __FUNCTION__ . $size;
-        $res = Cache::store('redis')->get($key);
+        $res = '';//Cache::store('redis')->get($key);
         if (empty($res)) {
             $res = [];
             $cates = self::getTopCategories($size);
@@ -644,7 +644,7 @@ class DataService extends ServiceBase
             }
 
             if (!empty($res)) {
-                Cache::store('redis')->set($key, $res, 7200);
+                //Cache::store('redis')->set($key, $res, 7200);
             }
         }
 
