@@ -18,7 +18,7 @@
                     <!-- 搜索词条 start -->
                     <div class="no-results show search-btn">
                         <i class="no-results-icon far fa-arrow-turn-down-right"></i>
-                        <span>搜索 <strong><a href="/" class="search-key"></a></strong></span>
+                        <span>搜索 <strong><a href="/ssssss" class="search-key"></a></strong></span>
                     </div>
                     <!-- 搜索词条 end -->
 

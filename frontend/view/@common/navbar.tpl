@@ -273,7 +273,7 @@
                 <div class="overflow-hidden">
                     {foreach name="__LISTS__" item="e" key="i" }
                         {if $i < 6}
-                            <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/主题#cum-inside">
+                            <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/testssxx#cum-inside">
                                 <span class="menu-pill">{$e.username}</span>
                                 <span class="badge badge-text badge-xsm">{$e.view}M</span>
                             </a>

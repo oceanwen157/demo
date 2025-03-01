@@ -12,6 +12,18 @@ use think\facade\Route;
 
 Route::group('', function() {
     Route::get('', 'home/首页');
+
+    Route::get('category/[:category]', 'home/category');
+
+    Route::get('pornstar[:pornstar]', 'home/明星');
+
+    Route::get('popular', 'home/popular');
+    Route::get('new', 'home/new');
+    Route::get('rating', 'home/rating');
+
+
+
+
     Route::get('登陆', 'popup/登陆');
     Route::get('注册', 'popup/注册');
     Route::get('找回', 'popup/找回');
@@ -19,6 +31,7 @@ Route::group('', function() {
     Route::get('通知', 'popup/通知');
     Route::get('十八', 'popup/十八');
     Route::get('精品', 'popup/精品');
+    
 });
 
 

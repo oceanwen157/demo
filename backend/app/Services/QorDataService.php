@@ -172,8 +172,7 @@ class QorDataService extends ServiceBase
      * @return int
      * @throws Throwable
      */
-    public
-    static function addSource(string $name): int
+    public static function addSource(string $name): int
     {
         $name = trim($name);
         if (empty($name)) {

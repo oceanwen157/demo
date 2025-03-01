@@ -6,10 +6,10 @@
         </h2>
         <div class="pill-group">
             <div class="pill-container">
-                {foreach name="__LISTS__" item="e" key="i" }
-                    <a href="/home/主题" class="pill">
-                        <span class="pill-text">{$e.username}</span>
-                        <span class="badge badge-xsm">18+</span>
+                {foreach name="__RECOMMENDCATES__" item="e" key="i" }
+                    <a href="/category/{$e->title_en}" class="pill">
+                        <span class="pill-text">{$e->title_en}</span>
+                        <span class="badge badge-xsm">{if $e->age_limit}{$e->age_limit}+{/if}</span>
                     </a>
                 {/foreach}
             </div>

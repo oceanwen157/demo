@@ -14,9 +14,9 @@ class Crawler extends Command
 {
     const BASE_URL = 'https://www.qorno.com';
 
-    const REQUEST_BATCH_SIZE = 5000;
+    const REQUEST_BATCH_SIZE = 1000;
 
-    const MAX_CONCURRENT_REQUESTS = 20;
+    const MAX_CONCURRENT_REQUESTS = 10;
 
     const UPLOAD_IMG_API = 'https://upload-outside.yesebo.net/api/system/image';
 
@@ -34,21 +34,67 @@ class Crawler extends Command
 
     public function handle()
     {
+        ini_set('memory_limit', '-1');
         //var_dump(self::getImgPath());exit;
-        $data = self::getAllCategoryVideos(
-            [
-                [
-                    'href' => '/category/10-inch-cock',
-                    'title' => '10+ Inch Cock',
-                    'age_badge' => '',
-                    'count_badge' => '581K'
-                ]
-            ]
-        );
+        // $data = self::getAllCategoryVideos(
+        //     [
+        //         [
+        //             'href' => '/category/10-inch-cock',
+        //             'title' => '10+ Inch Cock',
+        //             'age_badge' => '',
+        //             'count_badge' => '583K'
+        //         ]
+        //     ]
+        // );
 
-        foreach($data as $v) {
-            var_dump(self::$qorSvc->addVideoInfo($v));
+        // foreach($data as $v) {
+        //     var_dump($v);exit;
+        //     //var_dump(self::$qorSvc->addVideoInfo($v));
+        // }
+
+        //self::addCates();
+
+
+
+        try {
+            $categories = self::getCategories();
+            foreach($categories as $category) {
+                $data = self::getPageVideos($category);
+                // $data = self::getAllCategoryVideos(
+                //     [
+                //         [
+                //             'href' => '/category/10-inch-cock',
+                //             'title' => '10+ Inch Cock',
+                //             'age_badge' => '',
+                //             'count_badge' => '583K'
+                //         ]
+                //     ]
+                // );
+                foreach($data as $v) {
+                    try {
+                        $result = self::$qorSvc->addVideoInfo($v);
+                        var_dump($result);
+                    } catch (\Exception $e) {
+                        $this->error(sprintf(
+                            "Failed to add video info. Data: %s, Error: %s",
+                            json_encode($v),
+                            $e->getMessage()
+                        ));
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $this->error("Exception caught:\n");
+            $this->error("Message: " . $e->getMessage() . "\n");
+            $this->error("File: " . $e->getFile() . "\n");
+            $this->error("Line: " . $e->getLine() . "\n");
+            $this->error("Stack trace:\n" . $e->getTraceAsString() . "\n");
         }
+        exit;
+        //$pornstars = self::getCategories(true);
+
+        
+
 
         exit;
         
@@ -56,18 +102,24 @@ class Crawler extends Command
         //var_dump(self::getImgPath());
         //var_dump(self::getPornstars());
         //var_dump(self::getRedirectUrl('https://www.qorno.com/out/?l=3AASPM4TEyRnq0huT2lGQlBsTkhTAtmOaHR0cHM6Ly93d3cuNHdhbmsuY29tL3ZpZGVvcy8xNDE0MzEvaS1tLWdvaW5nLXRvLWdpdmUteW91LW15LWJ1dHQtdG9kYXkvP3V0bV9zb3VyY2U9YXdtJnV0bV9tZWRpdW09YXdtdHJhZmZpYyZ1dG1fY2FtcGFpZ249NHdhbmsmc3ViaWQxPTcwMDAwMc0DpKJ0YwHNCCKncG9wdWxhcs0DQNkweyJhbGwiOiIiLCJvcmllbnRhdGlvbiI6InN0cmFpZ2h0IiwicHJpY2luZyI6IiJ9zQT1zme8sdaoY2F0ZWdvcnnOAAjXIsDZfFt7IjEiOiJyWXQyVnRlcDVVWSJ9LHsiMiI6IlBxSHE3emxaSDhDIn0seyIzIjoiT0ZwbndJUXFXYncifSx7Ii0xIjoiSllvdFd5UFV1SGcifSx7Ii0yIjoiRlVGTmNaeEpFUTAifSx7Ii0zIjoiNDlrRFNLTE81M1QifV0%3D&c=ddb6f8f4&v=3&'));
-        var_dump(self::getAllCategoryVideos(
-            [
-                [
-                    'href' => '/category/10-inch-cock',
-                    'title' => '10+ Inch Cock',
-                    'age_badge' => '',
-                    'count_badge' => '581K'
-                ]
-            ]
-        ));
         //var_dump(self::getCategoryVideos());
         //var_dump(self::getCategories());
+    }
+
+    private static function addCates()
+    {
+        // pornstar
+        $categories = self::getCategories(1);
+        foreach($categories as $category) {
+            $gender = (strpos($category['title'], '♂') !== false) ? 1 : 0;
+            self::$qorSvc->addPstar($category['title'], $category['href'], $category['count_badge'], $gender);
+        }
+
+        // categories
+        $categories = self::getCategories();
+        foreach($categories as $category) {
+            self::$qorSvc->addCategory($category['title'], $category['href'], $category['count_badge'], intval($category['age_badge']));
+        }
     }
 
     public static function getCategories($star = false)
@@ -116,7 +168,7 @@ class Crawler extends Command
         // }, $data);
     }
 
-    public static function getAllCategoryVideos($categories, $star = false)
+    public static function getAllCategoryVideosv2($categories, $star = false)
     {
         $dataAll = [];
         $client = new Client(['timeout' => 10]);
@@ -135,7 +187,8 @@ class Crawler extends Command
             $firstPageUrl = sprintf(self::BASE_URL . $category['href']);
             $response = $client->get($firstPageUrl);
             $html = (string)$response->getBody();
-            $maxPage = 1;//self::detectMaxPage($html);
+            //$maxPage = 1;
+            $maxPage = self::detectMaxPage($html);
 
             for ($page = 1; $page <= $maxPage; $page++) {
                 $path = ($page == 1) ? $category['href'] : $category['href']."?page=$page";
@@ -158,7 +211,7 @@ class Crawler extends Command
 
             $pool = new Pool($client, $requests(), [
                 'concurrency' => self::MAX_CONCURRENT_REQUESTS,
-                'options' => ['delay' => rand(100, 500)],
+                'options' => ['delay' => rand(2000, 5000)],
                 'fulfilled' => function ($response, $key) use (&$dataAll, $rules, $range, $star) {
                     $html = (string)$response->getBody();
                     $data = QueryList::Query($html, $rules, $range, '', 'utf-8')->data;
@@ -168,7 +221,8 @@ class Crawler extends Command
                             
                             $item['routeOri'] = $arr[0];
                             $item['quantityDesc'] = $arr[3];
-                            $item['coverNew'] = self::getImgPath($item['coverOri']);
+                            //$item['coverNew'] = self::getImgPath($item['coverOri']);
+                            $item['coverNew'] = 'xxx';//self::getImgPath($item['coverOri']);
                             //$item['playUrl'] = self::getRedirectUrl(self::BASE_URL.$item['playUrl']);
                             
                             if ($star) {
@@ -197,52 +251,151 @@ class Crawler extends Command
         return $dataAll;
     }
 
-    public static function getCurrentPageCategoryVideos()
+    public static function getAllCategoryVideos($categories, $star = false)
     {
-        $path = '/category/%s';
-        $url = sprintf(self::BASE_URL.$path, '10-inch-cock');
+        $dataAll = [];
+        $client = new Client(['timeout' => 10, 'headers' => ['User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36']]);
 
         $rules = [
-            'duration' => ['span.item-meta-container span.badge.float-right', 'text', '-span.font-bold.italic'],
-            'cover_image' => ['img.item-image', 'src'],
+            'durationDesc' => ['span.item-meta-container span.badge.float-right', 'text', '-span.font-bold.italic'],
+            'coverOri' => ['img.item-image', 'src'],
             'source' => ['div.item-source-rating-container a.item-source', 'text', '-i'],
-            'play_link' => ['a.item-link.rate-link:first', 'href'],
+            'playUrl' => ['a.item-link.rate-link:first', 'href'],
             'title' => ['div.item-footer a.item-title', 'text']
         ];
-
         $range = '.content-block .cards-container .card';
 
-        $maxPage =2;//100;
-        $dataAll = [];
-        $client = new Client([
-            'timeout' => 10
-        ]);
-        $requests = function($total) use ($path) {
-            for ($page = 2; $page <= $total; $page++) {
-                //$url = self::BASE_URL . $path . '/' . $page;
-                $url = sprintf(self::BASE_URL.$path, '10-inch-cock');
-                //$url = sprintf(self::BASE_URL.$path, '10-inch-cock') . '?page=' . $page;
-                yield $page => new Request('GET', $url);
+        $allRequests = [];
+        foreach ($categories as $category) {
+            $firstPageUrl = sprintf(self::BASE_URL . $category['href']);
+            $response = $client->get($firstPageUrl);
+            $html = (string)$response->getBody();
+            $maxPage = self::detectMaxPage($html);
+
+            for ($page = 1; $page <= $maxPage; $page++) {
+                $path = ($page == 1) ? $category['href'] : $category['href'] . "?page=$page";
+                $url = self::BASE_URL . $path;
+
+                $key = "{$category['href']}_{$category['title']}_{$category['age_badge']}_{$category['count_badge']}_{$page}";
+                $allRequests[$key] = ['url' => $url, 'category' => $category, 'page' => $page, 'key' => $key]; // Store data for retry
+            }
+        }
+
+        $batches = array_chunk($allRequests, self::REQUEST_BATCH_SIZE, true);
+        foreach ($batches as $batchIndex => $batchRequests) {
+            echo "Processing batch " . ($batchIndex + 1) . " of " . count($batches) . "\n";
+
+            self::processBatch($batchRequests, $dataAll, $rules, $range, $star, $client);
+        }
+
+        return $dataAll;
+    }
+
+    private static function processBatch($batchRequests, &$dataAll, $rules, $range, $star, $client)
+    {
+        $requests = function () use ($batchRequests) {
+            foreach ($batchRequests as $requestData) {
+                yield $requestData['key'] => new Request('GET', $requestData['url']);
             }
         };
 
-        $pool = new Pool($client, $requests($maxPage), [
-            'concurrency' => 10,
-            'fulfilled' => function($response, $page) use (&$dataAll, $rules, $range) {
+        $pool = new Pool($client, $requests(), [
+            'concurrency' => self::MAX_CONCURRENT_REQUESTS,
+            'options' => ['delay' => rand(3000, 7000)], // Increased delay
+            'fulfilled' => function ($response, $key) use (&$dataAll, $rules, $range, $star, $batchRequests) {
                 $html = (string)$response->getBody();
                 $data = QueryList::Query($html, $rules, $range, '', 'utf-8')->data;
-                $dataAll = array_merge($dataAll, $data);
-                
-                var_dump(count($dataAll), $dataAll[0]);
-                //usleep(0.2 * 1000000);
+                if (!empty($data)) {
+                    foreach ($data as &$item) {
+                        $arr = explode('_', $key);
+
+                        $item['routeOri'] = $arr[0];
+                        $item['quantityDesc'] = $arr[3];
+                        $item['coverNew'] = 'xxx';//self::getImgPath($item['coverOri']);
+
+                        if ($star) {
+                            $item['star'] = $arr[1];
+                            $item['gender'] = (strpos($arr[1], '♂') !== false) ? 1 : 0;
+                        } else {
+                            $item['category'] = $arr[1];
+                            $item['ageLimit'] = intval($arr[2]);
+                        }
+                    }
+
+                    $dataAll = array_merge($dataAll, $data);
+                }
+
+                echo "Processed {$key}, total items: " . count($dataAll) . "\n";
             },
-            'rejected' => function(RequestException $reason, $page) {
-                echo "Failed to process page {$page}: " . $reason->getMessage() . "\n";
+            'rejected' => function (\Exception $reason, $key) use (&$batchRequests, &$dataAll, $rules, $range, $star, $client) {
+                echo "Failed to process {$key} \n";
+
+                if ($reason instanceof \GuzzleHttp\Exception\RequestException) {
+                    $response = $reason->getResponse();
+                    if ($response) {
+                        $code = $response->getStatusCode();
+                    } else {
+                        $code = 0;
+                    }
+
+                    if ($response && $code == 429) {
+                        echo "Retrying {$key} after delay...\n";
+                        sleep(15);
+                        
+                        $requestData = collect($batchRequests)->first(function ($value, $k) use ($key) {
+                            return $value['key'] == $key;
+                        });
+                        if ($requestData) {
+                            self::processBatch([$requestData], $dataAll, $rules, $range, $star, $client);
+                        }
+                    } else {
+                        echo "Request {$key} rejected with code {$code}.\n";
+                    }
+                } else {
+                    echo "Request {$key} permanently rejected due to connection or other error: " . $reason->getMessage() . "\n";
+                }
             },
         ]);
 
         $promise = $pool->promise();
         $promise->wait();
+    }
+
+    public static function getPageVideos($category, $star = false)
+    {
+        $dataAll = [];
+        $client = new Client(['timeout' => 10, 'headers' => ['User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36']]);
+
+        $rules = [
+            'durationDesc' => ['span.item-meta-container span.badge.float-right', 'text', '-span.font-bold.italic'],
+            'coverOri' => ['img.item-image', 'src'],
+            'source' => ['div.item-source-rating-container a.item-source', 'text', '-i'],
+            'playUrl' => ['a.item-link.rate-link:first', 'href'],
+            'title' => ['div.item-footer a.item-title', 'text']
+        ];
+        $range = '.content-block .cards-container .card';
+
+        $allRequests = [];
+        $firstPageUrl = sprintf(self::BASE_URL . $category['href']);
+        $response = $client->get($firstPageUrl);
+        $html = (string)$response->getBody();
+        $maxPage = self::detectMaxPage($html);
+
+        for ($page = 1; $page <= $maxPage; $page++) {
+            $path = ($page == 1) ? $category['href'] : $category['href'] . "?page=$page";
+            $url = self::BASE_URL . $path;
+
+            $key = "{$category['href']}_{$category['title']}_{$category['age_badge']}_{$category['count_badge']}_{$page}";
+            $allRequests[$key] = ['url' => $url, 'category' => $category, 'page' => $page, 'key' => $key]; // Store data for retry
+        }
+
+
+        $batches = array_chunk($allRequests, self::REQUEST_BATCH_SIZE, true);
+        foreach ($batches as $batchIndex => $batchRequests) {
+            echo "Processing batch " . ($batchIndex + 1) . " of " . count($batches) . "\n";
+
+            self::processBatch($batchRequests, $dataAll, $rules, $range, $star, $client);
+        }
 
         return $dataAll;
     }
@@ -291,17 +444,19 @@ class Crawler extends Command
         ];
         $data = QueryList::Query($html, $rules)->data;
 
-        $totalPage = 500;
+        $maxPage = 100;
         if (!empty($data[0]['total']) && !empty($data[0]['pageSize'])) {
             $total = filter_var($data[0]['total'], FILTER_SANITIZE_NUMBER_INT);
             $pageSize = filter_var($data[0]['pageSize'], FILTER_SANITIZE_NUMBER_INT);
 
             if ($total && $pageSize) {
-                return ceil(intval($total) / intval($pageSize));
+                $page = ceil(intval($total) / intval($pageSize));
+                
+                return $page > $maxPage ? $maxPage : $page;
             }
         }
 
-        return $totalPage;
+        return 1;
     }
 
     public static function makeUploadSign($array, $signKey = ''): string
