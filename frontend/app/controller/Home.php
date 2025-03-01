@@ -20,11 +20,10 @@ class Home extends BaseController
         //     }
         // }
 
-        $pagination = \think\facade\Db::table('qor_videos')->paginate(10);
-
         $recommend = DataService::getHomeVideos();
-        View::assign('__RECOMMENDVIDEO__', $recommend['video']);
+
         View::assign('total', 0);
+        View::assign('__RECOMMENDVIDEO__', $recommend['video']);
         View::assign('__OTHERCATEGORIES__', DataService::getOtherCategories());
         View::assign('__POPULARCATEGORIES__', DataService::getPopularCategories());
         View::assign('__POPULARSTARS__', DataService::getPopularPstars());
@@ -43,17 +42,15 @@ class Home extends BaseController
         return View::fetch('@pages/home/首页');
     }
 
-    public function search()
+    public function search($keyword = '')
     {
         $navTitle = 'Popular videos';
-        $popurVideo = DataService::getPopularVideos();
+        $searchVideo = DataService::searchVideos($keyword);
 
-        $recommend = DataService::getHomeVideos();
-        View::assign('__RECOMMENDCATES__', $recommend['category']);
-        View::assign('pagination', $popurVideo['paginate']);
+        View::assign('pagination', $searchVideo['paginate']);
 
-        View::assign('navTitle', $navTitle);
-        View::assign('total', $popurVideo['total']);
+        View::assign('navTitle', $keyword);
+        View::assign('total', $searchVideo['total']);
 
         return View::fetch('@pages/home/主题');
     }

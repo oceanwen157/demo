@@ -20,6 +20,7 @@ Route::group('', function() {
     Route::get('popular', 'home/popular');
     Route::get('new', 'home/new');
     Route::get('rating', 'home/rating');
+    Route::get('search[:category]', 'home/search');
 
 
 
