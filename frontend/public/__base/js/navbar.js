@@ -128,7 +128,7 @@
 				console.log('key: ', key);
 
 				// TODO................................................................
-				location.replace(`/home/主题#${key}`);
+				location.replace(`/search/${key}`);
 
 				return false;
 			})

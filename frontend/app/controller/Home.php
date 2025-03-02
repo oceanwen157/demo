@@ -48,6 +48,10 @@ class Home extends BaseController
     {
         $searchVideo = DataService::searchVideos($keyword);
 
+        
+        if (!trim($keyword)) {
+            $keyword = 'Popular';
+        }
         View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
         View::assign('pagination', $searchVideo['paginate']);
         View::assign('navTitle', $keyword);
@@ -101,7 +105,7 @@ class Home extends BaseController
 
     public function 主题()
     {
-
+        echo 123123;exit;
         return View::fetch('@pages/home/主题');
     }
 
