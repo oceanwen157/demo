@@ -638,8 +638,10 @@ class DataService extends ServiceBase
             foreach ($cates as $cate) {
                 $video = Videos::where('cid', $cate->id)->order('vote_num')->find();
                 if (!empty($video)) {
-                    $res['category'][] = $cate;
-                    $res['video'][] = $video;
+                    $res[] = [
+                        'category' => $cate, //分类信息
+                        'video' => $video, //视频信息
+                    ];
                 }
             }
 
