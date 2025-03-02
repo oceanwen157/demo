@@ -59,7 +59,20 @@ CREATE TABLE `qor_categories`
     `quantity_desc` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci        NOT NULL DEFAULT '' COMMENT '数量描述',
     `create_at`     int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
     `update_at`     int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY             `idx_name` (`origin_name`) USING BTREE,
+    KEY             `idx_en` (`title_en`) USING BTREE,
+    KEY             `idx_cn` (`title_cn`) USING BTREE,
+    KEY             `idx_tw` (`title_tw`) USING BTREE,
+    KEY             `idx_ja` (`title_ja`) USING BTREE,
+    KEY             `idx_ko` (`title_ko`) USING BTREE,
+    KEY             `idx_ms` (`title_ms`) USING BTREE,
+    KEY             `idx_th` (`title_th`) USING BTREE,
+    KEY             `idx_de` (`title_de`) USING BTREE,
+    KEY             `idx_vi` (`title_vi`) USING BTREE,
+    KEY             `idx_id` (`title_id`) USING BTREE,
+    KEY             `idx_pt` (`title_pt`) USING BTREE,
+    KEY             `idx_tlph` (`title_tlph`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '分类表';
 
 
@@ -92,7 +105,20 @@ CREATE TABLE `qor_pstars`
     `quantity_desc` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci        NOT NULL DEFAULT '' COMMENT '数量描述',
     `create_at`     int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
     `update_at`     int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY             `idx_name` (`origin_name`) USING BTREE,
+    KEY             `idx_en` (`title_en`) USING BTREE,
+    KEY             `idx_cn` (`title_cn`) USING BTREE,
+    KEY             `idx_tw` (`title_tw`) USING BTREE,
+    KEY             `idx_ja` (`title_ja`) USING BTREE,
+    KEY             `idx_ko` (`title_ko`) USING BTREE,
+    KEY             `idx_ms` (`title_ms`) USING BTREE,
+    KEY             `idx_th` (`title_th`) USING BTREE,
+    KEY             `idx_de` (`title_de`) USING BTREE,
+    KEY             `idx_vi` (`title_vi`) USING BTREE,
+    KEY             `idx_id` (`title_id`) USING BTREE,
+    KEY             `idx_pt` (`title_pt`) USING BTREE,
+    KEY             `idx_tlph` (`title_tlph`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '明星表';
 
 
@@ -119,22 +145,35 @@ CREATE TABLE `qor_sources`
     `title_tlph`   varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-菲律宾文',
     `create_at`    int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
     `update_at`    int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    KEY            `idx_name` (`origin_name`) USING BTREE,
+    KEY            `idx_en` (`title_en`) USING BTREE,
+    KEY            `idx_cn` (`title_cn`) USING BTREE,
+    KEY            `idx_tw` (`title_tw`) USING BTREE,
+    KEY            `idx_ja` (`title_ja`) USING BTREE,
+    KEY            `idx_ko` (`title_ko`) USING BTREE,
+    KEY            `idx_ms` (`title_ms`) USING BTREE,
+    KEY            `idx_th` (`title_th`) USING BTREE,
+    KEY            `idx_de` (`title_de`) USING BTREE,
+    KEY            `idx_vi` (`title_vi`) USING BTREE,
+    KEY            `idx_id` (`title_id`) USING BTREE,
+    KEY            `idx_pt` (`title_pt`) USING BTREE,
+    KEY            `idx_tlph` (`title_tlph`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '来源站点表';
 
 
 DROP TABLE IF EXISTS `qor_videos`;
 CREATE TABLE `qor_videos`
 (
-    `id`            int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `is_hot`        tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否热门:0否1是',
-    `trans_status`  tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '翻译状态:0待翻译,1翻译中,2翻译完成',
-    `cid`           int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '分类ID',
-    `pid`           int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '明星ID',
-    `sid`           int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '来源ID',
-    `duration_num`  int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '时长量,秒',
-    `view_num`      int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '浏览量',
-    `vote_num`      int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '投票数',
+    `id`            int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `is_hot`        tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否热门:0否1是',
+    `trans_status`  tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '翻译状态:0待翻译,1翻译中,2翻译完成',
+    `cid`           int(10) unsigned NOT NULL DEFAULT '0' COMMENT '分类ID',
+    `pid`           int(10) unsigned NOT NULL DEFAULT '0' COMMENT '明星ID',
+    `sid`           int(10) unsigned NOT NULL DEFAULT '0' COMMENT '来源ID',
+    `duration_num`  int(10) unsigned NOT NULL DEFAULT '0' COMMENT '时长量,秒',
+    `view_num`      int(10) unsigned NOT NULL DEFAULT '0' COMMENT '浏览量',
+    `vote_num`      int(10) unsigned NOT NULL DEFAULT '0' COMMENT '投票数',
     `origin_name`   varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci        NOT NULL DEFAULT '' COMMENT '原名',
     `cover_ori`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci        NOT NULL DEFAULT '' COMMENT '封面-原地址',
     `cover_new`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci        NOT NULL DEFAULT '' COMMENT '封面-经下载后上传的地址',
@@ -142,7 +181,9 @@ CREATE TABLE `qor_videos`
     `duration_desc` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci         NOT NULL DEFAULT '' COMMENT '时长描述',
     `view_desc`     varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci         NOT NULL DEFAULT '' COMMENT '浏览量描述',
     `vote_desc`     varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci         NOT NULL DEFAULT '' COMMENT '投票描述',
-    `title_en`      varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '' COMMENT '标题-英文',
+    `quality_desc`  varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci         NOT NULL DEFAULT '' COMMENT '分辨率描述',
+    `vr_desc`       varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci         NOT NULL DEFAULT '' COMMENT 'VR描述',
+    `title_en`      varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '' COMMENT '标题-英文',
     `title_cn`      varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '' COMMENT '标题-简体中文',
     `title_tw`      varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '' COMMENT '标题-繁体中文',
     `title_ja`      varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '' COMMENT '标题-日文',
@@ -155,12 +196,24 @@ CREATE TABLE `qor_videos`
     `title_pt`      varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '' COMMENT '标题-葡萄牙文',
     `title_tlph`    varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL DEFAULT '' COMMENT '标题-菲律宾文',
     `play_url`      varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '播放地址',
-    `create_at`     int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-    `update_at`     int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+    `publish_at`    int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发布时间',
+    `create_at`     int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+    `update_at`     int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    INDEX           `idx_cid`(`cid` ASC) USING BTREE,
-    INDEX           `idx_pid`(`pid` ASC) USING BTREE,
-    INDEX           `idx_sid`(`sid` ASC) USING BTREE,
-    INDEX           `idx_name`(`origin_name` ASC) USING BTREE,
-    INDEX           `idx_nameen`(`title_en` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '视频表';
+    KEY             `idx_cid` (`cid`) USING BTREE,
+    KEY             `idx_pid` (`pid`) USING BTREE,
+    KEY             `idx_sid` (`sid`) USING BTREE,
+    KEY             `idx_name` (`origin_name`) USING BTREE,
+    KEY             `idx_en` (`title_en`) USING BTREE,
+    KEY             `idx_cn` (`title_cn`) USING BTREE,
+    KEY             `idx_tw` (`title_tw`) USING BTREE,
+    KEY             `idx_ja` (`title_ja`) USING BTREE,
+    KEY             `idx_ko` (`title_ko`) USING BTREE,
+    KEY             `idx_ms` (`title_ms`) USING BTREE,
+    KEY             `idx_th` (`title_th`) USING BTREE,
+    KEY             `idx_de` (`title_de`) USING BTREE,
+    KEY             `idx_vi` (`title_vi`) USING BTREE,
+    KEY             `idx_id` (`title_id`) USING BTREE,
+    KEY             `idx_pt` (`title_pt`) USING BTREE,
+    KEY             `idx_tlph` (`title_tlph`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=22793 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='视频表';
