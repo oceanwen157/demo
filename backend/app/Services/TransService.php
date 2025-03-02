@@ -221,12 +221,55 @@ class TransService extends ServiceBase
 
 
     /**
-     * 翻译明星
+     * 翻译明星的多语言标题
      * @return int
      */
     public static function transPstars(): int
     {
-        return 0;
+        $res = 0;
+        $tags = self::getWaitTransTags();
+        $lastId = 0;
+        printf("transPstars begin: %s\n", date("Y-m-d H:i:s"));
+
+        while (true) {
+            $qry = QorPstars::query()->whereIn('trans_status', [0, 1]);
+            if ($lastId > 0) {
+                $qry->where('id', '<', $lastId);
+            }
+
+            $row = $qry->orderBy('id', 'desc')->first();
+            if (!$row) {
+                break;
+            }
+
+            printf("star id: %s\n", $row->id);
+            $lastId = $row->id;
+            $titleEn = $row->title_en;
+            foreach ($tags as $tag) {
+                $field = "title_{$tag}";
+                $value = $row->$field ?? '';
+                if (empty($value)) {
+                    $valueTran = self::transWords($titleEn, $tag);
+                    if (!empty($valueTran) && $valueTran != $value) {
+                        $row = self::modelSaveLangTitle($row, $tag, $valueTran);
+                    }
+                }
+            }
+            $chkDone = self::checkModelTitleFull($row);
+            printf("trans star id:%s res:%b\n", $row->id, $chkDone);
+            if ($chkDone) {
+                $res++;
+            }
+            $row->trans_status = $chkDone ? 2 : 1; //更新状态
+
+            DB::transaction(function () use (&$row) {
+                $row->save();
+            });
+        }
+
+        printf("transPstars done: %d\n", $res);
+
+        return $res;
     }
 
 
@@ -247,6 +290,7 @@ class TransService extends ServiceBase
     public function doTranslate(): void
     {
         self::transCategories();
+        self::transPstars();
     }
 
 
