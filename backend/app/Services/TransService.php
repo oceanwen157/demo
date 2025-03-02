@@ -118,6 +118,7 @@ class TransService extends ServiceBase
 
             }
 //$res = HanziConvert::convert($str, true);
+            $res = 'hello world';
         }
 
         return $res ?? '';
@@ -174,32 +175,44 @@ class TransService extends ServiceBase
     {
         $res = 0;
         $tags = self::getWaitTransTags();
-        QorCategories::query()->whereIn('trans_status', [0, 1])
-            ->orderBy('id', 'ASC')
-            ->chunk(50, function ($rows) use (&$res, $tags) {
-                foreach ($rows as $row) {
-                    $titleEn = $row->title_en;
-                    foreach ($tags as $tag) {
-                        $field = "title_{$tag}";
-                        $value = $row->$field ?? '';
-                        if (empty($value)) {
-                            $valueTran = self::transWords($titleEn, $tag);
-                            if (!empty($valueTran) && $valueTran != $value) {
-                                $row = self::modelSaveLangTitle($row, $tag, $valueTran);
-                            }
-                        }
-                    }
-                    $chkDone = self::checkModelTitleFull($row);
-                    if ($chkDone) {
-                        $res++;
-                    }
-                    $row->trans_status = $chkDone ? 2 : 1; //更新状态
+        $lastId = 0;
+        printf("transCategories begin: %s\n", date("Y-m-d H:i:s"));
 
-                    DB::transaction(function () use (&$row) {
-                        $row->save();
-                    });
+        while (true) {
+            $qry = QorCategories::query()->whereIn('trans_status', [0, 1]);
+            if ($lastId > 0) {
+                $qry->where('id', '<', $lastId);
+            }
+
+            $row = $qry->orderBy('id', 'desc')->first();
+            if (!$row) {
+                break;
+            }
+
+            printf("category id: %s\n", $row->id);
+            $lastId = $row->id;
+            $titleEn = $row->title_en;
+            foreach ($tags as $tag) {
+                $field = "title_{$tag}";
+                $value = $row->$field ?? '';
+                if (empty($value)) {
+                    $valueTran = self::transWords($titleEn, $tag);
+                    if (!empty($valueTran) && $valueTran != $value) {
+                        $row = self::modelSaveLangTitle($row, $tag, $valueTran);
+                    }
                 }
+            }
+            $chkDone = self::checkModelTitleFull($row);
+            printf("trans category id:%s res:%b\n", $row->id, $chkDone);
+            if ($chkDone) {
+                $res++;
+            }
+            $row->trans_status = $chkDone ? 2 : 1; //更新状态
+
+            DB::transaction(function () use (&$row) {
+                $row->save();
             });
+        }
 
         printf("transCategories done: %d\n", $res);
 
@@ -233,9 +246,7 @@ class TransService extends ServiceBase
      */
     public function doTranslate(): void
     {
-        $client = self::getApiClient();
-        $all = $client->getTargetLanguages();
-        var_dump($all);
+        self::transCategories();
     }
 
 
