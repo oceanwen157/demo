@@ -22,9 +22,8 @@ Route::group('', function() {
     Route::get('popular', 'home/popular');
     Route::get('new', 'home/new');
     Route::get('rating', 'home/rating');
-    Route::get('search[:category]', 'home/search');
-
-
+    Route::get('search/:keyword', 'home/search');
+    Route::get('search', 'home/search');
 
 
     Route::get('登陆', 'popup/登陆');
