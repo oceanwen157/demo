@@ -16,6 +16,9 @@ use Throwable;
 class QorDataService extends ServiceBase
 {
 
+    const UPLOAD_IMG_API = 'https://upload-outside.yesebo.net/api/system/image';
+
+    const UPLOAD_SIGN_KEY = '8ThqREd2YlAB7zIvGp1dOhlRvdz956jd';
 
     /**
      * 过滤后台表单的多语言标题字段
@@ -473,5 +476,63 @@ class QorDataService extends ServiceBase
         return $res;
     }
 
+    public static function makeUploadSign($array, $signKey = ''): string
+    {
+        if (empty($array)) {
+            return '';
+        }
+        ksort($array);
+
+        $arr_temp = array();
+        foreach ($array as $key => $val) {
+            if ($key == 'data') {
+                $valTemp = str_replace(' ', '+', $val);
+                $arr_temp[] = $key . '=' . $valTemp;
+            } else {
+                $arr_temp[] = $key . '=' . $val;
+            }
+        }
+        $string = implode('&', $arr_temp);
+
+        if (empty($signKey)) {
+            $signKey = self::UPLOAD_SIGN_KEY;
+        }
+        $string = $string . $signKey;
+
+        $res = md5(hash('sha256', $string));
+
+        return $res;
+    }
+
+    public static function curlPost(string $url, array $params, int $timeout = 60): array
+    {
+        $res = [];
+        if (empty($url)) {
+            return $res;
+        }
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+
+        $response = curl_exec($ch);
+        $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if (curl_errno($ch)) {
+            return [$code, ''];
+        }
+
+        @curl_close($ch);
+        $resp = strval($response);
+        //var_dump('--------------curl req:', $url, $params);
+        //var_dump('--------------curl res:', $code, $resp);
+
+        return [$code, $resp];
+    }
 
 }
