@@ -23,7 +23,7 @@ class Home extends BaseController
         $recommend = DataService::getHomeVideos();
 
         View::assign('total', 0);
-        View::assign('__RECOMMENDVIDEO__', $recommend['video']);
+        View::assign('__RECOMMENDVIDEO__', $recommend);
         View::assign('__OTHERCATEGORIES__', DataService::getOtherCategories());
         View::assign('__POPULARCATEGORIES__', DataService::getPopularCategories());
         View::assign('__POPULARSTARS__', DataService::getPopularPstars());
@@ -89,8 +89,7 @@ class Home extends BaseController
         $navTitle = 'Top rated videos';
         $topRate = DataService::getTopRatedVideos(20);
 
-        $recommend = DataService::getHomeVideos();
-        View::assign('__RECOMMENDCATES__', $recommend['category']);
+        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
         View::assign('pagination', $topRate['paginate']);
 
         View::assign('navTitle', $navTitle);
@@ -110,9 +109,8 @@ class Home extends BaseController
     {
         if ($pornstar) {
             $video = DataService::getPstarVideoPaginate($pornstar);
-            $recommend = DataService::getHomeVideos();
     
-            View::assign('__RECOMMENDCATES__', $recommend['category']);
+            View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
             View::assign('pagination', $video['paginate']);
             View::assign('navTitle', $pornstar);
             View::assign('total', $video['total']);
