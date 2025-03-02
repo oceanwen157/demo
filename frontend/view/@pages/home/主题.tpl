@@ -4,7 +4,7 @@
 
 <div id="content" class="flex flex-col container gap-3 pt-4 pb-6 px-3 mobile:px-2">
     <h1 class="content-header-title capitalize flex items-center gap-1" dir="auto">
-        最受欢迎的视频分类<span class="font-normal text-dimmed text-md">(9,679)</span>
+        {$navTitle}<span class="font-normal text-dimmed text-md">({$total})</span>
     </h1>
 
     <div class="content-grid">
@@ -27,14 +27,10 @@
     {include file="@components/xqbj-component-tags3" /}
     <!-- 推荐 end -->
 
-    <!-- 推荐 start -->
-    {include file="@components/xqbj-component-tags3" /}
-    <!-- 推荐 end -->
-
     <!--  -->
     <div class="all-categories-button-container flex gap-2 justify-center">
-        <a href="/home/明星" class="button button-secondary">Categories</a>
-        <a href="/home/明星#" class="button button-secondary">Pornstars</a>
+        <a href="/category" class="button button-secondary">Categories</a>
+        <a href="/pornstar" class="button button-secondary">Pornstars</a>
     </div>
     <!--  -->
 </div>

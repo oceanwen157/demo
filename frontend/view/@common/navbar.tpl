@@ -199,12 +199,12 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="all-categories">
                     {foreach name="__CATEGORIES__" item="e" key="i" }
-                        <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/category/{$e->title_en}">
-                            Cum Inside<span class="badge badge-text badge-xsm">3.19M</span>
+                        <a class="anchor-link menu-item px-3 whitespace-nowrap" href="{$e->route_ori}">
+                            {$e->title_en}<span class="badge badge-text badge-xsm">{$e->quantity_desc}</span>
                         </a>
                     {/foreach}
                     <a href="/a-z" class="button button-secondary flex mx-2" target="_self">
-                        全部分类
+                        All categories
                     </a>
                 </div>
             </div>
@@ -214,7 +214,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="all-categories">
                     {foreach name="__PORNSTARS__" item="e" key="i" }
-                        <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/pornstar/{$e->title_en}">
+                        <a class="anchor-link menu-item px-3 whitespace-nowrap" href="{$e->route_ori}">
                             {$e->title_en}
                             <span class="badge badge-text badge-xsm">{$e->quantity_desc}</span>
                         </a>
@@ -273,7 +273,7 @@
                 <div class="overflow-hidden">
                     {foreach name="__LISTS__" item="e" key="i" }
                         {if $i < 6}
-                            <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/home/主题#cum-inside">
+                            <a class="anchor-link menu-item px-3 whitespace-nowrap" href="/testssxx#cum-inside">
                                 <span class="menu-pill">{$e.username}</span>
                                 <span class="badge badge-text badge-xsm">{$e.view}M</span>
                             </a>

@@ -1,10 +1,10 @@
 <!-- 通用组件/列表 -->
 
 <div class="cards-container">
-    {foreach name="__LISTS__" item="e" key="i" }
+    {foreach name="$pagination" item="e" key="i" }
         <div class="rating-card card sub group rating-active {if $i == 2} paid {/if}">
-            <a class="item-link rate-link relative" href="" target="_blank" title="{$e.text}" tabindex="-1" rel="nofollow">
-                <img class="item-image" z-image-loader-url="{$e.imageUrl}" loading="eager" alt="{$e.username}" />
+            <a class="item-link rate-link relative" href="{$e.play_url}" target="_blank" title="{$e.title_en}" tabindex="-1" rel="nofollow">
+                <img class="item-image" z-image-loader-url="{$e.cover_new}" loading="eager" alt="{$e.title_en}" />
 
                 {if $i == 2}
                     <span class="item-premium-container">
@@ -20,7 +20,7 @@
                         </span>
                     </span>
                     <span class="badge float-right">
-                        5:12 
+                        {$e.duration_desc} 
                     </span>
                     <span class="badge float-right">
                         <span class="font-bold italic">高清</span>
@@ -53,11 +53,11 @@
                         </a>
                     </div>
                     <a class="item-title item-link rate-link font-medium" dir="ltr" data-error-title="No video available" href="/out/?l=3AASPM4WivQpq1dFcjBaUlowRHd3AtljaHR0cHM6Ly93d3cueHZpZGVvcy5yZWQvdmlkZW8udWRoZWFidjY4NzUvY2hpbmVzZV9sYWR5X2Z1Y2tfYmJjXy1fM2RfYW5pbWF0aW9uXzMxOT9zeGNhZj1ZRDlFMVJaNDlNzQMGonRjAc0HgKdwb3B1bGFyBdlgeyJhbGwiOiIiLCJvcmllbnRhdGlvbiI6InN0cmFpZ2h0IiwicHJpY2luZyI6Im1lbWJlcnNoaXAscGF5cGVydmlldyxwYXlwZXJjbGlwLGZhbnN1YnNjcmlwdGlvbiJ9zPzOZ7Ar8KhjYXRlZ29yec0lz8DZfFt7IjEiOiJIcWxLbHdsS3Y5aCJ9LHsiMiI6ImhrSmd4bGg5ZGpRIn0seyIzIjoiUVB2TW05aUNWOXkifSx7Ii0xIjoidFZoOGV4NjNjaW0ifSx7Ii0yIjoiS3JxajNnVEJkdmYifSx7Ii0zIjoiSVVwb0psTWhnS1UifV0%3D&amp;c=6ce60806&amp;v=3&amp;" target="_blank" title="Chinese lady fuck BBC - 3D Animation 319" rel="nofollow">
-                        {$e.username}
+                        {$e.title_en}
                     </a>
                     <div class="item-source-rating-container mt-1 pr-0 h-auto flex justify-between">
                         <a class="item-source block text-xsm" href="/source/xvideosred?pricing=membership-and-payperview-and-payperclip-and-fansubscription">
-                            <i class="far fa-badge-check text-xsm fa-fw"></i>站点名称
+                            <i class="far fa-badge-check text-xsm fa-fw"></i>{$e.source}
                         </a>
                         <span class="item-source block text-xsm">9 months ago</span>
                     </div>

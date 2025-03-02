@@ -13,7 +13,7 @@
                 </h3>
                 <div>
                     {foreach name="$e" item="o" key="j" }
-                        <a class="flex items-center gap-1" href="/category/{$o->title_en}" title="{$o->title_en}" target="_self">
+                        <a class="flex items-center gap-1" href="{$o->route_ori}" title="{$o->title_en}" target="_self">
                             <span class="category-text">{$o->title_en}</span>
                             <span class="badge badge-text badge-xsm">{$o->quantity_desc}</span>
                         </a>
@@ -42,7 +42,7 @@
                 </h3>
                 <div>
                     {foreach name="$e" item="o" key="j" }
-                        <a class="flex items-center gap-1" href="/category/{$o->title_en}" title="{$o->title_en}" target="_self">
+                        <a class="flex items-center gap-1" href="{$o->route_ori}" title="{$o->title_en}" target="_self">
                             <span class="category-text">{$o->title_en}</span>
                             <span class="badge badge-text badge-xsm">{$o->quantity_desc}</span>
                         </a>

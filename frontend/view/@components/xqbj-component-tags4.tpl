@@ -1,16 +1,16 @@
 <div class="category-group-container grid grid-cols-[2rem_auto] gap-x-2 gap-y-8">
-    {foreach name="__LISTS__" item="e" key="i" }
+    {foreach name="__ALLSTARS__" item="e" key="i" }
         <h3 class="category-sidebar-header m-0">
-            <a href="/home/明星#{$e.tag3}" id="{$e.tag3}">{$e.tag3}</a>
+            <a href="/pornstar/{$i}" id="{$i}">{$i}</a>
         </h3>
         <div class="category-group" data-anchor="a">
             <ul class="w-full">
-                {foreach name="e.sublist" item="o" key="i" }
-                    <li class="category" data-title="{$e.username}">
-                        <a class="anchor-link" href="/">
-                            <span class="category-title">{$i + 1}{$o.username}</span>
-                            <span class="badge badge-xsm">18+</span>
-                            <span class="badge badge-text badge-xsm">{$e.view}</span>
+                {foreach name="$e" item="o" key="i" }
+                    <li class="category" data-title="{$o->title_en}">
+                        <a class="anchor-link" href="{$o->route_ori}">
+                            <span class="category-title">{$o->title_en}</span>
+                            <span class="badge badge-xsm">{if $o->age_limit}{$o->age_limit}+{/if}</span>
+                            <span class="badge badge-text badge-xsm">{$o->quantity_desc}</span>
                         </a>
                     </li>
                 {/foreach}
