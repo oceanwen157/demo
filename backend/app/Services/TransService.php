@@ -64,6 +64,22 @@ class TransService extends ServiceBase
 
 
     /**
+     * 获取待翻译的语言标识
+     * @param string $exclude 要排除的标识,默认en
+     * @return array
+     */
+    public static function getWaitTransTags(string $exclude = 'en'): array
+    {
+        $arr = self::LANG_PAIR;
+        if (!empty($exclude)) {
+            unset($arr[$exclude]);
+        }
+
+        return array_keys($arr);
+    }
+
+
+    /**
      * 获取翻译API客户端
      * @return DeepLClient
      * @throws DeepLException
@@ -76,6 +92,8 @@ class TransService extends ServiceBase
             $authKey = env('TRANS_API_KEY', '');
             $client = new DeepLClient($authKey);
         }
+
+        //TODO 使用第三方接口
 
         return $client;
     }
@@ -102,8 +120,7 @@ class TransService extends ServiceBase
 //$res = HanziConvert::convert($str, true);
         }
 
-
-        return $res;
+        return $res ?? '';
     }
 
 
@@ -119,8 +136,8 @@ class TransService extends ServiceBase
         $val = trim($val);
         $langTag = trim($langTag);
         $chkTag = !empty($langTag) && in_array($langTag, array_keys(self::LANG_PAIR));
-        if ($chkTag && !empty($val)) {
-            $field = "title_{$langTag}";
+        $field = "title_{$langTag}";
+        if ($chkTag && !empty($val) && isset($mod->$field)) {
             $mod->$field = $val;
         }
 
@@ -129,20 +146,62 @@ class TransService extends ServiceBase
 
 
     /**
-     * 翻译分类
+     * 检查模型里的各个多语言标题是否已填充完全
+     * @param Model $mod
+     * @return bool
+     */
+    public static function checkModelTitleFull(Model $mod): bool
+    {
+        $tags = self::getWaitTransTags('en');
+        $all = count($tags);
+        $num = 0;
+        foreach ($tags as $tag) {
+            $field = "title_{$tag}";
+            if (isset($mod->$field) && trim($mod->$field) != '') {
+                $num++;
+            }
+        }
+
+        return ($num == $all);
+    }
+
+
+    /**
+     * 翻译分类的多语言标题
      * @return int
      */
     public static function transCategories(): int
     {
         $res = 0;
-        $tags = array_keys(self::LANG_PAIR);
+        $tags = self::getWaitTransTags();
         QorCategories::query()->whereIn('trans_status', [0, 1])
             ->orderBy('id', 'ASC')
             ->chunk(50, function ($rows) use (&$res, $tags) {
                 foreach ($rows as $row) {
-                    
+                    $titleEn = $row->title_en;
+                    foreach ($tags as $tag) {
+                        $field = "title_{$tag}";
+                        $value = $row->$field ?? '';
+                        if (empty($value)) {
+                            $valueTran = self::transWords($titleEn, $tag);
+                            if (!empty($valueTran) && $valueTran != $value) {
+                                $row = self::modelSaveLangTitle($row, $tag, $valueTran);
+                            }
+                        }
+                    }
+                    $chkDone = self::checkModelTitleFull($row);
+                    if ($chkDone) {
+                        $res++;
+                    }
+                    $row->trans_status = $chkDone ? 2 : 1; //更新状态
+
+                    DB::transaction(function () use (&$row) {
+                        $row->save();
+                    });
                 }
             });
+
+        printf("transCategories done: %d\n", $res);
 
         return $res;
     }
