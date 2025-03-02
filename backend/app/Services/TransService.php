@@ -108,12 +108,43 @@ class TransService extends ServiceBase
 
 
     /**
+     * 模型保存多语言标题
+     * @param Model $mod 数据模型
+     * @param string $langTag 语言标识
+     * @param string $val 新值
+     * @return Model
+     */
+    public static function modelSaveLangTitle(Model $mod, string $langTag, string $val): Model
+    {
+        $val = trim($val);
+        $langTag = trim($langTag);
+        $chkTag = !empty($langTag) && in_array($langTag, array_keys(self::LANG_PAIR));
+        if ($chkTag && !empty($val)) {
+            $field = "title_{$langTag}";
+            $mod->$field = $val;
+        }
+
+        return $mod;
+    }
+
+
+    /**
      * 翻译分类
      * @return int
      */
     public static function transCategories(): int
     {
-        return 0;
+        $res = 0;
+        $tags = array_keys(self::LANG_PAIR);
+        QorCategories::query()->whereIn('trans_status', [0, 1])
+            ->orderBy('id', 'ASC')
+            ->chunk(50, function ($rows) use (&$res, $tags) {
+                foreach ($rows as $row) {
+                    
+                }
+            });
+
+        return $res;
     }
 
 
