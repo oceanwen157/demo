@@ -154,6 +154,38 @@ class QorDataService extends ServiceBase
 
 
     /**
+     * 时间距离描述转为时间戳
+     * @param string $str 字符串,如 2 months ago
+     * @return int
+     */
+    public static function strToTimestamp(string $str): int
+    {
+        $res = time();
+        $str = strtolower(trim($str));
+        if (empty($str)) {
+            $now = time();
+            $arr = explode(' ', $str);
+            $diff = 0;
+            if (StringHelper::contains($str, 'hour')) {
+                $diff = intval($arr[0] ?? '') * 3600;
+            } elseif (StringHelper::contains($str, 'day')) {
+                $diff = intval($arr[0] ?? '') * 86400;
+            } elseif (StringHelper::contains($str, 'week')) {
+                $diff = intval($arr[0] ?? '') * 604800;
+            } elseif (StringHelper::contains($str, 'month')) {
+                $diff = intval($arr[0] ?? '') * 2592000;
+            } elseif (StringHelper::contains($str, 'year')) {
+                $diff = intval($arr[0] ?? '') * 31556952;
+            }
+
+            $res = abs($now - $diff);
+        }
+
+        return $res;
+    }
+
+
+    /**
      * 投票描述转为数值
      * @param string $vote 投票描述,如 89%
      * @return int
@@ -373,6 +405,13 @@ class QorDataService extends ServiceBase
      * 'source' => '来源,选填',
      * 'durationDesc' => '时长描述,必填,如 1:50:51 ',
      * 'voteDesc' => '投票描述,选填,如 75%',
+     * 'qualityDesc' => '分辨率描述,选填,如 HD',
+     * 'vrDesc' => 'VR描述,选填,如 VR',
+     * 'timeDesc' => '发布时间描述,选填,如 3 years ago',
+     * 'ageLimit' => '年龄限制,选填,如 18',
+     * 'gender' => '明星的性别,选填,0未知,1男性,2女性',
+     * 'quantityDesc' => '分类/明星下的数量描述,选填,如 45K',
+     * 'routeOri' => '分类/明星的路由,必填',
      * ];
      * @return int
      */
@@ -393,6 +432,11 @@ class QorDataService extends ServiceBase
         $gender = intval($gender ?? '');
         $quantityDesc = trim($quantityDesc ?? '');
         $routeOri = trim($routeOri ?? '');
+
+        //TODO 新增的字段信息
+        $qualityDesc = trim($qualityDesc ?? '');
+        $vrDesc = trim($vrDesc ?? '');
+        $timeDesc = trim($timeDesc ?? '');
 
         if (empty($title)) {
             $this->setErrorInfo('title 不能为空');
