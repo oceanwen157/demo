@@ -141,4 +141,7 @@ return [
     'Cid' => '分类ID',
     'Pid' => '明星ID',
     'Sid' => '来源ID',
+    'Quality desc' => '分辨率',
+    'Vr desc' => 'VR',
+    'Publish at' => '发布时间',
 ];
