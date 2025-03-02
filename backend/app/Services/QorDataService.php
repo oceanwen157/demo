@@ -480,6 +480,7 @@ class QorDataService extends ServiceBase
 
         $durationNum = self::hmsToSeconds($durationDesc);
         $voteNum = self::voteDesc2Number($voteDesc);
+        $publishAt = self::strToTimestamp($timeDesc);
         $data = [
             'cid' => $cid,
             'pid' => $pid,
@@ -492,8 +493,11 @@ class QorDataService extends ServiceBase
             'duration_desc' => $durationDesc,
             'vote_num' => $voteNum,
             'vote_desc' => $voteDesc,
+            'quality_desc' => $qualityDesc,
+            'vr_desc' => $vrDesc,
             'title_en' => $title,
             'play_url' => $playUrl,
+            'publish_at' => $publishAt,
         ];
 
         $res = 0;
