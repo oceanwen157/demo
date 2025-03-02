@@ -35,9 +35,8 @@ class Home extends BaseController
     public function category($category)
     {
         $video = DataService::getCategoryVideoPaginate($category);
-        $recommend = DataService::getHomeVideos();
 
-        View::assign('__RECOMMENDCATES__', $recommend['category']);
+        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
         View::assign('pagination', $video['paginate']);
         View::assign('navTitle', $category);
         View::assign('total', $video['total']);
@@ -48,9 +47,8 @@ class Home extends BaseController
     public function search($keyword = '')
     {
         $searchVideo = DataService::searchVideos($keyword);
-        $recommend = DataService::getHomeVideos();
 
-        View::assign('__RECOMMENDCATES__', $recommend['category']);
+        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
         View::assign('pagination', $searchVideo['paginate']);
         View::assign('navTitle', $keyword);
         View::assign('total', $searchVideo['total']);
@@ -63,8 +61,7 @@ class Home extends BaseController
         $navTitle = 'Popular videos';
         $popurVideo = DataService::getPopularVideos();
 
-        $recommend = DataService::getHomeVideos();
-        View::assign('__RECOMMENDCATES__', $recommend['category']);
+        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
         View::assign('pagination', $popurVideo['paginate']);
 
         View::assign('navTitle', $navTitle);
@@ -78,8 +75,7 @@ class Home extends BaseController
         $navTitle = 'New videos';
         $newVideo = DataService::getNewVideos();
 
-        $recommend = DataService::getHomeVideos();
-        View::assign('__RECOMMENDCATES__', $recommend['category']);
+        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
         View::assign('pagination', $newVideo['paginate']);
 
         View::assign('navTitle', $navTitle);
