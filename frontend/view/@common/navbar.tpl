@@ -178,24 +178,24 @@
         <div class="container flex">
             <div class="dropdown">
                 <a data-toggle="dropdown" class="anchor-link menu-item focus-visible:outline-0" href="#" aria-haspopup="true" aria-expanded="false">
-                    视频<i class="icon-end far fa-chevron-down"></i>
+                    Videos<i class="icon-end far fa-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="all-videos">
-                    <a class="anchor-link menu-item px-3 popular" href="/#热门视频" target="_self">
-                        热门视频
+                    <a class="anchor-link menu-item px-3 popular" href="/popular" target="_self">
+                        Popular videos
                     </a>
-                    <a class="anchor-link menu-item px-3 new" href="/#最新视频" target="_self">
-                        最新视频
+                    <a class="anchor-link menu-item px-3 new" href="/new" target="_self">
+                        New videos
                     </a>
-                    <a class="anchor-link menu-item px-3 rating" href="/#高分视频" target="_self">
-                        高分视频
+                    <a class="anchor-link menu-item px-3 rating" href="/rating" target="_self">
+                        Top rated videos
                     </a>
                 </div>
             </div>
             <div class="dropdown">
                 <a data-toggle="dropdown" class="anchor-link menu-item focus-visible:outline-0" href="#"
                     aria-haspopup="true" aria-expanded="false">
-                    分类<i class="icon-end far fa-chevron-down"></i>
+                    Categories<i class="icon-end far fa-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="all-categories">
                     {foreach name="__CATEGORIES__" item="e" key="i" }
@@ -210,7 +210,7 @@
             </div>
             <div class="dropdown">
                 <a data-toggle="dropdown" class="anchor-link menu-item focus-visible:outline-0" href="#" aria-haspopup="true" aria-expanded="false">
-                    色情明星<i class="icon-end far fa-chevron-down"></i>
+                    Pornstars<i class="icon-end far fa-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="all-categories">
                     {foreach name="__PORNSTARS__" item="e" key="i" }
@@ -224,8 +224,8 @@
                     </a>
                 </div>
             </div>
-            <a class="anchor-link menu-item" id="network" href="/cooperate/合作列表" target="_self">
-                合作伙伴
+            <a class="anchor-link menu-item" id="network" href="/network" target="_self">
+                Our network
             </a>
         </div>
     </nav>
