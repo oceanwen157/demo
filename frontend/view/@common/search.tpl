@@ -6,7 +6,7 @@
         <form name="search_query" method="post" target="_self" class="relative grow">
             <div id="search_query" class="flex justify-center">
                 <div class="input-container">
-                    <input type="search" name="search_query[query]" id="search_query_query" class="input search_query" placeholder="搜索 45,673,628 视频 ..." aria-label="搜索 45,673,628 视频 ..." autocomplete="off" maxlength="200" value="" required="">
+                    <input type="search" name="search_query[query]" id="search_query_query" class="input search_query" placeholder="Search 45,673,628 videos ..." aria-label="Search 45,673,628 videos ..." autocomplete="off" maxlength="200" value="" required="">
                     <button class="clear-search-icon" aria-label="Clear search field" type="button">
                         <i class="far fa-circle-xmark"></i>
                     </button>

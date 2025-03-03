@@ -9,7 +9,7 @@
                 {if $i == 2}
                     <span class="item-premium-container">
                         <span class="item-premium-icon"><i class="far fa-dollar-sign"></i></span>
-                        <span class="item-premium-label">收费</span>
+                        <span class="item-premium-label">charge</span>
                     </span>
                 {/if}
 
@@ -22,9 +22,11 @@
                     <span class="badge float-right">
                         {$e.duration_desc} 
                     </span>
+                    <!--
                     <span class="badge float-right">
                         <span class="font-bold italic">高清</span>
                     </span>
+                    -->
                 </span>
             </a>
 

@@ -58,6 +58,8 @@ class Crawler extends Command
             $this->error("Line: " . $e->getLine() . "\n");
             $this->error("Stack trace:\n" . $e->getTraceAsString() . "\n");
         }
+
+        self::$qorSvc::updateImages();
     }
 
     private static function addCates()
