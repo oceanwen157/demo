@@ -6,6 +6,7 @@ use App\Models\QorCategories;
 use App\Models\QorPstars;
 use App\Models\QorSources;
 use App\Models\QorVideos;
+use App\Jobs\UpdateImageRealPathJob;
 use Encore\Admin\Form;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
@@ -474,6 +475,16 @@ class QorDataService extends ServiceBase
         });
 
         return $res;
+    }
+
+    public static function updateImages()
+    {
+        QorVideos::where('cover_new', 'xxx')
+        ->chunk(100, function ($chunk) {
+            foreach ($chunk as $record) {
+                UpdateImageRealPathJob::dispatch($record);
+            }
+        });
     }
 
     public static function makeUploadSign($array, $signKey = ''): string
