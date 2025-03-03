@@ -26,22 +26,34 @@ class TransService extends ServiceBase
 
 
     /**
+     * 翻译接口key
+     */
+    const TRANS_API_KEY = '132f1537f85scxpcm59f7e318b9epa51';
+
+
+    /**
+     * 翻译接口地址
+     */
+    const TRANS_API_URL = 'http://172.104.184.179:8019/api/ai/chat';
+
+
+    /**
      * 语言对映射
      */
     const LANG_PAIR = [
         // 标识 -> 目标语言
-        'en' => 'EN-US',
-        'cn' => 'ZH',
-        'tw' => 'ZH-HANS',
-        'ja' => 'JA',
-        'ko' => 'KO',
-        'ms' => '',
-        'th' => '',
-        'de' => 'DE',
-        'vi' => '',
-        'id' => 'ID',
-        'pt' => 'PT-PT',
-        'tlph' => '',
+        'en' => 'English',
+        'cn' => 'Chinese Simplified',
+        'tw' => 'Chinese Traditional',
+        'ja' => 'Japanese',
+        'ko' => 'Korean',
+        'ms' => 'Bahasa Melayu',
+        'th' => 'Thai',
+        'de' => 'German',
+        'vi' => 'Vietnamese',
+        'id' => 'Bahasa Indonesia',
+        'pt' => 'Portuguese',
+        'tlph' => 'Filipino',
     ];
 
 
@@ -80,45 +92,51 @@ class TransService extends ServiceBase
 
 
     /**
-     * 获取翻译API客户端
-     * @return DeepLClient
-     * @throws DeepLException
+     * 翻译文本
+     * @param string $words 带翻译的英文
+     * @param string $langTag 语言标识
+     * @return string
      */
-    public static function getApiClient(): DeepLClient
-    {
-        //api申请地址：https://www.deepl.com/docs-api
-        static $client;
-        if (!$client) {
-            $authKey = env('TRANS_API_KEY', '');
-            $client = new DeepLClient($authKey);
-        }
-
-        //TODO 使用第三方接口
-
-        return $client;
-    }
-
-
     public static function transWords(string $words, string $langTag): string
     {
         $words = trim($words);
         $langTag = trim(strtolower($langTag));
         $targetLang = self::tag2Lang($langTag);
         if (empty($words) || empty($langTag) || empty($targetLang)) {
-            return $words;
+            return '';
         }
 
+        $wordLen = mb_strlen($words);
         $key = self::CACHE_PREFIX . md5("{$langTag}:{$words}");
-        $res = Redis::get($key);
-        if (empty($res)) {
-            $client = self::getApiClient();
-            if ($langTag == 'tw') {
-                //deepl不支持繁体,故要先转为简体
-                $words = self::transWords($words, 'cn');
-
+        if ($wordLen <= 24) {
+            $res = Redis::get($key);
+            if (!empty($res)) {
+                return $res;
             }
-//$res = HanziConvert::convert($str, true);
-            $res = 'hello world';
+        }
+
+        $now = time();
+        $projec = 'waiguo';
+        $content = "Translate the following text to {$targetLang}: {$words}";
+        $sign = md5($now . self::TRANS_API_KEY);
+        $params = [
+            'content' => $content,
+            'sign' => $sign,
+            'time' => $now,
+            'project' => $projec,
+        ];
+        $ret = QorDataService::curlPost(self::TRANS_API_URL, $params);
+        if (!empty($ret) && $ret[0] == 200) {
+            //结构如 {"code":200,"data":{"content":"極細小 - 適合藍眼睛的寶貝 - 凱特·布魯姆","engine":"chatgpt"},"msg":""}
+            $arr = json_decode($ret[1], true);
+            $str = $arr['data']['content'] ?? '';
+            $tmp = explode("\n", $str);
+            if (!empty($tmp)) {
+                $res = trim(end($tmp));
+                if (!empty($res) && $wordLen <= 24) {
+                    Redis::setex($key, 1800, $res);
+                }
+            }
         }
 
         return $res ?? '';
@@ -289,8 +307,11 @@ class TransService extends ServiceBase
      */
     public function doTranslate(): void
     {
-        self::transCategories();
-        self::transPstars();
+//        self::transCategories();
+//        self::transPstars();
+        $str = '18 Year Old German';
+        $res = self::transWords($str, 'tw');
+        var_dump('---------99', $res);
     }
 
 

@@ -568,10 +568,15 @@ class QorDataService extends ServiceBase
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        //curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+        //curl_setopt($ch, CURLOPT_PROXY, "127.0.0.1");
+        //curl_setopt($ch, CURLOPT_PROXYPORT, 10808);
 
         $response = curl_exec($ch);
         $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if (curl_errno($ch)) {
+        $errno = @curl_errno($ch);
+        if ($errno) {
+            //var_dump('-----------------err:', $errno, $params);
             return [$code, ''];
         }
 
