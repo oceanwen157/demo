@@ -292,12 +292,55 @@ class TransService extends ServiceBase
 
 
     /**
-     * 翻译视频
+     * 翻译视频的多语言标题
      * @return int
      */
     public static function transVideos(): int
     {
-        return 0;
+        $res = 0;
+        $tags = self::getWaitTransTags();
+        $lastId = 0;
+        printf("transVideos begin: %s\n", date("Y-m-d H:i:s"));
+
+        while (true) {
+            $qry = QorVideos::query()->whereIn('trans_status', [0, 1]);
+            if ($lastId > 0) {
+                $qry->where('id', '<', $lastId);
+            }
+
+            $row = $qry->orderBy('id', 'desc')->first();
+            if (!$row) {
+                break;
+            }
+
+            printf("video id: %s\n", $row->id);
+            $lastId = $row->id;
+            $titleEn = $row->title_en;
+            foreach ($tags as $tag) {
+                $field = "title_{$tag}";
+                $value = $row->$field ?? '';
+                if (empty($value)) {
+                    $valueTran = self::transWords($titleEn, $tag);
+                    if (!empty($valueTran) && $valueTran != $value) {
+                        $row = self::modelSaveLangTitle($row, $tag, $valueTran);
+                    }
+                }
+            }
+            $chkDone = self::checkModelTitleFull($row);
+            printf("trans video id:%s res:%b\n", $row->id, $chkDone);
+            if ($chkDone) {
+                $res++;
+            }
+            $row->trans_status = $chkDone ? 2 : 1; //更新状态
+
+            DB::transaction(function () use (&$row) {
+                $row->save();
+            });
+        }
+
+        printf("transVideos done: %d\n", $res);
+
+        return $res;
     }
 
 
@@ -307,11 +350,9 @@ class TransService extends ServiceBase
      */
     public function doTranslate(): void
     {
-//        self::transCategories();
-//        self::transPstars();
-        $str = '18 Year Old German';
-        $res = self::transWords($str, 'tw');
-        var_dump('---------99', $res);
+        self::transCategories();
+        self::transPstars();
+        self::transVideos();
     }
 
 

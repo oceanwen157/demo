@@ -13,6 +13,7 @@ PHP 版本为 7.3或7.4，需composer、mysql和redis。
 执行命令
 
 ```text
+cd backend
 composer install
 ```
 
@@ -36,6 +37,20 @@ location / {
 - 地址 xxx.com/myadmin
 - 初始账号和密码 admin / admin
 
+#### 1.4 执行采集命令
+
+```text
+cd backend
+php artisan crawler:run
+```
+
+#### 1.5 执行翻译命令
+
+```text
+cd backend
+php artisan translate:do
+```
+
 ### 二、前台展示站
 
 - 代码目录为 frontend
@@ -46,6 +61,7 @@ location / {
 执行命令
 
 ```text
+cd backend
 composer install
 ```
 
