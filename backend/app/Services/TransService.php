@@ -26,22 +26,34 @@ class TransService extends ServiceBase
 
 
     /**
+     * 翻译接口key
+     */
+    const TRANS_API_KEY = '132f1537f85scxpcm59f7e318b9epa51';
+
+
+    /**
+     * 翻译接口地址
+     */
+    const TRANS_API_URL = 'http://172.104.184.179:8019/api/ai/chat';
+
+
+    /**
      * 语言对映射
      */
     const LANG_PAIR = [
         // 标识 -> 目标语言
-        'en' => 'EN-US',
-        'cn' => 'ZH',
-        'tw' => 'ZH-HANS',
-        'ja' => 'JA',
-        'ko' => 'KO',
-        'ms' => '',
-        'th' => '',
-        'de' => 'DE',
-        'vi' => '',
-        'id' => 'ID',
-        'pt' => 'PT-PT',
-        'tlph' => '',
+        'en' => 'English',
+        'cn' => 'Chinese Simplified',
+        'tw' => 'Chinese Traditional',
+        'ja' => 'Japanese',
+        'ko' => 'Korean',
+        'ms' => 'Bahasa Melayu',
+        'th' => 'Thai',
+        'de' => 'German',
+        'vi' => 'Vietnamese',
+        'id' => 'Bahasa Indonesia',
+        'pt' => 'Portuguese',
+        'tlph' => 'Filipino',
     ];
 
 
@@ -64,46 +76,70 @@ class TransService extends ServiceBase
 
 
     /**
-     * 获取翻译API客户端
-     * @return DeepLClient
-     * @throws DeepLException
+     * 获取待翻译的语言标识
+     * @param string $exclude 要排除的标识,默认en
+     * @return array
      */
-    public static function getApiClient(): DeepLClient
+    public static function getWaitTransTags(string $exclude = 'en'): array
     {
-        //api申请地址：https://www.deepl.com/docs-api
-        static $client;
-        if (!$client) {
-            $authKey = env('TRANS_API_KEY', '');
-            $client = new DeepLClient($authKey);
+        $arr = self::LANG_PAIR;
+        if (!empty($exclude)) {
+            unset($arr[$exclude]);
         }
 
-        return $client;
+        return array_keys($arr);
     }
 
 
+    /**
+     * 翻译文本
+     * @param string $words 带翻译的英文
+     * @param string $langTag 语言标识
+     * @return string
+     */
     public static function transWords(string $words, string $langTag): string
     {
         $words = trim($words);
         $langTag = trim(strtolower($langTag));
         $targetLang = self::tag2Lang($langTag);
         if (empty($words) || empty($langTag) || empty($targetLang)) {
-            return $words;
+            return '';
         }
 
+        $wordLen = mb_strlen($words);
         $key = self::CACHE_PREFIX . md5("{$langTag}:{$words}");
-        $res = Redis::get($key);
-        if (empty($res)) {
-            $client = self::getApiClient();
-            if ($langTag == 'tw') {
-                //deepl不支持繁体,故要先转为简体
-                $words = self::transWords($words, 'cn');
-
+        if ($wordLen <= 24) {
+            $res = Redis::get($key);
+            if (!empty($res)) {
+                return $res;
             }
-//$res = HanziConvert::convert($str, true);
         }
 
+        $now = time();
+        $projec = 'waiguo';
+        $content = "Translate the following text to {$targetLang}: {$words}";
+        $sign = md5($now . self::TRANS_API_KEY);
+        $params = [
+            'content' => $content,
+            'sign' => $sign,
+            'time' => $now,
+            'project' => $projec,
+        ];
+        $ret = QorDataService::curlPost(self::TRANS_API_URL, $params);
+        if (!empty($ret) && $ret[0] == 200) {
+            //结构如 {"code":200,"data":{"content":"極細小 - 適合藍眼睛的寶貝 - 凱特·布魯姆","engine":"chatgpt"},"msg":""}
+            $arr = json_decode($ret[1], true);
+            $str = $arr['data']['content'] ?? '';
+            $tmp = explode("\n", $str);
+            if (!empty($tmp)) {
+                $res = trim(end($tmp));
+                if (!empty($res) && $wordLen <= 24) {
+                    Redis::setex($key, 1800, $res);
+                }
+            }
+        }
 
-        return $res;
+        return $res ?? '';
     }
 
 
@@ -119,8 +155,8 @@ class TransService extends ServiceBase
         $val = trim($val);
         $langTag = trim($langTag);
         $chkTag = !empty($langTag) && in_array($langTag, array_keys(self::LANG_PAIR));
-        if ($chkTag && !empty($val)) {
-            $field = "title_{$langTag}";
+        $field = "title_{$langTag}";
+        if ($chkTag && !empty($val) && isset($mod->$field)) {
             $mod->$field = $val;
         }
 
@@ -129,42 +165,182 @@ class TransService extends ServiceBase
 
 
     /**
-     * 翻译分类
+     * 检查模型里的各个多语言标题是否已填充完全
+     * @param Model $mod
+     * @return bool
+     */
+    public static function checkModelTitleFull(Model $mod): bool
+    {
+        $tags = self::getWaitTransTags('en');
+        $all = count($tags);
+        $num = 0;
+        foreach ($tags as $tag) {
+            $field = "title_{$tag}";
+            if (isset($mod->$field) && trim($mod->$field) != '') {
+                $num++;
+            }
+        }
+
+        return ($num == $all);
+    }
+
+
+    /**
+     * 翻译分类的多语言标题
      * @return int
      */
     public static function transCategories(): int
     {
         $res = 0;
-        $tags = array_keys(self::LANG_PAIR);
-        QorCategories::query()->whereIn('trans_status', [0, 1])
-            ->orderBy('id', 'ASC')
-            ->chunk(50, function ($rows) use (&$res, $tags) {
-                foreach ($rows as $row) {
-                    
+        $tags = self::getWaitTransTags();
+        $lastId = 0;
+        printf("transCategories begin: %s\n", date("Y-m-d H:i:s"));
+
+        while (true) {
+            $qry = QorCategories::query()->whereIn('trans_status', [0, 1]);
+            if ($lastId > 0) {
+                $qry->where('id', '<', $lastId);
+            }
+
+            $row = $qry->orderBy('id', 'desc')->first();
+            if (!$row) {
+                break;
+            }
+
+            printf("category id: %s\n", $row->id);
+            $lastId = $row->id;
+            $titleEn = $row->title_en;
+            foreach ($tags as $tag) {
+                $field = "title_{$tag}";
+                $value = $row->$field ?? '';
+                if (empty($value)) {
+                    $valueTran = self::transWords($titleEn, $tag);
+                    if (!empty($valueTran) && $valueTran != $value) {
+                        $row = self::modelSaveLangTitle($row, $tag, $valueTran);
+                    }
                 }
+            }
+            $chkDone = self::checkModelTitleFull($row);
+            printf("trans category id:%s res:%b\n", $row->id, $chkDone);
+            if ($chkDone) {
+                $res++;
+            }
+            $row->trans_status = $chkDone ? 2 : 1; //更新状态
+
+            DB::transaction(function () use (&$row) {
+                $row->save();
             });
+        }
+
+        printf("transCategories done: %d\n", $res);
 
         return $res;
     }
 
 
     /**
-     * 翻译明星
+     * 翻译明星的多语言标题
      * @return int
      */
     public static function transPstars(): int
     {
-        return 0;
+        $res = 0;
+        $tags = self::getWaitTransTags();
+        $lastId = 0;
+        printf("transPstars begin: %s\n", date("Y-m-d H:i:s"));
+
+        while (true) {
+            $qry = QorPstars::query()->whereIn('trans_status', [0, 1]);
+            if ($lastId > 0) {
+                $qry->where('id', '<', $lastId);
+            }
+
+            $row = $qry->orderBy('id', 'desc')->first();
+            if (!$row) {
+                break;
+            }
+
+            printf("star id: %s\n", $row->id);
+            $lastId = $row->id;
+            $titleEn = $row->title_en;
+            foreach ($tags as $tag) {
+                $field = "title_{$tag}";
+                $value = $row->$field ?? '';
+                if (empty($value)) {
+                    $valueTran = self::transWords($titleEn, $tag);
+                    if (!empty($valueTran) && $valueTran != $value) {
+                        $row = self::modelSaveLangTitle($row, $tag, $valueTran);
+                    }
+                }
+            }
+            $chkDone = self::checkModelTitleFull($row);
+            printf("trans star id:%s res:%b\n", $row->id, $chkDone);
+            if ($chkDone) {
+                $res++;
+            }
+            $row->trans_status = $chkDone ? 2 : 1; //更新状态
+
+            DB::transaction(function () use (&$row) {
+                $row->save();
+            });
+        }
+
+        printf("transPstars done: %d\n", $res);
+
+        return $res;
     }
 
 
     /**
-     * 翻译视频
+     * 翻译视频的多语言标题
      * @return int
      */
     public static function transVideos(): int
     {
-        return 0;
+        $res = 0;
+        $tags = self::getWaitTransTags();
+        $lastId = 0;
+        printf("transVideos begin: %s\n", date("Y-m-d H:i:s"));
+
+        while (true) {
+            $qry = QorVideos::query()->whereIn('trans_status', [0, 1]);
+            if ($lastId > 0) {
+                $qry->where('id', '<', $lastId);
+            }
+
+            $row = $qry->orderBy('id', 'desc')->first();
+            if (!$row) {
+                break;
+            }
+
+            printf("video id: %s\n", $row->id);
+            $lastId = $row->id;
+            $titleEn = $row->title_en;
+            foreach ($tags as $tag) {
+                $field = "title_{$tag}";
+                $value = $row->$field ?? '';
+                if (empty($value)) {
+                    $valueTran = self::transWords($titleEn, $tag);
+                    if (!empty($valueTran) && $valueTran != $value) {
+                        $row = self::modelSaveLangTitle($row, $tag, $valueTran);
+                    }
+                }
+            }
+            $chkDone = self::checkModelTitleFull($row);
+            printf("trans video id:%s res:%b\n", $row->id, $chkDone);
+            if ($chkDone) {
+                $res++;
+            }
+            $row->trans_status = $chkDone ? 2 : 1; //更新状态
+
+            DB::transaction(function () use (&$row) {
+                $row->save();
+            });
+        }
+
+        printf("transVideos done: %d\n", $res);
+
+        return $res;
     }
 
 
@@ -174,9 +350,9 @@ class TransService extends ServiceBase
      */
     public function doTranslate(): void
     {
-        $client = self::getApiClient();
-        $all = $client->getTargetLanguages();
-        var_dump($all);
+        self::transCategories();
+        self::transPstars();
+        self::transVideos();
     }
 
 

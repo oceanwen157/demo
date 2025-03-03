@@ -26,20 +26,15 @@ class QorDataService extends ServiceBase
      * @param Form $form
      * @return Form
      */
-    public static function trimFormMulTitle(Form $form): Form
+    public static function trimFormMulTitle(Form $form, string $field = 'title'): Form
     {
-        $form->title_en = trim($form->title_en ?? '');
-        $form->title_cn = trim($form->title_cn ?? $form->title_en);
-        $form->title_tw = trim($form->title_tw ?? $form->title_en);
-        $form->title_ja = trim($form->title_ja ?? $form->title_en);
-        $form->title_ko = trim($form->title_ko ?? $form->title_en);
-        $form->title_ms = trim($form->title_ms ?? $form->title_en);
-        $form->title_th = trim($form->title_th ?? $form->title_en);
-        $form->title_de = trim($form->title_de ?? $form->title_en);
-        $form->title_vi = trim($form->title_vi ?? $form->title_en);
-        $form->title_id = trim($form->title_id ?? $form->title_en);
-        $form->title_pt = trim($form->title_pt ?? $form->title_en);
-        $form->title_tlph = trim($form->title_tlph ?? $form->title_en);
+
+        $tags = array_keys(TransService::LANG_PAIR);
+        foreach ($tags as $tag) {
+            $fieldName = "{$field}_{$tag}";
+            $value = trim($form->$fieldName ?? '');
+            $form->$fieldName = $value;
+        }
 
         return $form;
     }
@@ -151,6 +146,38 @@ class QorDataService extends ServiceBase
         for ($i = 0; $i <= $len - 1; $i++) {
             $num = intval(end($arr));
             $res += $num * pow(60, $i);
+        }
+
+        return $res;
+    }
+
+
+    /**
+     * 时间距离描述转为时间戳
+     * @param string $str 字符串,如 2 months ago
+     * @return int
+     */
+    public static function strToTimestamp(string $str): int
+    {
+        $res = time();
+        $str = strtolower(trim($str));
+        if (empty($str)) {
+            $now = time();
+            $arr = explode(' ', $str);
+            $diff = 0;
+            if (StringHelper::contains($str, 'hour')) {
+                $diff = intval($arr[0] ?? '') * 3600;
+            } elseif (StringHelper::contains($str, 'day')) {
+                $diff = intval($arr[0] ?? '') * 86400;
+            } elseif (StringHelper::contains($str, 'week')) {
+                $diff = intval($arr[0] ?? '') * 604800;
+            } elseif (StringHelper::contains($str, 'month')) {
+                $diff = intval($arr[0] ?? '') * 2592000;
+            } elseif (StringHelper::contains($str, 'year')) {
+                $diff = intval($arr[0] ?? '') * 31556952;
+            }
+
+            $res = abs($now - $diff);
         }
 
         return $res;
@@ -377,6 +404,13 @@ class QorDataService extends ServiceBase
      * 'source' => '来源,选填',
      * 'durationDesc' => '时长描述,必填,如 1:50:51 ',
      * 'voteDesc' => '投票描述,选填,如 75%',
+     * 'qualityDesc' => '分辨率描述,选填,如 HD',
+     * 'vrDesc' => 'VR描述,选填,如 VR',
+     * 'timeDesc' => '发布时间描述,选填,如 3 years ago',
+     * 'ageLimit' => '年龄限制,选填,如 18',
+     * 'gender' => '明星的性别,选填,0未知,1男性,2女性',
+     * 'quantityDesc' => '分类/明星下的数量描述,选填,如 45K',
+     * 'routeOri' => '分类/明星的路由,必填',
      * ];
      * @return int
      */
@@ -397,6 +431,11 @@ class QorDataService extends ServiceBase
         $gender = intval($gender ?? '');
         $quantityDesc = trim($quantityDesc ?? '');
         $routeOri = trim($routeOri ?? '');
+
+        //TODO 新增的字段信息
+        $qualityDesc = trim($qualityDesc ?? '');
+        $vrDesc = trim($vrDesc ?? '');
+        $timeDesc = trim($timeDesc ?? '');
 
         if (empty($title)) {
             $this->setErrorInfo('title 不能为空');
@@ -440,6 +479,7 @@ class QorDataService extends ServiceBase
 
         $durationNum = self::hmsToSeconds($durationDesc);
         $voteNum = self::voteDesc2Number($voteDesc);
+        $publishAt = self::strToTimestamp($timeDesc);
         $data = [
             'cid' => $cid,
             'pid' => $pid,
@@ -452,8 +492,11 @@ class QorDataService extends ServiceBase
             'duration_desc' => $durationDesc,
             'vote_num' => $voteNum,
             'vote_desc' => $voteDesc,
+            'quality_desc' => $qualityDesc,
+            'vr_desc' => $vrDesc,
             'title_en' => $title,
             'play_url' => $playUrl,
+            'publish_at' => $publishAt,
         ];
 
         $res = 0;
@@ -531,10 +574,15 @@ class QorDataService extends ServiceBase
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        //curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+        //curl_setopt($ch, CURLOPT_PROXY, "127.0.0.1");
+        //curl_setopt($ch, CURLOPT_PROXYPORT, 10808);
 
         $response = curl_exec($ch);
         $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if (curl_errno($ch)) {
+        $errno = @curl_errno($ch);
+        if ($errno) {
+            //var_dump('-----------------err:', $errno, $params);
             return [$code, ''];
         }
 

@@ -34,13 +34,13 @@ class QorVideosController extends AdminController
 
         $grid->column('id', __('Id'));
         $grid->column('is_hot', __('admin.Is hot'));
-        //$grid->column('trans_status', __('Trans status'));
+        //$grid->column('trans_status', __('admin.Trans status'));
         $grid->column('cid', __('admin.Cid'));
         $grid->column('pid', __('admin.Pid'));
         $grid->column('sid', __('admin.Sid'));
         $grid->column('duration_num', __('admin.Duration num'));
-        $grid->column('view_num', __('admin.View num'));
-//        $grid->column('vote_num', __('admin.Vote num'));
+        //$grid->column('view_num', __('admin.View num'));
+        $grid->column('vote_num', __('admin.Vote num'));
 //        $grid->column('origin_name', __('admin.Origin name'));
 //        $grid->column('cover_ori', __('admin.Cover ori'));
 //        $grid->column('cover_new', __('admin.Cover new'));
@@ -48,8 +48,10 @@ class QorVideosController extends AdminController
 //        $grid->column('duration_desc', __('admin.Duration desc'));
 //        $grid->column('view_desc', __('admin.View desc'));
 //        $grid->column('vote_desc', __('admin.Vote desc'));
+        $grid->column('quality_desc', __('admin.Quality desc'));
+        $grid->column('vr_desc', __('admin.Vr desc'));
         $grid->column('title_en', __('admin.Title en'));
-        $grid->column('title_cn', __('admin.Title cn'));
+//        $grid->column('title_cn', __('admin.Title cn'));
 //        $grid->column('title_tw', __('admin.Title tw'));
 //        $grid->column('title_ja', __('admin.Title ja'));
 //        $grid->column('title_ko', __('admin.Title ko'));
@@ -60,12 +62,22 @@ class QorVideosController extends AdminController
 //        $grid->column('title_id', __('admin.Title id'));
 //        $grid->column('title_pt', __('admin.Title pt'));
 //        $grid->column('title_tlph', __('admin.Title tlph'));
-        //$grid->column('play_url', __('admin.Play url'));
+//        $grid->column('play_url', __('admin.Play url'));
+        $grid->column('publish_at', __('admin.Publish at'))->display(function () {
+            return $this->publish_at > 0 ? date('y-m-d H:i', $this->publish_at) : '';
+        });
         $grid->column('create_at', __('admin.Create at'))->display(function () {
             return date('y-m-d H:i', $this->create_at);
         });
         $grid->column('update_at', __('admin.Update at'))->display(function () {
             return date('y-m-d H:i', $this->update_at);
+        });
+
+        $grid->filter(function($filter){
+            $filter->equal('cid', __('admin.Cid'));
+            $filter->equal('pid', __('admin.Pid'));
+            $filter->equal('sid', __('admin.Sid'));
+            $filter->equal('title_en', __('admin.Title en'));
         });
 
         return $grid;
@@ -97,6 +109,8 @@ class QorVideosController extends AdminController
         $show->field('duration_desc', __('admin.Duration desc'));
         $show->field('view_desc', __('admin.View desc'));
         $show->field('vote_desc', __('admin.Vote desc'));
+        $show->field('quality_desc', __('admin.Quality desc'));
+        $show->field('vr_desc', __('admin.Vr desc'));
         $show->field('title_en', __('admin.Title en'));
         $show->field('title_cn', __('admin.Title cn'));
         $show->field('title_tw', __('admin.Title tw'));
@@ -110,6 +124,11 @@ class QorVideosController extends AdminController
         $show->field('title_pt', __('admin.Title pt'));
         $show->field('title_tlph', __('admin.Title tlph'));
         $show->field('play_url', __('admin.Play url'));
+        $show->field('publish_at', __('admin.Publish at'))->as(function ($val) {
+            return $val > 0 ? date('Y-m-d H:i', intval($val)) : '';
+        });
+//        $show->field('create_at', __('admin.Create at'));
+//        $show->field('update_at', __('admin.Update at'));
 
         return $show;
     }
@@ -138,6 +157,8 @@ class QorVideosController extends AdminController
         $form->text('duration_desc', __('admin.Duration desc'));
         $form->text('view_desc', __('admin.View desc'));
         $form->text('vote_desc', __('admin.Vote desc'));
+        $form->text('quality_desc', __('admin.Quality desc'));
+        $form->text('vr_desc', __('admin.Vr desc'));
         $form->text('title_en', __('admin.Title en'))->rules('required');
         $form->text('title_cn', __('admin.Title cn'))->rules('required');
         $form->text('title_tw', __('admin.Title tw'))->rules('required');
@@ -151,7 +172,7 @@ class QorVideosController extends AdminController
         $form->text('title_pt', __('admin.Title pt'))->rules('required');
         $form->text('title_tlph', __('admin.Title tlph'))->rules('required');
         $form->text('play_url', __('admin.Play url'))->rules('required');
-
+        //$form->number('publish_at', __('admin.Publish at'));
 
         $form->saving(function (Form $form) {
             $titleEn = trim($form->title_en ?? '');

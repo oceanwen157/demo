@@ -35,7 +35,7 @@ class QorCategoriesController extends AdminController
         $grid->column('sort', __('admin.Sort'));
         $grid->column('letter', __('admin.Letter'));
         $grid->column('title_en', __('admin.Title en'));
-        $grid->column('title_cn', __('admin.Title cn'));
+        //$grid->column('title_cn', __('admin.Title cn'));
 //        $grid->column('title_tw', __('admin.Title tw'));
 //        $grid->column('title_ja', __('admin.Title ja'));
 //        $grid->column('title_ko', __('admin.Title ko'));
@@ -53,6 +53,10 @@ class QorCategoriesController extends AdminController
         });
         $grid->column('update_at', __('admin.Update at'))->display(function () {
             return date('y-m-d H:i', $this->update_at);
+        });
+
+        $grid->filter(function($filter){
+            $filter->equal('title_en', __('admin.Title en'));
         });
 
         return $grid;

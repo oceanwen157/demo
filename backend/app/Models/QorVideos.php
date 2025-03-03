@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @OA\Schema (
  *      schema="QorVideos",
- *      required={"is_hot", "trans_status", "cid", "pid", "sid", "duration_num", "view_num", "vote_num", "origin_name", "cover_ori", "cover_new", "source", "duration_desc", "view_desc", "vote_desc", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "play_url", "create_at", "update_at"},
+ *      required={"is_hot", "trans_status", "cid", "pid", "sid", "duration_num", "view_num", "vote_num", "origin_name", "cover_ori", "cover_new", "source", "duration_desc", "view_desc", "vote_desc", "quality_desc", "vr_desc", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "play_url", "publish_at", "create_at", "update_at"},
  *      @OA\Property(
  *          property="id",
  *          description="id",
@@ -25,14 +25,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *          description="是否热门:0否1是",
  *          readOnly=$FIELD_READ_ONLY$,
  *          nullable=$FIELD_NULLABLE$,
- *          type="boolean"
+ *          type="integer"
  *      ),
  *      @OA\Property(
  *          property="trans_status",
  *          description="翻译状态:0待翻译,1翻译中,2翻译完成",
  *          readOnly=$FIELD_READ_ONLY$,
  *          nullable=$FIELD_NULLABLE$,
- *          type="boolean"
+ *          type="integer"
  *      ),
  *      @OA\Property(
  *          property="cid",
@@ -132,6 +132,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *          type="string"
  *      ),
  *      @OA\Property(
+ *          property="quality_desc",
+ *          description="分辨率描述",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
+ *          property="vr_desc",
+ *          description="VR描述",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="string"
+ *      ),
+ *      @OA\Property(
  *          property="title_en",
  *          description="标题-英文",
  *          readOnly=$FIELD_READ_ONLY$,
@@ -223,6 +237,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *          type="string"
  *      ),
  *      @OA\Property(
+ *          property="publish_at",
+ *          description="发布时间",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="integer",
+ *          format="int32"
+ *      ),
+ *      @OA\Property(
  *          property="create_at",
  *          description="创建时间",
  *          readOnly=$FIELD_READ_ONLY$,
@@ -240,8 +262,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *      )
  * )
  * @property int $id
- * @property bool $is_hot 是否热门:0否1是
- * @property bool $trans_status 翻译状态:0待翻译,1翻译中,2翻译完成
+ * @property int $is_hot 是否热门:0否1是
+ * @property int $trans_status 翻译状态:0待翻译,1翻译中,2翻译完成
  * @property int $cid 分类ID
  * @property int $pid 明星ID
  * @property int $sid 来源ID
@@ -255,6 +277,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $duration_desc 时长描述
  * @property string $view_desc 浏览量描述
  * @property string $vote_desc 投票描述
+ * @property string $quality_desc 分辨率描述
+ * @property string $vr_desc VR描述
  * @property string $title_en 标题-英文
  * @property string $title_cn 标题-简体中文
  * @property string $title_tw 标题-繁体中文
@@ -268,11 +292,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $title_pt 标题-葡萄牙文
  * @property string $title_tlph 标题-菲律宾文
  * @property string $play_url 播放地址
+ * @property int $publish_at 发布时间
  * @property int $create_at 创建时间
  * @property int $update_at 更新时间
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|QorVideos onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos query()
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereCid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereCoverNew($value)
@@ -285,6 +309,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereOriginName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos wherePid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos wherePlayUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos wherePublishAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereQualityDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereSid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereSource($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereTitleCn($value)
@@ -305,8 +331,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereViewNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereVoteDesc($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereVoteNum($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorVideos withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|QorVideos withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorVideos whereVrDesc($value)
  * @mixin \Eloquent
  */
 class QorVideos extends Model
@@ -339,6 +364,8 @@ class QorVideos extends Model
         'duration_desc',
         'view_desc',
         'vote_desc',
+        'quality_desc',
+        'vr_desc',
         'title_en',
         'title_cn',
         'title_tw',
@@ -352,6 +379,7 @@ class QorVideos extends Model
         'title_pt',
         'title_tlph',
         'play_url',
+        'publish_at',
         'create_at',
         'update_at'
     ];
@@ -378,6 +406,8 @@ class QorVideos extends Model
         'duration_desc' => 'string',
         'view_desc' => 'string',
         'vote_desc' => 'string',
+        'quality_desc' => 'string',
+        'vr_desc' => 'string',
         'title_en' => 'string',
         'title_cn' => 'string',
         'title_tw' => 'string',
@@ -391,6 +421,7 @@ class QorVideos extends Model
         'title_pt' => 'string',
         'title_tlph' => 'string',
         'play_url' => 'string',
+        'publish_at' => 'integer',
         'create_at' => 'integer',
         'update_at' => 'integer'
     ];
@@ -416,19 +447,22 @@ class QorVideos extends Model
         'duration_desc' => 'string|max:32',
         'view_desc' => 'string|max:32',
         'vote_desc' => 'string|max:32',
-        'title_en' => 'required|string|max:128',
-        'title_cn' => 'string|max:128',
-        'title_tw' => 'string|max:128',
-        'title_ja' => 'string|max:128',
-        'title_ko' => 'string|max:128',
-        'title_ms' => 'string|max:128',
-        'title_th' => 'string|max:128',
-        'title_de' => 'string|max:128',
-        'title_vi' => 'string|max:128',
-        'title_id' => 'string|max:128',
-        'title_pt' => 'string|max:128',
-        'title_tlph' => 'string|max:128',
+        'quality_desc' => 'string|max:32',
+        'vr_desc' => 'string|max:32',
+        'title_en' => 'required|string|max:512',
+        'title_cn' => 'string|max:512',
+        'title_tw' => 'string|max:512',
+        'title_ja' => 'string|max:512',
+        'title_ko' => 'string|max:512',
+        'title_ms' => 'string|max:512',
+        'title_th' => 'string|max:512',
+        'title_de' => 'string|max:512',
+        'title_vi' => 'string|max:512',
+        'title_id' => 'string|max:512',
+        'title_pt' => 'string|max:512',
+        'title_tlph' => 'string|max:512',
         'play_url' => 'required|string|max:1024',
+        'publish_at' => 'integer',
         'create_at' => 'integer',
         'update_at' => 'integer'
     ];
