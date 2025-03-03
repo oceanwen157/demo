@@ -25,20 +25,15 @@ class QorDataService extends ServiceBase
      * @param Form $form
      * @return Form
      */
-    public static function trimFormMulTitle(Form $form): Form
+    public static function trimFormMulTitle(Form $form, string $field = 'title'): Form
     {
-        $form->title_en = trim($form->title_en ?? '');
-        $form->title_cn = trim($form->title_cn ?? '');
-        $form->title_tw = trim($form->title_tw ?? '');
-        $form->title_ja = trim($form->title_ja ?? '');
-        $form->title_ko = trim($form->title_ko ?? '');
-        $form->title_ms = trim($form->title_ms ?? '');
-        $form->title_th = trim($form->title_th ?? '');
-        $form->title_de = trim($form->title_de ?? '');
-        $form->title_vi = trim($form->title_vi ?? '');
-        $form->title_id = trim($form->title_id ?? '');
-        $form->title_pt = trim($form->title_pt ?? '');
-        $form->title_tlph = trim($form->title_tlph ?? '');
+
+        $tags = array_keys(TransService::LANG_PAIR);
+        foreach ($tags as $tag) {
+            $fieldName = "{$field}_{$tag}";
+            $value = trim($form->$fieldName ?? '');
+            $form->$fieldName = $value;
+        }
 
         return $form;
     }

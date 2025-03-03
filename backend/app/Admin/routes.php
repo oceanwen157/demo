@@ -17,4 +17,5 @@ Route::group([
     $router->resource('qor-pstars', QorPstarsController::class);
     $router->resource('qor-sources', QorSourcesController::class);
     $router->resource('qor-videos', QorVideosController::class);
+    $router->resource('qor-partners', QorPartnersController::class);
 });

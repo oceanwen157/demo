@@ -512,7 +512,7 @@ class QorPartners extends Model
      * @var array
      */
     public static $rules = [
-        'name' => 'string|max:128',
+        'name' => 'required|string|max:128',
         'logo' => 'string|max:1024',
         'sort' => 'integer',
         'title_en' => 'required|string|max:512',
