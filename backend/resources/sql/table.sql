@@ -216,4 +216,53 @@ CREATE TABLE `qor_videos`
     KEY             `idx_id` (`title_id`) USING BTREE,
     KEY             `idx_pt` (`title_pt`) USING BTREE,
     KEY             `idx_tlph` (`title_tlph`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=22793 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='视频表';
+) ENGINE= InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '视频表';
+
+
+DROP TABLE IF EXISTS `qor_partners`;
+CREATE TABLE `qor_partners`
+(
+    `id`               int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `name`             varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '名称',
+    `logo`             varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci      NOT NULL DEFAULT '' COMMENT 'LOGO',
+    `sort`             int(10) UNSIGNED NOT NULL DEFAULT 99 COMMENT '排序:ASC',
+    `title_en`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-英文',
+    `title_cn`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-简体中文',
+    `title_tw`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-繁体中文',
+    `title_ja`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-日文',
+    `title_ko`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-韩文',
+    `title_ms`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-马来文',
+    `title_th`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-泰文',
+    `title_de`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-德文',
+    `title_vi`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-越南文',
+    `title_id`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-印尼文',
+    `title_pt`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-葡萄牙文',
+    `title_tlph`       varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-菲律宾文',
+    `hint_en`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提示-英文',
+    `hint_cn`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提示-简体中文',
+    `hint_tw`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提示-繁体中文',
+    `hint_ja`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提示-日文',
+    `hint_ko`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提示-韩文',
+    `hint_ms`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提示-马来文',
+    `hint_th`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提示-泰文',
+    `hint_de`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提示-德文',
+    `hint_vi`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提示-越南文',
+    `hint_id`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提示-印尼文',
+    `hint_pt`          varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提示-葡萄牙文',
+    `hint_tlph`        varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提示-菲律宾文',
+    `description_en`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述-英文',
+    `description_cn`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述-简体中文',
+    `description_tw`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述-繁体中文',
+    `description_ja`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述-日文',
+    `description_ko`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述-韩文',
+    `description_ms`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述-马来文',
+    `description_th`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述-泰文',
+    `description_de`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述-德文',
+    `description_vi`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述-越南文',
+    `description_id`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述-印尼文',
+    `description_pt`   text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述-葡萄牙文',
+    `description_tlph` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述-菲律宾文',
+    `create_at`        int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+    `update_at`        int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '合作表';
