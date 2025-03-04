@@ -653,6 +653,10 @@ class DataService extends ServiceBase
         return $res;
     }
 
+    public static function getNetworks()
+    {
+        return Db::name('partners')->select();
+    }
 
     public static function getVideos()
     {

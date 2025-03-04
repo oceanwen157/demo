@@ -9,10 +9,10 @@
     {include file="@components/xqbj-component-list-103" /}
 
     <div class="desktop:hidden all-categories-button-container flex gap-2 justify-center">
-        <a href="/home/明星" class="button button-secondary">
+        <a href="/a-z" class="button button-secondary">
             Categories
         </a>
-        <a href="/home/明星#" class="button button-secondary">
+        <a href="/pornstar" class="button button-secondary">
             Pornstars
         </a>
     </div>

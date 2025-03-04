@@ -150,6 +150,11 @@ class Home extends BaseController
         return View::fetch('@pages/home/明星');
     }
 
+    public function network()
+    {
+           
+    }
+
     public function listdata()
     {
         $data = $this->listdata;

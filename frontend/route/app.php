@@ -24,6 +24,7 @@ Route::group('', function() {
     Route::get('rating', 'home/rating');
     Route::get('search/:keyword', 'home/search');
     Route::get('search', 'home/search');
+    Route::get('network', 'home/network');
 
 
     Route::get('登陆', 'popup/登陆');
