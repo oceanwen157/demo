@@ -29,6 +29,12 @@ return [
     */
 
     'disks' => [
+
+        'front' => [
+            'driver' => 'local',
+            'root' => realpath(base_path('../frontend/public')),
+        ],
+
         'admin' => [
             'driver' => 'local',
             'root' => storage_path('app'),
