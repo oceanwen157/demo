@@ -22,8 +22,11 @@ Route::group('', function() {
     Route::get('popular', 'home/popular');
     Route::get('new', 'home/new');
     Route::get('rating', 'home/rating');
+    
     Route::get('search/:keyword', 'home/search');
     Route::get('search', 'home/search');
+
+    Route::get('network/:keyword', 'home/network');
     Route::get('network', 'home/network');
 
 

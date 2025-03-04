@@ -660,37 +660,17 @@ class DataService extends ServiceBase
         return Db::name('partners')->select();
     }
 
-    /**
-     * 获取全部的合作伙伴列表
-     * @return Collection
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
-     */
-    public static function getAllPartners(): Collection
-    {
-        $res = Partners::field('*')->order('sort', 'asc')->order('id', 'desc')->select();
-        return $res;
-    }
-
 
     /**
      * 根据路由获取合作伙伴
      * @param string $route
-     * @return Model
+     * @return Array
      * @throws DataNotFoundException
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getPartnerByRouteName(string $route): Model
+    public static function getPartnerByRouteName(string $route): Array
     {
-        $res = Partners::where('route_path', $route)->find();
-        return $res;
+        return Db::name('partners')->where('route_path', $route)->find();
     }
-
-
-    public static function getVideos()
-    {
-    }
-
 }

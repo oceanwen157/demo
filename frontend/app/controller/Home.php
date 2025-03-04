@@ -150,9 +150,16 @@ class Home extends BaseController
         return View::fetch('@pages/home/明星');
     }
 
-    public function network()
+    public function network($keyword = '')
     {
-           
+        if ($keyword) {
+            View::assign('info', DataService::getPartnerByRouteName($keyword));
+            return View::fetch('@pages/cooperate/合作详情');
+        } else {
+
+            View::assign('__NETWORKS__', DataService::getNetworks());
+            return View::fetch('@pages/cooperate/合作列表');
+        }
     }
 
     public function listdata()
