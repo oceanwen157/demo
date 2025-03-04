@@ -4,12 +4,14 @@ namespace app\Services;
 
 use app\model\Categories;
 use app\model\Languages;
+use app\model\Partners;
 use app\model\Pstars;
 use app\model\Sources;
 use app\model\Videos;
 use Kph\Helpers\ValidateHelper;
 use think\facade\Db;
 use think\facade\Cache;
+use think\Model;
 use think\model\Collection;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
@@ -657,6 +659,35 @@ class DataService extends ServiceBase
     {
         return Db::name('partners')->select();
     }
+
+    /**
+     * 获取全部的合作伙伴列表
+     * @return Collection
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public static function getAllPartners(): Collection
+    {
+        $res = Partners::field('*')->order('sort', 'asc')->order('id', 'desc')->select();
+        return $res;
+    }
+
+
+    /**
+     * 根据路由获取合作伙伴
+     * @param string $route
+     * @return Model
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public static function getPartnerByRouteName(string $route): Model
+    {
+        $res = Partners::where('route_path', $route)->find();
+        return $res;
+    }
+
 
     public static function getVideos()
     {

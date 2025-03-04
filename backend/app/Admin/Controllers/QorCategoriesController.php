@@ -135,10 +135,10 @@ class QorCategoriesController extends AdminController
                 return back()->with(compact('error'))->withInput();
             }
 
-            if (empty($routePath) || !ValidateHelper::isAlphaNumDash($routePath)) {
+            if (empty($routePath) || !QorDataService::checkRoute($routePath)) {
                 $error = new MessageBag([
                     'title' => '提示',
-                    'message' => __('admin.Route path') . "仅支持英文、数字和下划线",
+                    'message' => __('admin.Route path') . "只允许字母、数字、下划线、中划线",
                 ]);
                 return back()->with(compact('error'))->withInput();
             }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\QorCategories;
+use App\Models\QorPartners;
 use App\Models\QorPstars;
 use App\Models\QorSources;
 use App\Models\QorVideos;
@@ -95,9 +96,10 @@ class TransService extends ServiceBase
      * 翻译文本
      * @param string $words 带翻译的英文
      * @param string $langTag 语言标识
+     * @param string $field 字段名(不含语言后缀)
      * @return string
      */
-    public static function transWords(string $words, string $langTag): string
+    public static function transWords(string $words, string $langTag, string $field = 'title'): string
     {
         $words = trim($words);
         $langTag = trim(strtolower($langTag));
@@ -130,12 +132,17 @@ class TransService extends ServiceBase
             //结构如 {"code":200,"data":{"content":"極細小 - 適合藍眼睛的寶貝 - 凱特·布魯姆","engine":"chatgpt"},"msg":""}
             $arr = json_decode($ret[1], true);
             $str = $arr['data']['content'] ?? '';
-            $tmp = explode("\n", $str);
-            if (!empty($tmp)) {
-                $res = trim(end($tmp));
-                if (!empty($res) && $wordLen <= 24) {
-                    Redis::setex($key, 1800, $res);
+            if (!in_array($field, ['title', 'hint'])) {
+                $tmp = explode("\n", $str);
+                if (!empty($tmp)) {
+                    $res = trim(end($tmp));
                 }
+            } else {
+                $res = trim($str);
+            }
+
+            if (!empty($res) && $wordLen <= 24) {
+                Redis::setex($key, 1800, $res);
             }
         }
 
@@ -144,20 +151,21 @@ class TransService extends ServiceBase
 
 
     /**
-     * 模型保存多语言标题
+     * 模型保存多语言字段值
      * @param Model $mod 数据模型
      * @param string $langTag 语言标识
      * @param string $val 新值
+     * @param string $field 字段名(不含语言后缀)
      * @return Model
      */
-    public static function modelSaveLangTitle(Model $mod, string $langTag, string $val): Model
+    public static function modelSaveLangField(Model $mod, string $langTag, string $val, string $field = 'title'): Model
     {
         $val = trim($val);
         $langTag = trim($langTag);
         $chkTag = !empty($langTag) && in_array($langTag, array_keys(self::LANG_PAIR));
-        $field = "title_{$langTag}";
-        if ($chkTag && !empty($val) && isset($mod->$field)) {
-            $mod->$field = $val;
+        $fieldName = "{$field}_{$langTag}";
+        if ($chkTag && !empty($val) && isset($mod->$fieldName)) {
+            $mod->$fieldName = $val;
         }
 
         return $mod;
@@ -165,18 +173,19 @@ class TransService extends ServiceBase
 
 
     /**
-     * 检查模型里的各个多语言标题是否已填充完全
+     * 检查模型里的各个多语言字段是否已填充完全
      * @param Model $mod
+     * @param string $field 字段名(不包含语言后缀)
      * @return bool
      */
-    public static function checkModelTitleFull(Model $mod): bool
+    public static function checkModelFieldFull(Model $mod, string $field = 'title'): bool
     {
         $tags = self::getWaitTransTags('en');
         $all = count($tags);
         $num = 0;
         foreach ($tags as $tag) {
-            $field = "title_{$tag}";
-            if (isset($mod->$field) && trim($mod->$field) != '') {
+            $fieldName = "{$field}_{$tag}}";
+            if (isset($mod->$fieldName) && trim($mod->$fieldName) != '') {
                 $num++;
             }
         }
@@ -216,11 +225,11 @@ class TransService extends ServiceBase
                 if (empty($value)) {
                     $valueTran = self::transWords($titleEn, $tag);
                     if (!empty($valueTran) && $valueTran != $value) {
-                        $row = self::modelSaveLangTitle($row, $tag, $valueTran);
+                        $row = self::modelSaveLangField($row, $tag, $valueTran);
                     }
                 }
             }
-            $chkDone = self::checkModelTitleFull($row);
+            $chkDone = self::checkModelFieldFull($row);
             printf("trans category id:%s res:%b\n", $row->id, $chkDone);
             if ($chkDone) {
                 $res++;
@@ -269,11 +278,11 @@ class TransService extends ServiceBase
                 if (empty($value)) {
                     $valueTran = self::transWords($titleEn, $tag);
                     if (!empty($valueTran) && $valueTran != $value) {
-                        $row = self::modelSaveLangTitle($row, $tag, $valueTran);
+                        $row = self::modelSaveLangField($row, $tag, $valueTran);
                     }
                 }
             }
-            $chkDone = self::checkModelTitleFull($row);
+            $chkDone = self::checkModelFieldFull($row);
             printf("trans star id:%s res:%b\n", $row->id, $chkDone);
             if ($chkDone) {
                 $res++;
@@ -322,11 +331,11 @@ class TransService extends ServiceBase
                 if (empty($value)) {
                     $valueTran = self::transWords($titleEn, $tag);
                     if (!empty($valueTran) && $valueTran != $value) {
-                        $row = self::modelSaveLangTitle($row, $tag, $valueTran);
+                        $row = self::modelSaveLangField($row, $tag, $valueTran);
                     }
                 }
             }
-            $chkDone = self::checkModelTitleFull($row);
+            $chkDone = self::checkModelFieldFull($row);
             printf("trans video id:%s res:%b\n", $row->id, $chkDone);
             if ($chkDone) {
                 $res++;
@@ -345,11 +354,76 @@ class TransService extends ServiceBase
 
 
     /**
+     * 翻译合作伙伴的多语言字段(标题/提示/描述)
+     * @return int
+     * @throws Throwable
+     */
+    public static function transPartners(): int
+    {
+        $res = 0;
+        $tags = self::getWaitTransTags();
+        $lastId = 0;
+        printf("transPartners begin: %s\n", date("Y-m-d H:i:s"));
+
+        while (true) {
+            $qry = QorPartners::query()->whereIn('trans_status', [0, 1]);
+            if ($lastId > 0) {
+                $qry->where('id', '<', $lastId);
+            }
+
+            $row = $qry->orderBy('id', 'desc')->first();
+            if (!$row) {
+                break;
+            }
+
+            printf("partner id: %s\n", $row->id);
+            $lastId = $row->id;
+            $fields = ['title', 'hint', 'description'];
+            foreach ($fields as $fld) {
+                $enField = "{$fld}_en";
+                $enValue = $row->$enField;;
+
+                foreach ($tags as $tag) {
+                    $field = "{$fld}_{$tag}";
+                    $value = $row->$field ?? '';
+
+                    if (empty($value)) {
+                        $valueTran = self::transWords($enValue, $tag, $fld);
+                        if (!empty($valueTran) && $valueTran != $value) {
+                            $row = self::modelSaveLangField($row, $tag, $valueTran, $fld);
+                        }
+                    }
+                }
+            }
+
+            $chkDone1 = self::checkModelFieldFull($row, 'title');
+            $chkDone2 = self::checkModelFieldFull($row, 'hint');
+            $chkDone3 = self::checkModelFieldFull($row, 'description');
+            $chkDone = $chkDone1 && $chkDone2 && $chkDone3;
+            printf("trans partner id:%s res:%b\n", $row->id, $chkDone);
+            if ($chkDone) {
+                $res++;
+            }
+            $row->trans_status = $chkDone ? 2 : 1; //更新状态
+
+            DB::transaction(function () use (&$row) {
+                $row->save();
+            });
+        }
+
+        printf("transPartners done: %d\n", $res);
+
+        return $res;
+    }
+
+
+    /**
      * 执行翻译
      * @return void
      */
     public function doTranslate(): void
     {
+        self::transPartners();
         self::transCategories();
         self::transPstars();
         self::transVideos();
