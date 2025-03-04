@@ -27,10 +27,11 @@ class QorPartnersController extends AdminController
     {
         $grid = new Grid(new QorPartners());
         $grid->model()->orderBy('id', 'DESC');
+        $frontUrl = trim(env('FRONT_URL', ''), '/') . '/';
 
         $grid->column('id', __('Id'));
         $grid->column('name', __('admin.Name'));
-        $grid->column('logo', __('admin.Logo'));
+        $grid->column('logo', __('admin.Logo'))->image($frontUrl, 100, 100);
         $grid->column('sort', __('admin.Sort'));
         $grid->column('title_en', __('admin.Title en'));
 //        $grid->column('title_cn', __('admin.Title cn'));
@@ -92,6 +93,7 @@ class QorPartnersController extends AdminController
     {
         $show = new Show(QorPartners::findOrFail($id));
 
+
         $show->field('id', __('Id'));
         $show->field('name', __('admin.Name'));
         $show->field('logo', __('admin.Logo'));
@@ -147,9 +149,19 @@ class QorPartnersController extends AdminController
     {
         $form = new Form(new QorPartners());
 
+        //上传到前台站的目录
+        $day = date('Ym');
+        $baseDir = dirname(base_path('')) . "/frontend/public/uploads/images/{$day}";
+        $imgDir = "uploads/{$day}";
+        if (!file_exists($baseDir)) {
+            @mkdir($imgDir, 0777, true);
+        }
+
         $form->text('name', __('admin.Name'))->rules('required');
-        $form->text('logo', __('admin.Logo'));
-        $form->image('image', __('admin.Upload'));
+        $form->image('logo', __('admin.Logo'))
+            ->uniqueName()
+            ->removable()->move($imgDir);
+
         $form->number('sort', __('admin.Sort'))->default(99);
         $form->text('title_en', __('admin.Title en'))->rules('required');
         $form->text('title_cn', __('admin.Title cn'));

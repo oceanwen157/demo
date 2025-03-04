@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @OA\Schema (
  *      schema="QorPartners",
- *      required={"name", "logo", "sort", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "hint_en", "hint_cn", "hint_tw", "hint_ja", "hint_ko", "hint_ms", "hint_th", "hint_de", "hint_vi", "hint_id", "hint_pt", "hint_tlph", "create_at", "update_at"},
+ *      required={"trans_status", "name", "logo", "sort", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "hint_en", "hint_cn", "hint_tw", "hint_ja", "hint_ko", "hint_ms", "hint_th", "hint_de", "hint_vi", "hint_id", "hint_pt", "hint_tlph", "create_at", "update_at"},
  *      @OA\Property(
  *          property="id",
  *          description="id",
@@ -19,6 +19,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *          nullable=$FIELD_NULLABLE$,
  *          type="integer",
  *          format="int32"
+ *      ),
+ *      @OA\Property(
+ *          property="trans_status",
+ *          description="翻译状态:0待翻译,1翻译中,2翻译完成",
+ *          readOnly=$FIELD_READ_ONLY$,
+ *          nullable=$FIELD_NULLABLE$,
+ *          type="boolean"
  *      ),
  *      @OA\Property(
  *          property="name",
@@ -312,6 +319,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *      )
  * )
  * @property int $id
+ * @property int $trans_status 翻译状态:0待翻译,1翻译中,2翻译完成
  * @property string $name 名称
  * @property string $logo LOGO
  * @property int $sort 排序:ASC
@@ -397,6 +405,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|QorPartners whereTitleTlph($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorPartners whereTitleTw($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorPartners whereTitleVi($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorPartners whereTransStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorPartners whereUpdateAt($value)
  * @mixin \Eloquent
  */
@@ -412,7 +421,9 @@ class QorPartners extends Model
     protected $dateFormat = 'U';
 
 
+
     public $fillable = [
+        'trans_status',
         'name',
         'logo',
         'sort',
@@ -463,6 +474,7 @@ class QorPartners extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'trans_status' => 'integer',
         'name' => 'string',
         'logo' => 'string',
         'sort' => 'integer',
@@ -512,6 +524,7 @@ class QorPartners extends Model
      * @var array
      */
     public static $rules = [
+        'trans_status' => 'integer',
         'name' => 'required|string|max:128',
         'logo' => 'string|max:1024',
         'sort' => 'integer',
