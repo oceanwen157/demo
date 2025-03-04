@@ -8,6 +8,8 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\MessageBag;
+use Kph\Helpers\ValidateHelper;
 
 class QorPartnersController extends AdminController
 {
@@ -30,45 +32,47 @@ class QorPartnersController extends AdminController
         $frontUrl = trim(env('FRONT_URL', ''), '/') . '/';
 
         $grid->column('id', __('Id'));
-        $grid->column('name', __('admin.Name'));
+        //$grid->column('trans_status', __('Trans status'));
+        $grid->column('sort', __('Sort'));
+        $grid->column('name', __('Name'));
         $grid->column('logo', __('admin.Logo'))->image($frontUrl, 100, 100);
-        $grid->column('sort', __('admin.Sort'));
+        $grid->column('route_path', __('admin.Route path'));
         $grid->column('title_en', __('admin.Title en'));
-//        $grid->column('title_cn', __('admin.Title cn'));
-//        $grid->column('title_tw', __('admin.Title tw'));
-//        $grid->column('title_ja', __('admin.Title ja'));
-//        $grid->column('title_ko', __('admin.Title ko'));
-//        $grid->column('title_ms', __('admin.Title ms'));
-//        $grid->column('title_th', __('admin.Title th'));
-//        $grid->column('title_de', __('admin.Title de'));
-//        $grid->column('title_vi', __('admin.Title vi'));
-//        $grid->column('title_id', __('admin.Title id'));
-//        $grid->column('title_pt', __('admin.Title pt'));
-//        $grid->column('title_tlph', __('admin.Title tlph'));
-        $grid->column('hint_en', __('admin.Hint en'));
-//        $grid->column('hint_cn', __('admin.Hint cn'));
-//        $grid->column('hint_tw', __('admin.Hint tw'));
-//        $grid->column('hint_ja', __('admin.Hint ja'));
-//        $grid->column('hint_ko', __('admin.Hint ko'));
-//        $grid->column('hint_ms', __('admin.Hint ms'));
-//        $grid->column('hint_th', __('admin.Hint th'));
-//        $grid->column('hint_de', __('admin.Hint de'));
-//        $grid->column('hint_vi', __('admin.Hint vi'));
-//        $grid->column('hint_id', __('admin.Hint id'));
-//        $grid->column('hint_pt', __('admin.Hint pt'));
-//        $grid->column('hint_tlph', __('admin.Hint tlph'));
-//        $grid->column('description_en', __('admin.Description en'));
-//        $grid->column('description_cn', __('admin.Description cn'));
-//        $grid->column('description_tw', __('admin.Description tw'));
-//        $grid->column('description_ja', __('admin.Description ja'));
-//        $grid->column('description_ko', __('admin.Description ko'));
-//        $grid->column('description_ms', __('admin.Description ms'));
-//        $grid->column('description_th', __('admin.Description th'));
-//        $grid->column('description_de', __('admin.Description de'));
-//        $grid->column('description_vi', __('admin.Description vi'));
-//        $grid->column('description_id', __('admin.Description id'));
-//        $grid->column('description_pt', __('admin.Description pt'));
-//        $grid->column('description_tlph', __('admin.Description tlph'));
+//        $grid->column('title_cn', __('Title cn'));
+//        $grid->column('title_tw', __('Title tw'));
+//        $grid->column('title_ja', __('Title ja'));
+//        $grid->column('title_ko', __('Title ko'));
+//        $grid->column('title_ms', __('Title ms'));
+//        $grid->column('title_th', __('Title th'));
+//        $grid->column('title_de', __('Title de'));
+//        $grid->column('title_vi', __('Title vi'));
+//        $grid->column('title_id', __('Title id'));
+//        $grid->column('title_pt', __('Title pt'));
+//        $grid->column('title_tlph', __('Title tlph'));
+//        $grid->column('hint_en', __('Hint en'));
+//        $grid->column('hint_cn', __('Hint cn'));
+//        $grid->column('hint_tw', __('Hint tw'));
+//        $grid->column('hint_ja', __('Hint ja'));
+//        $grid->column('hint_ko', __('Hint ko'));
+//        $grid->column('hint_ms', __('Hint ms'));
+//        $grid->column('hint_th', __('Hint th'));
+//        $grid->column('hint_de', __('Hint de'));
+//        $grid->column('hint_vi', __('Hint vi'));
+//        $grid->column('hint_id', __('Hint id'));
+//        $grid->column('hint_pt', __('Hint pt'));
+//        $grid->column('hint_tlph', __('Hint tlph'));
+//        $grid->column('description_en', __('Description en'));
+//        $grid->column('description_cn', __('Description cn'));
+//        $grid->column('description_tw', __('Description tw'));
+//        $grid->column('description_ja', __('Description ja'));
+//        $grid->column('description_ko', __('Description ko'));
+//        $grid->column('description_ms', __('Description ms'));
+//        $grid->column('description_th', __('Description th'));
+//        $grid->column('description_de', __('Description de'));
+//        $grid->column('description_vi', __('Description vi'));
+//        $grid->column('description_id', __('Description id'));
+//        $grid->column('description_pt', __('Description pt'));
+//        $grid->column('description_tlph', __('Description tlph'));
         $grid->column('create_at', __('admin.Create at'))->display(function () {
             return date('y-m-d H:i', $this->create_at);
         });
@@ -78,6 +82,7 @@ class QorPartnersController extends AdminController
 
         $grid->filter(function ($filter) {
             $filter->equal('name', __('admin.Name'));
+            $filter->equal('route_path', __('Route path'));
         });
 
         return $grid;
@@ -93,11 +98,12 @@ class QorPartnersController extends AdminController
     {
         $show = new Show(QorPartners::findOrFail($id));
 
-
         $show->field('id', __('Id'));
+        //$show->field('trans_status', __('admin.Trans status'));
+        $show->field('sort', __('admin.Sort'));
         $show->field('name', __('admin.Name'));
         $show->field('logo', __('admin.Logo'));
-        $show->field('sort', __('admin.Sort'));
+        $show->field('route_path', __('admin.Route path'));
         $show->field('title_en', __('admin.Title en'));
         $show->field('title_cn', __('admin.Title cn'));
         $show->field('title_tw', __('admin.Title tw'));
@@ -158,6 +164,7 @@ class QorPartnersController extends AdminController
         }
 
         $form->text('name', __('admin.Name'))->rules('required');
+        $form->text('route_path', __('admin.Route path'))->rules('required');
         $form->image('logo', __('admin.Logo'))
             ->uniqueName()
             ->removable()->move($imgDir);
@@ -202,6 +209,15 @@ class QorPartnersController extends AdminController
 
         $form->saving(function (Form $form) {
             $name = trim($form->name ?? '');
+            $routePath = trim($form->route_path ?? '');
+
+            if (empty($routePath) || !QorDataService::checkRoute($routePath)) {
+                $error = new MessageBag([
+                    'title' => '提示',
+                    'message' => __('admin.Route path') . "只允许字母、数字、下划线、中划线",
+                ]);
+                return back()->with(compact('error'))->withInput();
+            }
 
             //检查是否有相同的名称
             $chkRow = QorPartners::where(['name' => $name])->first();
@@ -212,6 +228,19 @@ class QorPartnersController extends AdminController
                 ]);
                 return back()->with(compact('error'))->withInput();
             }
+
+            //检查是否有相同的路由
+            $chkRow = QorPartners::where(['route_path' => $routePath])->first();
+            if ($chkRow && $chkRow->id != intval($form->model()->id)) {
+                $error = new MessageBag([
+                    'title' => '提示',
+                    'message' => "该" . __('admin..Route path') . ":{$name} 已存在，请换一个",
+                ]);
+                return back()->with(compact('error'))->withInput();
+            }
+
+            $form->sort = intval($form->sort ?? 0);
+            $form->route_path = $routePath;
 
             $form = QorDataService::trimFormMulTitle($form, 'title');
             $form = QorDataService::trimFormMulTitle($form, 'hint');

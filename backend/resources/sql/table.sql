@@ -224,9 +224,10 @@ CREATE TABLE `qor_partners`
 (
     `id`               int(10) unsigned NOT NULL AUTO_INCREMENT,
     `trans_status`     tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '翻译状态:0待翻译,1翻译中,2翻译完成',
+    `sort`             int(10) UNSIGNED NOT NULL DEFAULT 99 COMMENT '排序:ASC',
     `name`             varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '名称',
     `logo`             varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci      NOT NULL DEFAULT '' COMMENT 'LOGO',
-    `sort`             int(10) UNSIGNED NOT NULL DEFAULT 99 COMMENT '排序:ASC',
+    `route_path`       varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci       NOT NULL DEFAULT '' COMMENT '路由路径',
     `title_en`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-英文',
     `title_cn`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-简体中文',
     `title_tw`         varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '标题-繁体中文',
