@@ -4,6 +4,7 @@ namespace app\Services;
 
 use app\model\Categories;
 use app\model\Languages;
+use app\model\Partners;
 use app\model\Pstars;
 use app\model\Sources;
 use app\model\Videos;
@@ -650,6 +651,20 @@ class DataService extends ServiceBase
             }
         }
 
+        return $res;
+    }
+
+
+    /**
+     * 获取全部的合作伙伴列表
+     * @return Collection
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public static function getAllPartners(): Collection
+    {
+        $res = Partners::field('*')->order('sort', 'asc')->order('id', 'desc')->select();
         return $res;
     }
 
