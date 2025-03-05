@@ -24,46 +24,22 @@ class DataService extends ServiceBase
 {
     const ORIGIN_BASE_URL = 'https://www.qorno.com';
 
-    public static function getRedirectUrl($url)
-    {
-        $ch = curl_init();
+    const ORDER_MAP = [
+        '' => 'id',
+        'popular' => 'is_hot',
+        'duration' => 'duration_num',
+        'rating' => 'vote_num',
+        'date' => 'create_at',
+        'publish_date' => 'publish_date'
+    ];
 
-        curl_setopt_array($ch, [
-            CURLOPT_URL => self::ORIGIN_BASE_URL . $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADER => true,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_TIMEOUT => 20,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            CURLOPT_NOBODY => true
-        ]);
-
-        $response = curl_exec($ch);
-
-        if (curl_errno($ch)) {
-            throw new Exception('Curl error: ' . curl_error($ch));
-        }
-
-        $finalUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-        curl_close($ch);
-
-        $url = '';
-        if ($httpCode == 200 && !empty($finalUrl)) {
-            if (strpos($finalUrl, self::ORIGIN_BASE_URL) !== false) {
-                return $url;
-            }
-            $url = $finalUrl;
-        }
-
-        return $url;
-    }
-
+    const ALLOW_ORDER_FIELDS = [
+        'id',
+        'is_hot',
+        'duration_num',
+        'vote_num',
+        'publish_at'
+    ];
 
     /**
      * 字母集合
@@ -363,8 +339,9 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getCategoryVideoPaginate(string $route, string $source = '', int $size = 120): array
+    public static function getCategoryVideoPaginate(string $orderBy, string $route, string $source = '', int $size = 120): array
     {
+        $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
         if ($size <= 0) {
             $size = 120;
         }
@@ -380,7 +357,7 @@ class DataService extends ServiceBase
             return $res;
         }
 
-        $qry = Db::name('videos')->order('id', 'desc')->where('cid', $cate->id);
+        $qry = Db::name('videos')->order($orderBy, 'desc')->where('cid', $cate->id);
         $source = trim($source);
         if (!empty($source)) {
             $qry->where('source', $source);
@@ -407,8 +384,9 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getPstarVideoPaginate(string $route, string $source = '', int $size = 120): array
+    public static function getPstarVideoPaginate(string $orderBy, string $route, string $source = '', int $size = 120): array
     {
+        $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
         if ($size <= 0) {
             $size = 120;
         }
@@ -424,7 +402,7 @@ class DataService extends ServiceBase
             return $res;
         }
 
-        $qry = Db::name('videos')->order('id', 'desc')->where('pid', $star->id);
+        $qry = Db::name('videos')->order($orderBy, 'desc')->where('pid', $star->id);
         $source = trim($source);
         if (!empty($source)) {
             $qry->where('source', $source);
@@ -488,8 +466,10 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function searchVideos(string $keyword = '', int $size = 120): array
+    public static function searchVideos(string $orderBy, string $keyword = '', int $size = 120): array
     {
+        $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
+        
         if ($size <= 0) {
             $size = 120;
         }
@@ -534,7 +514,7 @@ class DataService extends ServiceBase
             });
         }
 
-        $pagination = $qry->order('id', 'desc')->paginate($size);
+        $pagination = $qry->order($orderBy, 'desc')->paginate($size);
         $res = [
             'paginate' => $pagination,
             'total' => $pagination->total(),
@@ -551,13 +531,15 @@ class DataService extends ServiceBase
      * @return array
      * @throws DbException
      */
-    public static function getPopularVideos(int $size = 120): array
+    public static function getPopularVideos(string $orderBy, int $size = 120): array
     {
+        $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
+        
         if ($size <= 0) {
             $size = 120;
         }
 
-        $qry = Db::name('videos')->where('vote_num', '>', 45)->order('id', 'desc');
+        $qry = Db::name('videos')->where('vote_num', '>', 45)->order($orderBy, 'desc');
         $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
@@ -575,13 +557,15 @@ class DataService extends ServiceBase
      * @return array
      * @throws DbException
      */
-    public static function getNewVideos(int $size = 120): array
+    public static function getNewVideos(string $orderBy, int $size = 120): array
     {
+        $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
+        
         if ($size <= 0) {
             $size = 120;
         }
 
-        $qry = Db::name('videos')->order('id', 'desc');
+        $qry = Db::name('videos')->order($orderBy, 'desc');
         $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
@@ -599,13 +583,15 @@ class DataService extends ServiceBase
      * @return array
      * @throws DbException
      */
-    public static function getTopRatedVideos(int $size = 120): array
+    public static function getTopRatedVideos(string $orderBy, int $size = 120): array
     {
+        $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
+        
         if ($size <= 0) {
             $size = 120;
         }
 
-        $qry = Db::name('videos')->where('vote_num', '>', 80)->order('id', 'desc');
+        $qry = Db::name('videos')->where('vote_num', '>', 80)->order($orderBy, 'desc');
         $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
@@ -655,38 +641,63 @@ class DataService extends ServiceBase
         return $res;
     }
 
-
-    /**
-     * 获取全部的合作伙伴列表
-     * @return Collection
-     * @throws DataNotFoundException
-     * @throws DbException
-     * @throws ModelNotFoundException
-     */
-    public static function getAllPartners(): Collection
+    public static function getNetworks()
     {
-        $res = Partners::field('*')->order('sort', 'asc')->order('id', 'desc')->select();
-        return $res;
+        return Db::name('partners')->select();
     }
 
 
     /**
      * 根据路由获取合作伙伴
      * @param string $route
-     * @return Model
+     * @return Array
      * @throws DataNotFoundException
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getPartnerByRouteName(string $route): Model
+    public static function getPartnerByRouteName(string $route): Array
     {
-        $res = Partners::where('route_path', $route)->find();
-        return $res;
+        return Db::name('partners')->where('route_path', $route)->find();
     }
 
-
-    public static function getVideos()
+    public static function getRedirectUrl($url)
     {
+        $ch = curl_init();
+
+        curl_setopt_array($ch, [
+            CURLOPT_URL => self::ORIGIN_BASE_URL . $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 20,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            CURLOPT_NOBODY => true
+        ]);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            throw new Exception('Curl error: ' . curl_error($ch));
+        }
+
+        $finalUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        curl_close($ch);
+
+        $url = '';
+        if ($httpCode == 200 && !empty($finalUrl)) {
+            if (strpos($finalUrl, self::ORIGIN_BASE_URL) !== false) {
+                return $url;
+            }
+            $url = $finalUrl;
+        }
+
+        return $url;
     }
 
 }

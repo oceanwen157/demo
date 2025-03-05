@@ -32,13 +32,17 @@ class Home extends BaseController
         return View::fetch('@pages/home/首页');
     }
 
-    public function category($category)
+    public function category($category = '')
     {
-        $video = DataService::getCategoryVideoPaginate($category);
+        $filters = Request::param('filter');
+        $orderBy = $filters['order_by'] ?? 'popular';
+
+        $video = DataService::getCategoryVideoPaginate($orderBy, $category);
 
         View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
         View::assign('pagination', $video['paginate']);
         View::assign('navTitle', $category);
+        View::assign('checked', $orderBy);
         View::assign('total', $video['total']);
 
         return View::fetch('@pages/home/主题');
@@ -46,7 +50,10 @@ class Home extends BaseController
 
     public function search($keyword = '')
     {
-        $searchVideo = DataService::searchVideos($keyword);
+        $filters = Request::param('filter');
+        $orderBy = $filters['order_by'] ?? 'popular';
+
+        $searchVideo = DataService::searchVideos($orderBy, $keyword);
 
         
         if (!trim($keyword)) {
@@ -55,6 +62,7 @@ class Home extends BaseController
         View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
         View::assign('pagination', $searchVideo['paginate']);
         View::assign('navTitle', $keyword);
+        View::assign('checked', $orderBy);
         View::assign('total', $searchVideo['total']);
 
         return View::fetch('@pages/home/主题');
@@ -62,13 +70,17 @@ class Home extends BaseController
 
     public function popular()
     {
+        $filters = Request::param('filter');
+        $orderBy = $filters['order_by'] ?? 'popular';
+
         $navTitle = 'Popular videos';
-        $popurVideo = DataService::getPopularVideos();
+        $popurVideo = DataService::getPopularVideos($orderBy);
 
         View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
         View::assign('pagination', $popurVideo['paginate']);
 
         View::assign('navTitle', $navTitle);
+        View::assign('checked', $orderBy);
         View::assign('total', $popurVideo['total']);
 
         return View::fetch('@pages/home/主题');
@@ -76,13 +88,17 @@ class Home extends BaseController
 
     public function new()
     {
+        $filters = Request::param('filter');
+        $orderBy = $filters['order_by'] ?? 'popular';
+
         $navTitle = 'New videos';
-        $newVideo = DataService::getNewVideos();
+        $newVideo = DataService::getNewVideos($orderBy);
 
         View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
         View::assign('pagination', $newVideo['paginate']);
 
         View::assign('navTitle', $navTitle);
+        View::assign('checked', $orderBy);
         View::assign('total', $newVideo['total']);
 
         return View::fetch('@pages/home/主题');
@@ -90,13 +106,17 @@ class Home extends BaseController
 
     public function rating()
     {
+        $filters = Request::param('filter');
+        $orderBy = $filters['order_by'] ?? 'popular';
+        
         $navTitle = 'Top rated videos';
-        $topRate = DataService::getTopRatedVideos(20);
+        $topRate = DataService::getTopRatedVideos($orderBy, 20);
 
         View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
         View::assign('pagination', $topRate['paginate']);
 
         View::assign('navTitle', $navTitle);
+        View::assign('checked', $orderBy);
         View::assign('total', $topRate['total']);
         
         
@@ -112,12 +132,16 @@ class Home extends BaseController
     public function pornstar($pornstar)
     {
         if ($pornstar) {
-            $video = DataService::getPstarVideoPaginate($pornstar);
+            $filters = Request::param('filter');
+            $orderBy = $filters['order_by'] ?? 'popular';
+
+            $video = DataService::getPstarVideoPaginate($orderBy, $pornstar);
     
             View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
             View::assign('pagination', $video['paginate']);
             View::assign('navTitle', $pornstar);
             View::assign('total', $video['total']);
+            View::assign('checked', $orderBy);
 
             return View::fetch('@pages/home/主题');
         }else{
@@ -148,6 +172,18 @@ class Home extends BaseController
         View::assign('__ALLSTARS__', $res);
         View::assign('keys', array_keys($res));
         return View::fetch('@pages/home/明星');
+    }
+
+    public function network($keyword = '')
+    {
+        if ($keyword) {
+            View::assign('info', DataService::getPartnerByRouteName($keyword));
+            return View::fetch('@pages/cooperate/合作详情');
+        } else {
+
+            View::assign('__NETWORKS__', DataService::getNetworks());
+            return View::fetch('@pages/cooperate/合作列表');
+        }
     }
 
     public function listdata()

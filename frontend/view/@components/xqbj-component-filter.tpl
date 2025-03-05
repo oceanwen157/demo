@@ -10,19 +10,19 @@
                 <div class="chip-group-contents">
                     <label class="chip" for="filter_order_by_0">
                         <span class="label">Popularity</span>
-                        <input type="radio" id="filter_order_by_0" name="filter[order_by]" value="popular" required="" checked="" class="hidden">
+                        <input type="radio" id="filter_order_by_0" name="filter[order_by]" value="popular" required="" {if $checked == 'popular'}checked{/if} class="hidden">
                     </label>
                     <label class="chip" for="filter_order_by_1">
                         <span class="label">Date</span>
-                        <input type="radio" id="filter_order_by_1" name="filter[order_by]" value="date" required="" class="hidden">
+                        <input type="radio" id="filter_order_by_1" name="filter[order_by]" value="date" required="" {if $checked == 'popular'}checked{/if}  class="hidden">
                     </label>
                     <label class="chip" for="filter_order_by_2">
                         <span class="label">Duration</span>
-                        <input type="radio" id="filter_order_by_2" name="filter[order_by]" value="duration" required="" class="hidden">
+                        <input type="radio" id="filter_order_by_2" name="filter[order_by]" value="duration" required="" {if $checked == 'duration'}checked{/if}  class="hidden">
                     </label>
                     <label class="chip" for="filter_order_by_3">
                         <span class="label">Rating</span>
-                        <input type="radio" id="filter_order_by_3" name="filter[order_by]" value="rating" required="" class="hidden">
+                        <input type="radio" id="filter_order_by_3" name="filter[order_by]" value="rating" required="" {if $checked == 'rating'}checked{/if}  class="hidden">
                     </label>
                 </div>
             </div>
@@ -221,3 +221,8 @@
     </form>
 
 </div>
+
+
+
+
+

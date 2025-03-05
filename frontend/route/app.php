@@ -13,17 +13,21 @@ use think\facade\Route;
 Route::group('', function() {
     Route::get('', 'home/首页');
 
-    Route::get('category/:category', 'home/category');
+    Route::get('category/:category', 'home/category')->pattern(['category' => '[\w\-]+']);
 
-    Route::get('pornstar/:pornstar', 'home/pornstar');
+    Route::get('pornstar/:pornstar', 'home/pornstar')->pattern(['pornstar' => '[\w\-]+']);
     Route::get('pornstar', 'home/pornstarCates');
     Route::get('a-z', 'home/az');
 
     Route::get('popular', 'home/popular');
     Route::get('new', 'home/new');
     Route::get('rating', 'home/rating');
-    Route::get('search/:keyword', 'home/search');
+    
+    Route::get('search/:keyword', 'home/search')->pattern(['keyword' => '[\w\-]+']);
     Route::get('search', 'home/search');
+
+    Route::get('network/:keyword', 'home/network')->pattern(['keyword' => '[\w\-]+']);
+    Route::get('network', 'home/network');
 
 
     Route::get('登陆', 'popup/登陆');
