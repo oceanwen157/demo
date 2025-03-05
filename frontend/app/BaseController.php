@@ -33,6 +33,8 @@ abstract class BaseController
    */
   protected $batchValidate = false;
 
+  protected $lang = 'en';
+
   /**
    * 控制器中间件
    * @var array
@@ -1556,6 +1558,8 @@ abstract class BaseController
   {
     $this->app     = $app;
     $this->request = $this->app->request;
+
+    $this->lang = $this->request->param('lang') ?? $this->lang;
 
     // 控制器初始化
     $this->initialize();
