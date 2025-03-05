@@ -34,12 +34,13 @@ class Home extends BaseController
 
     public function category($category = '')
     {
+
         $filters = Request::param('filter');
         $orderBy = $filters['order_by'] ?? 'popular';
 
-        $video = DataService::getCategoryVideoPaginate($this->lang, $orderBy, $category);
+        $video = DataService::getCategoryVideoPaginate($this->lang, $filters, $category);
 
-        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
+        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories($this->lang));
         View::assign('pagination', $video['paginate']);
         View::assign('navTitle', $category);
         View::assign('checked', $orderBy);
@@ -53,13 +54,13 @@ class Home extends BaseController
         $filters = Request::param('filter');
         $orderBy = $filters['order_by'] ?? 'popular';
 
-        $searchVideo = DataService::searchVideos($this->lang, $orderBy, $keyword);
+        $searchVideo = DataService::searchVideos($this->lang, $filters, $keyword);
 
         
         if (!trim($keyword)) {
             $keyword = 'Popular';
         }
-        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
+        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories($this->lang));
         View::assign('pagination', $searchVideo['paginate']);
         View::assign('navTitle', $keyword);
         View::assign('checked', $orderBy);
@@ -74,9 +75,9 @@ class Home extends BaseController
         $orderBy = $filters['order_by'] ?? 'popular';
 
         $navTitle = 'Popular videos';
-        $popurVideo = DataService::getPopularVideos($orderBy);
+        $popurVideo = DataService::getPopularVideos($this->lang, $filters);
 
-        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
+        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories($this->lang));
         View::assign('pagination', $popurVideo['paginate']);
 
         View::assign('navTitle', $navTitle);
@@ -92,9 +93,9 @@ class Home extends BaseController
         $orderBy = $filters['order_by'] ?? 'popular';
 
         $navTitle = 'New videos';
-        $newVideo = DataService::getNewVideos($orderBy);
+        $newVideo = DataService::getNewVideos($this->lang, $filters);
 
-        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
+        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories($this->lang));
         View::assign('pagination', $newVideo['paginate']);
 
         View::assign('navTitle', $navTitle);
@@ -110,9 +111,9 @@ class Home extends BaseController
         $orderBy = $filters['order_by'] ?? 'popular';
         
         $navTitle = 'Top rated videos';
-        $topRate = DataService::getTopRatedVideos($this->lang, $orderBy, 20);
+        $topRate = DataService::getTopRatedVideos($this->lang, $filters, 20);
 
-        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
+        View::assign('__RECOMMENDCATES__', DataService::getOtherCategories($this->lang));
         View::assign('pagination', $topRate['paginate']);
 
         View::assign('navTitle', $navTitle);
@@ -135,9 +136,9 @@ class Home extends BaseController
             $filters = Request::param('filter');
             $orderBy = $filters['order_by'] ?? 'popular';
 
-            $video = DataService::getPstarVideoPaginate($this->lang, $orderBy, $pornstar);
+            $video = DataService::getPstarVideoPaginate($this->lang, $filters, $pornstar);
     
-            View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
+            View::assign('__RECOMMENDCATES__', DataService::getOtherCategories($this->lang));
             View::assign('pagination', $video['paginate']);
             View::assign('navTitle', $pornstar);
             View::assign('total', $video['total']);
@@ -181,7 +182,7 @@ class Home extends BaseController
             return View::fetch('@pages/cooperate/合作详情');
         } else {
 
-            View::assign('__NETWORKS__', DataService::getNetworks());
+            View::assign('__NETWORKS__', DataService::getNetworks($this->lang));
             return View::fetch('@pages/cooperate/合作列表');
         }
     }

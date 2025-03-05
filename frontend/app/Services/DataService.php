@@ -30,7 +30,7 @@ class DataService extends ServiceBase
         'duration' => 'duration_num',
         'rating' => 'vote_num',
         'date' => 'create_at',
-        'publish_date' => 'publish_date'
+        'publish_date' => 'publish_at'
     ];
 
     const ALLOW_ORDER_FIELDS = [
@@ -92,7 +92,6 @@ class DataService extends ServiceBase
         'title_pt',
         'title_tlph',
     ];
-
 
     /**
      * 初始化字母集合
@@ -203,7 +202,7 @@ class DataService extends ServiceBase
      */
     public static function getOtherCategories(string $lang, int $limit = 20): Collection
     {
-        $tops = self::getTopCategories($limit);
+        $tops = self::getTopCategories($lang, $limit);
         $topIds = [0];
         foreach ($tops as $top) {
             $topIds[] = $top->id;
@@ -344,9 +343,8 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getCategoryVideoPaginate(string $lang, string $orderBy, string $route, string $source = '', int $size = 120): array
+    public static function getCategoryVideoPaginate(string $lang, ?array $filters, string $route, int $size = 120): array
     {
-        $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
         if ($size <= 0) {
             $size = 120;
         }
@@ -362,10 +360,9 @@ class DataService extends ServiceBase
             return $res;
         }
 
-        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->order($orderBy, 'desc')->where('cid', $cate->id);
-        $source = trim($source);
-        if (!empty($source)) {
-            $qry->where('source', $source);
+        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->where('cid', $cate->id);
+        if (!empty($filters)) {
+            self::applyFilters($qry, $filters);
         }
 
         $pagination = $qry->paginate($size);
@@ -389,9 +386,8 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getPstarVideoPaginate(string $lang, string $orderBy, string $route, string $source = '', int $size = 120): array
+    public static function getPstarVideoPaginate(string $lang, ?array $filters, string $route, int $size = 120): array
     {
-        $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
         if ($size <= 0) {
             $size = 120;
         }
@@ -407,10 +403,9 @@ class DataService extends ServiceBase
             return $res;
         }
 
-        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->order($orderBy, 'desc')->where('pid', $star->id);
-        $source = trim($source);
-        if (!empty($source)) {
-            $qry->where('source', $source);
+        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->where('pid', $star->id);
+        if (!empty($filters)) {
+            self::applyFilters($qry, $filters);
         }
 
         $pagination = $qry->paginate($size);
@@ -471,16 +466,17 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function searchVideos(string $lang, string $orderBy, string $keyword = '', int $size = 120): array
+    public static function searchVideos(string $lang, ?array $filters, string $keyword = '', int $size = 120): array
     {
-        $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
-        
         if ($size <= 0) {
             $size = 120;
         }
         $res = self::initPaginateResult($size);
 
         $qry = Db::name('videos')->field("*,title_{$lang} AS title_en");
+        if (!empty($filters)) {
+            self::applyFilters($qry, $filters);
+        }
 
         $keyword = trim($keyword);
         if (!empty($keyword)) {
@@ -519,7 +515,7 @@ class DataService extends ServiceBase
             });
         }
 
-        $pagination = $qry->order($orderBy, 'desc')->paginate($size);
+        $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
             'total' => $pagination->total(),
@@ -536,15 +532,17 @@ class DataService extends ServiceBase
      * @return array
      * @throws DbException
      */
-    public static function getPopularVideos(string $lang, string $orderBy, int $size = 120): array
+    public static function getPopularVideos(string $lang, ?array $filters, int $size = 120): array
     {
-        $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
-        
         if ($size <= 0) {
             $size = 120;
         }
 
-        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->where('vote_num', '>', 45)->order($orderBy, 'desc');
+        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->where('vote_num', '>', 45);
+        if (!empty($filters)) {
+            self::applyFilters($qry, $filters);
+        }
+        
         $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
@@ -562,15 +560,17 @@ class DataService extends ServiceBase
      * @return array
      * @throws DbException
      */
-    public static function getNewVideos(string $lang, string $orderBy, int $size = 120): array
+    public static function getNewVideos(string $lang, ?array $filters, int $size = 120): array
     {
-        $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
-        
         if ($size <= 0) {
             $size = 120;
         }
 
-        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->order($orderBy, 'desc');
+        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en");
+        if (!empty($filters)) {
+            self::applyFilters($qry, $filters);
+        }
+        
         $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
@@ -588,15 +588,17 @@ class DataService extends ServiceBase
      * @return array
      * @throws DbException
      */
-    public static function getTopRatedVideos(string $lang, string $orderBy, int $size = 120): array
+    public static function getTopRatedVideos(string $lang, ?array $filters, int $size = 120): array
     {
-        $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
-        
         if ($size <= 0) {
             $size = 120;
         }
 
-        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->where('vote_num', '>', 80)->order($orderBy, 'desc');
+        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->where('vote_num', '>', 80);
+        if (!empty($filters)) {
+            self::applyFilters($qry, $filters);
+        }
+        
         $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
@@ -627,7 +629,7 @@ class DataService extends ServiceBase
         $res = Cache::store('redis')->get($key);
         if (empty($res)) {
             $res = [];
-            $cates = self::getTopCategories($size);
+            $cates = self::getTopCategories($lang, $size);
             foreach ($cates as $cate) {
                 $video = Videos::Field("*,title_{$lang} AS title_en")->where('cid', $cate->id)->order('vote_num')->find();
                 if (!empty($video)) {
@@ -708,5 +710,47 @@ class DataService extends ServiceBase
 
         return $url;
     }
+
+    public static function applyFilters($query, $filters)
+    {
+        
+        if (isset($filters['duration']) && !empty($filters['duration'] && $filters['duration'] != 'all')) {
+            $duration = $filters['duration'];
+            if (strpos($duration, '-') !== false) {
+                [$min, $max] = explode('-', $duration);
+                $query->whereBetween('duration_num', [(int)$min, (int)$max]);
+            } else {
+                $query->where('duration_num', '>=', (int)$duration);
+            }
+        }
+
+        if (isset($filters['publish_date']) && !empty($filters['publish_date']) && $filters['publish_date'] != 'all') {
+            $publishDate = $filters['publish_date'];
+            $timeRanges = [
+                '1D' => strtotime('-1 day'),
+                '2D' => strtotime('-2 days'),
+                '7D' => strtotime('-7 days'),
+                '1M' => strtotime('-1 month'),
+                '3M' => strtotime('-3 months'),
+                '1Y' => strtotime('-1 year'),
+            ];
+
+            if (array_key_exists($publishDate, $timeRanges)) {
+                $startTime = $timeRanges[$publishDate];
+                $query->where('publish_at', '>=', $startTime);
+            }
+        }
+
+        if (isset($filters['source']) && !empty($filters['source'])) {
+            $query->where('source', $filters['source']);
+        }
+
+        $orderBy = 'id';
+        if (!empty($filters['order_by']) && in_array(self::ORDER_MAP[$filters['order_by']], self::ALLOW_ORDER_FIELDS)) {
+            $orderBy = self::ORDER_MAP[$filters['order_by']];
+            $query->order($orderBy, 'desc');
+        }
+    }
+
 
 }
