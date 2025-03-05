@@ -9,21 +9,22 @@ use think\Model;
  */
 function getCurrentLangTag(): string
 {
-    $res = 'en';
-    //TODO 获取具体的语言
-
-//* - en,英文
-//* - cn,简体中文
-//* - tw,繁体中文
-//* - ja,日文
-//* - ko,韩文
-//* - ms,马来文
-//* - th,泰文
-//* - de,德文
-//* - vi,越南文
-//* - id,印尼文
-//* - pt,葡萄牙文
-//* - tlph,菲律宾文
+    //* - en,英文
+    //* - cn,简体中文
+    //* - tw,繁体中文
+    //* - ja,日文
+    //* - ko,韩文
+    //* - ms,马来文
+    //* - th,泰文
+    //* - de,德文
+    //* - vi,越南文
+    //* - id,印尼文
+    //* - pt,葡萄牙文
+    //* - tlph,菲律宾文
+    $res = cookie('think_lang', '');
+    if (empty($res)) {
+        $res = 'en'; //默认英文
+    }
 
     return $res;
 }
