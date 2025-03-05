@@ -1587,7 +1587,7 @@ abstract class BaseController
     //     })(document, window);
     // </script>';
 
-    View::assign('currentLang', 'English');
+    View::assign('currentLang', getCurrentLangTag());
 
     View::assign('__LANGUAGES__', DataService::getLanguages());
     View::assign('__SOURCES__', DataService::getSources());
