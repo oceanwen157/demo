@@ -35,8 +35,8 @@
                                 <div class="panel-content">
                                     <div class="tag-data" data-tag-name="orientation" data-persistent="0">
                                         {foreach name="__LANGUAGES__" item="e" key="i" }
-                                            <a href="/home/主题#Straight" data-tag-value="straight" class="menu-item px-5 flex items-center gap-3 selected" data-label="Straight">
-                                                <i class="far flex-shrink-0 w-4 fa-check opacity-0 {if $currentLang == trim($e->title)}opacity-100{else}opacity-0{/if}"></i>{$e->title}
+                                            <a href="/lang/switch?lang={$e.tag}" data-tag-value="straight" class="menu-item px-5 flex items-center gap-3 selected" data-label="Straight">
+                                                <i class="far flex-shrink-0 w-4 fa-check opacity-0 {if $currentLang == trim($e->tag)}opacity-100{else}opacity-0{/if}"></i>{$e->title}
                                             </a>
                                         {/foreach}
                                     </div>
