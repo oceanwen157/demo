@@ -83,11 +83,12 @@
     // 导航搜索
     const onNavFilter = (ele) => {
         $("form[name='filter']").on('change', 'input, select, textarea', (e) => {
-            var formSerializeArray = $("form[name='filter']").serializeArray();
-            var formSerialize = $("form[name='filter']").serialize();
+            //var formSerializeArray = $("form[name='filter']").serializeArray();
+            //var formSerialize = $("form[name='filter']").serialize();
             
-            console.log('表单数据发生变化: ', formSerializeArray);
-            location.href = `#${formSerialize}`;
+            //console.log('表单数据发生变化: ', formSerializeArray);
+            //location.href = `#${formSerialize}`;
+            $("form[name='filter']")[0].submit();
         });
     }
 

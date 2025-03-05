@@ -45,7 +45,7 @@
 
                     console.log(`加载更多数据->${_this.pagination.page}`);
 
-                    axios.get(`/home/listdata`).then(({ data }) => {
+                    axios.get(`/hsssome/listdata`).then(({ data }) => {
                         let list = data;
                         if (list.length) {
                             _this.listdata = [..._this.listdata, ...list];
