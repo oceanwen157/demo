@@ -145,7 +145,7 @@ class Home extends BaseController
 
             return View::fetch('@pages/home/主题');
         }else{
-            $res = DataService::getAllPstars();
+            $res = DataService::getAllPstars($this->lang);
 
             View::assign('navTitle', 'Pornstars');
             View::assign('__ALLSTARS__', $res);
@@ -177,7 +177,7 @@ class Home extends BaseController
     public function network($keyword = '')
     {
         if ($keyword) {
-            View::assign('info', DataService::getPartnerByRouteName($keyword));
+            View::assign('info', DataService::getPartnerByRouteName($this->lang, $keyword));
             return View::fetch('@pages/cooperate/合作详情');
         } else {
 

@@ -313,10 +313,10 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getAllPstars()
+    public static function getAllPstars(string $lang)
     {
         $res = self::initLettersMap();
-        $qry = Pstars::order('is_hot', 'desc')->order('sort', 'asc');
+        $qry = Pstars::field("*, title_{$lang} AS title_en")->order('is_hot', 'desc')->order('sort', 'asc');
 
         //结果分组
         $rows = $qry->select();
@@ -432,12 +432,12 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getCategoriesByLike(string $keyword): Collection
+    public static function getCategoriesByLike(string $lang, string $keyword): Collection
     {
         $fields = self::MUL_LANG_FIELD;
         array_push($fields, 'route_path');
         $searchFields = implode('|', $fields);
-        $res = Categories::where($searchFields, 'like', "%{$keyword}%")->select();
+        $res = Categories::field("*, title_{$lang} AS title_en")->where($searchFields, 'like', "%{$keyword}%")->select();
 
         return $res;
     }
@@ -451,12 +451,12 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getPstarsByLike(string $keyword): Collection
+    public static function getPstarsByLike(string $lang, string $keyword): Collection
     {
         $fields = self::MUL_LANG_FIELD;
         array_push($fields, 'route_path');
         $searchFields = implode('|', $fields);
-        $res = Pstars::where($searchFields, 'like', "%{$keyword}%")->select();
+        $res = Pstars::field("*, title_{$lang} AS title_en")->where($searchFields, 'like', "%{$keyword}%")->select();
 
         return $res;
     }
@@ -487,7 +487,7 @@ class DataService extends ServiceBase
             $orWheres = []; //多个or
 
             $cateIds = [];
-            $cates = self::getCategoriesByLike($keyword);
+            $cates = self::getCategoriesByLike($lang, $keyword);
             if ($cates) {
                 foreach ($cates as $cate) {
                     $cateIds[] = $cate->id;
@@ -498,7 +498,7 @@ class DataService extends ServiceBase
             }
 
             $starIds = [];
-            $stars = self::getPstarsByLike($keyword);
+            $stars = self::getPstarsByLike($lang, $keyword);
             if ($stars) {
                 foreach ($stars as $star) {
                     $starIds[] = $star->id;
@@ -646,9 +646,11 @@ class DataService extends ServiceBase
         return $res;
     }
 
-    public static function getNetworks()
+    public static function getNetworks(string $lang)
     {
-        return Db::name('partners')->select();
+        return Db::name('partners')
+        ->field("*,title_{$lang} AS title_en,hint_{$lang} AS hint_en,description_{$lang} AS description_en")
+        ->select();
     }
 
 
@@ -660,9 +662,11 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getPartnerByRouteName(string $route): Array
+    public static function getPartnerByRouteName(string $lang, string $route): Array
     {
-        return Db::name('partners')->where('route_path', $route)->find();
+        return Db::name('partners')
+        ->field("*,title_{$lang} AS title_en,hint_{$lang} AS hint_en,description_{$lang} AS description_en")
+        ->where('route_path', $route)->find();
     }
 
     public static function getRedirectUrl($url)
