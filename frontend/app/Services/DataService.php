@@ -145,9 +145,9 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getSources(): Collection
+    public static function getSources(string $lang): Collection
     {
-        $res = Sources::field('*')->whereIn('is_hot', [0, 1])->order('sort', 'asc')->select();
+        $res = Sources::field("*, title_{$lang} AS title_en")->whereIn('is_hot', [0, 1])->order('sort', 'asc')->select();
         return $res;
     }
 
@@ -160,9 +160,9 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getTopCategories(int $limit = 8): Collection
+    public static function getTopCategories(string $lang, int $limit = 8): Collection
     {
-        $res = Categories::field('*')
+        $res = Categories::field("*, title_{$lang} AS title_en")
             ->order('is_hot', 'desc')
             ->order('quantity_num', 'desc')
             ->order('sort', 'asc')
@@ -181,9 +181,14 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getTopPstars(int $limit = 8): Collection
+    public static function getTopPstars(string $lang, int $limit = 8): Collection
     {
-        $res = Pstars::field('*')->order('is_hot', 'desc')->order('sort', 'asc')->order('id', 'asc')->limit($limit)->select();
+        $res = Pstars::field("*, title_{$lang} AS title_en")
+        ->order('is_hot', 'desc')
+        ->order('sort', 'asc')
+        ->order('id', 'asc')
+        ->limit($limit)
+        ->select();
         return $res;
     }
 
@@ -196,7 +201,7 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getOtherCategories(int $limit = 20): Collection
+    public static function getOtherCategories(string $lang, int $limit = 20): Collection
     {
         $tops = self::getTopCategories($limit);
         $topIds = [0];
@@ -204,7 +209,7 @@ class DataService extends ServiceBase
             $topIds[] = $top->id;
         }
 
-        $res = Categories::whereNotIn('id', $topIds)->order('is_hot', 'desc')->order('sort', 'asc')->limit($limit)->select();
+        $res = Categories::field("*, title_{$lang} AS title_en")->whereNotIn('id', $topIds)->order('is_hot', 'desc')->order('sort', 'asc')->limit($limit)->select();
         return $res;
     }
 
@@ -217,10 +222,10 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getPopularCategories(bool $isHot = false): array
+    public static function getPopularCategories(string $lang, bool $isHot = false): array
     {
         $res = self::initLettersMap();
-        $qry = Categories::order('is_hot', 'desc')->order('sort', 'asc');
+        $qry = Categories::field("*, title_{$lang} AS title_en")->order('is_hot', 'desc')->order('sort', 'asc');
         if ($isHot) {
             $qry->where('is_hot', 1);
         }
@@ -249,10 +254,10 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getPopularPstars(bool $isHot = false): array
+    public static function getPopularPstars(string $lang, bool $isHot = false): array
     {
         $res = self::initLettersMap();
-        $qry = Pstars::order('is_hot', 'desc')->order('sort', 'asc');
+        $qry = Pstars::field("*, title_{$lang} AS title_en")->order('is_hot', 'desc')->order('sort', 'asc');
         if ($isHot) {
             $qry->where('is_hot', 1);
         }
@@ -280,10 +285,10 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getAllCategories(): array
+    public static function getAllCategories(string $lang): array
     {
         $res = self::initLettersMap();
-        $qry = Categories::order('is_hot', 'desc')->order('sort', 'asc');
+        $qry = Categories::field("*, title_{$lang} AS title_en")->order('is_hot', 'desc')->order('sort', 'asc');
 
         //结果分组
         $rows = $qry->select();
@@ -618,7 +623,7 @@ class DataService extends ServiceBase
      */
     public static function getHomeVideos(string $lang, int $size = 120): array
     {
-        $key = __FUNCTION__ . $size;
+        $key = __FUNCTION__ . $size . $lang;
         $res = Cache::store('redis')->get($key);
         if (empty($res)) {
             $res = [];

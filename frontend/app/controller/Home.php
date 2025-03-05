@@ -24,9 +24,9 @@ class Home extends BaseController
 
         View::assign('total', 0);
         View::assign('__RECOMMENDVIDEO__', $recommend);
-        View::assign('__OTHERCATEGORIES__', DataService::getOtherCategories());
-        View::assign('__POPULARCATEGORIES__', DataService::getPopularCategories());
-        View::assign('__POPULARSTARS__', DataService::getPopularPstars());
+        View::assign('__OTHERCATEGORIES__', DataService::getOtherCategories($this->lang));
+        View::assign('__POPULARCATEGORIES__', DataService::getPopularCategories($this->lang));
+        View::assign('__POPULARSTARS__', DataService::getPopularPstars($this->lang));
         
         
         return View::fetch('@pages/home/首页');
@@ -166,7 +166,7 @@ class Home extends BaseController
 
     public function az()
     {
-        $res = DataService::getAllCategories();
+        $res = DataService::getAllCategories($this->lang);
 
         View::assign('navTitle', 'Categories');
         View::assign('__ALLSTARS__', $res);

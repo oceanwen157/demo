@@ -1594,9 +1594,9 @@ abstract class BaseController
     View::assign('currentLang', 'English');
 
     View::assign('__LANGUAGES__', DataService::getLanguages());
-    View::assign('__SOURCES__', DataService::getSources());
+    View::assign('__SOURCES__', DataService::getSources($this->lang));
 
-    View::assign('__CATEGORIES__', DataService::getTopCategories());
+    View::assign('__CATEGORIES__', DataService::getTopCategories($this->lang));
     View::assign('__PORNSTARS__', DataService::getTopPstars());
 
   }
