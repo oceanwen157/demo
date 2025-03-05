@@ -4,7 +4,7 @@
 
 <div id="content" class="flex flex-col container gap-3 pt-4 pb-6 px-3 mobile:px-2">
     <h2 class="content-header-title">
-        Most Popular Sex Video Categories
+        {$Think.lang.homeHeaderTitle}
     </h2>
     
     <!-- 列表 start -->
