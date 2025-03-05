@@ -1559,7 +1559,7 @@ abstract class BaseController
     $this->app     = $app;
     $this->request = $this->app->request;
 
-    $this->lang = $this->request->param('lang') ?? $this->lang;
+    $this->lang = getCurrentLangTag();
 
     // 控制器初始化
     $this->initialize();
@@ -1594,10 +1594,10 @@ abstract class BaseController
     View::assign('currentLang', getCurrentLangTag());
 
     View::assign('__LANGUAGES__', DataService::getLanguages());
-    View::assign('__SOURCES__', DataService::getSources());
+    View::assign('__SOURCES__', DataService::getSources($this->lang));
 
-    View::assign('__CATEGORIES__', DataService::getTopCategories());
-    View::assign('__PORNSTARS__', DataService::getTopPstars());
+    View::assign('__CATEGORIES__', DataService::getTopCategories($this->lang));
+    View::assign('__PORNSTARS__', DataService::getTopPstars($this->lang));
 
   }
 

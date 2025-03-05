@@ -9,19 +9,19 @@
                 data-filter="order_by">
                 <div class="chip-group-contents">
                     <label class="chip" for="filter_order_by_0">
-                        <span class="label">Popularity</span>
+                        <span class="label">{$Think.lang.popularity}</span>
                         <input type="radio" id="filter_order_by_0" name="filter[order_by]" value="popular" required="" {if $checked == 'popular'}checked{/if} class="hidden">
                     </label>
                     <label class="chip" for="filter_order_by_1">
-                        <span class="label">Date</span>
-                        <input type="radio" id="filter_order_by_1" name="filter[order_by]" value="date" required="" {if $checked == 'popular'}checked{/if}  class="hidden">
+                        <span class="label">{$Think.lang.date}</span>
+                        <input type="radio" id="filter_order_by_1" name="filter[order_by]" value="date" required="" {if $checked == 'date'}checked{/if}  class="hidden">
                     </label>
                     <label class="chip" for="filter_order_by_2">
-                        <span class="label">Duration</span>
+                        <span class="label">{$Think.lang.duration}</span>
                         <input type="radio" id="filter_order_by_2" name="filter[order_by]" value="duration" required="" {if $checked == 'duration'}checked{/if}  class="hidden">
                     </label>
                     <label class="chip" for="filter_order_by_3">
-                        <span class="label">Rating</span>
+                        <span class="label">{$Think.lang.rate}</span>
                         <input type="radio" id="filter_order_by_3" name="filter[order_by]" value="rating" required="" {if $checked == 'rating'}checked{/if}  class="hidden">
                     </label>
                 </div>
@@ -200,7 +200,7 @@
                                 <label class="menu-item" for="filter_advertiser_site_0">All</label>
                             </div>
                             {foreach name="__SOURCES__" item="e" key="i" }
-                                <div class="radio filter_advertiser_site_setting filter-setting"  data-value="40Something">
+                                <div class="radio filter_advertiser_site_setting filter-setting"  data-value="{$e.title_en}">
                                     <input type="radio" id="filter_advertiser_site_1" name="filter[advertiser_site]" value="{$e.title_en}">
                                     <label class="menu-item" for="filter_advertiser_site_1">{$e.title_en}</label>
                                 </div>

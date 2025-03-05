@@ -183,6 +183,14 @@ class QorDataService extends ServiceBase
         return $res;
     }
 
+    public static function generateTimestamp(): int
+    {
+        $currentTimestamp = time(); 
+        $fourYearsAgo = strtotime('-4 years'); 
+        
+        return rand($fourYearsAgo, $currentTimestamp); 
+    }
+
 
     /**
      * 投票描述转为数值
@@ -479,7 +487,7 @@ class QorDataService extends ServiceBase
 
         $durationNum = self::hmsToSeconds($durationDesc);
         $voteNum = self::voteDesc2Number($voteDesc);
-        $publishAt = self::strToTimestamp($timeDesc);
+        $publishAt = self::generateTimestamp();
         $data = [
             'cid' => $cid,
             'pid' => $pid,
