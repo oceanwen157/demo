@@ -29,7 +29,7 @@ class QorPartnersController extends AdminController
     {
         $grid = new Grid(new QorPartners());
         $grid->model()->orderBy('id', 'DESC');
-        $frontUrl = trim(env('FRONT_URL', ''), '/') . '/';
+        $frontUrl = trim(config('FRONT_URL'), '/') . '/';
 
         $grid->column('id', __('Id'));
         //$grid->column('trans_status', __('Trans status'));
@@ -171,6 +171,9 @@ class QorPartnersController extends AdminController
 
         $form->number('sort', __('admin.Sort'))->default(99);
         $form->text('title_en', __('admin.Title en'))->rules('required');
+        $form->text('hint_en', __('admin.Hint en'))->rules('required');
+        $form->textarea('description_en', __('admin.Description en'))->rules('required');
+
         $form->text('title_cn', __('admin.Title cn'));
         $form->text('title_tw', __('admin.Title tw'));
         $form->text('title_ja', __('admin.Title ja'));
@@ -182,7 +185,7 @@ class QorPartnersController extends AdminController
         $form->text('title_id', __('admin.Title id'));
         $form->text('title_pt', __('admin.Title pt'));
         $form->text('title_tlph', __('admin.Title tlph'));
-        $form->text('hint_en', __('admin.Hint en'))->rules('required');
+
         $form->text('hint_cn', __('admin.Hint cn'));
         $form->text('hint_tw', __('admin.Hint tw'));
         $form->text('hint_ja', __('admin.Hint ja'));
@@ -194,7 +197,7 @@ class QorPartnersController extends AdminController
         $form->text('hint_id', __('admin.Hint id'));
         $form->text('hint_pt', __('admin.Hint pt'));
         $form->text('hint_tlph', __('admin.Hint tlph'));
-        $form->textarea('description_en', __('admin.Description en'))->rules('required');
+
         $form->textarea('description_cn', __('admin.Description cn'));
         $form->textarea('description_tw', __('admin.Description tw'));
         $form->textarea('description_ja', __('admin.Description ja'));

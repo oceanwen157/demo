@@ -8,9 +8,9 @@
                 <span class="hidden no-image">No video available</span>
                 <span class="badge absolute left-1 bottom-1">{$e.video.duration_num}K</span>
             </a>
-            <a class="pl-1 collection-title" href="/category/{$e.category.route_path}" title="{$e.category.title_en}">
+            <a class="pl-1 collection-title" href="/category/{$e.category.route_path}" title="{$e.category|getLangValueByField}">
                 <h3 class="m-0 w-full overflow-hidden truncate text-ellipsis text-md flex items-center gap-1">
-                    {$e.category.title_en}
+                    {$e.category|getLangValueByField=###,"title"}
                 </h3>
             </a>
         </div>
