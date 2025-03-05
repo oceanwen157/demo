@@ -339,7 +339,7 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getCategoryVideoPaginate(string $orderBy, string $route, string $source = '', int $size = 120): array
+    public static function getCategoryVideoPaginate(string $lang, string $orderBy, string $route, string $source = '', int $size = 120): array
     {
         $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
         if ($size <= 0) {
@@ -357,7 +357,7 @@ class DataService extends ServiceBase
             return $res;
         }
 
-        $qry = Db::name('videos')->order($orderBy, 'desc')->where('cid', $cate->id);
+        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->order($orderBy, 'desc')->where('cid', $cate->id);
         $source = trim($source);
         if (!empty($source)) {
             $qry->where('source', $source);
@@ -384,7 +384,7 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function getPstarVideoPaginate(string $orderBy, string $route, string $source = '', int $size = 120): array
+    public static function getPstarVideoPaginate(string $lang, string $orderBy, string $route, string $source = '', int $size = 120): array
     {
         $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
         if ($size <= 0) {
@@ -402,7 +402,7 @@ class DataService extends ServiceBase
             return $res;
         }
 
-        $qry = Db::name('videos')->order($orderBy, 'desc')->where('pid', $star->id);
+        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->order($orderBy, 'desc')->where('pid', $star->id);
         $source = trim($source);
         if (!empty($source)) {
             $qry->where('source', $source);
@@ -466,7 +466,7 @@ class DataService extends ServiceBase
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function searchVideos(string $orderBy, string $keyword = '', int $size = 120): array
+    public static function searchVideos(string $lang, string $orderBy, string $keyword = '', int $size = 120): array
     {
         $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
         
@@ -475,7 +475,7 @@ class DataService extends ServiceBase
         }
         $res = self::initPaginateResult($size);
 
-        $qry = Db::name('videos');
+        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en");
 
         $keyword = trim($keyword);
         if (!empty($keyword)) {
@@ -531,7 +531,7 @@ class DataService extends ServiceBase
      * @return array
      * @throws DbException
      */
-    public static function getPopularVideos(string $orderBy, int $size = 120): array
+    public static function getPopularVideos(string $lang, string $orderBy, int $size = 120): array
     {
         $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
         
@@ -539,7 +539,7 @@ class DataService extends ServiceBase
             $size = 120;
         }
 
-        $qry = Db::name('videos')->where('vote_num', '>', 45)->order($orderBy, 'desc');
+        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->where('vote_num', '>', 45)->order($orderBy, 'desc');
         $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
@@ -557,7 +557,7 @@ class DataService extends ServiceBase
      * @return array
      * @throws DbException
      */
-    public static function getNewVideos(string $orderBy, int $size = 120): array
+    public static function getNewVideos(string $lang, string $orderBy, int $size = 120): array
     {
         $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
         
@@ -565,7 +565,7 @@ class DataService extends ServiceBase
             $size = 120;
         }
 
-        $qry = Db::name('videos')->order($orderBy, 'desc');
+        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->order($orderBy, 'desc');
         $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
@@ -583,7 +583,7 @@ class DataService extends ServiceBase
      * @return array
      * @throws DbException
      */
-    public static function getTopRatedVideos(string $orderBy, int $size = 120): array
+    public static function getTopRatedVideos(string $lang, string $orderBy, int $size = 120): array
     {
         $orderBy = !in_array(self::ORDER_MAP[$orderBy], self::ALLOW_ORDER_FIELDS) ? 'id' : self::ORDER_MAP[$orderBy];
         
@@ -591,7 +591,7 @@ class DataService extends ServiceBase
             $size = 120;
         }
 
-        $qry = Db::name('videos')->where('vote_num', '>', 80)->order($orderBy, 'desc');
+        $qry = Db::name('videos')->field("*,title_{$lang} AS title_en")->where('vote_num', '>', 80)->order($orderBy, 'desc');
         $pagination = $qry->paginate($size);
         $res = [
             'paginate' => $pagination,
@@ -616,7 +616,7 @@ class DataService extends ServiceBase
      * @throws ModelNotFoundException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public static function getHomeVideos(int $size = 120): array
+    public static function getHomeVideos(string $lang, int $size = 120): array
     {
         $key = __FUNCTION__ . $size;
         $res = Cache::store('redis')->get($key);
@@ -624,7 +624,7 @@ class DataService extends ServiceBase
             $res = [];
             $cates = self::getTopCategories($size);
             foreach ($cates as $cate) {
-                $video = Videos::where('cid', $cate->id)->order('vote_num')->find();
+                $video = Videos::Field("*,title_{$lang} AS title_en")->where('cid', $cate->id)->order('vote_num')->find();
                 if (!empty($video)) {
                     $res[] = [
                         'category' => $cate, //分类信息

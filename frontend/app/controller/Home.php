@@ -20,7 +20,7 @@ class Home extends BaseController
         //     }
         // }
 
-        $recommend = DataService::getHomeVideos();
+        $recommend = DataService::getHomeVideos($this->lang);
 
         View::assign('total', 0);
         View::assign('__RECOMMENDVIDEO__', $recommend);
@@ -37,7 +37,7 @@ class Home extends BaseController
         $filters = Request::param('filter');
         $orderBy = $filters['order_by'] ?? 'popular';
 
-        $video = DataService::getCategoryVideoPaginate($orderBy, $category);
+        $video = DataService::getCategoryVideoPaginate($this->lang, $orderBy, $category);
 
         View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
         View::assign('pagination', $video['paginate']);
@@ -53,7 +53,7 @@ class Home extends BaseController
         $filters = Request::param('filter');
         $orderBy = $filters['order_by'] ?? 'popular';
 
-        $searchVideo = DataService::searchVideos($orderBy, $keyword);
+        $searchVideo = DataService::searchVideos($this->lang, $orderBy, $keyword);
 
         
         if (!trim($keyword)) {
@@ -110,7 +110,7 @@ class Home extends BaseController
         $orderBy = $filters['order_by'] ?? 'popular';
         
         $navTitle = 'Top rated videos';
-        $topRate = DataService::getTopRatedVideos($orderBy, 20);
+        $topRate = DataService::getTopRatedVideos($this->lang, $orderBy, 20);
 
         View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
         View::assign('pagination', $topRate['paginate']);
@@ -135,7 +135,7 @@ class Home extends BaseController
             $filters = Request::param('filter');
             $orderBy = $filters['order_by'] ?? 'popular';
 
-            $video = DataService::getPstarVideoPaginate($orderBy, $pornstar);
+            $video = DataService::getPstarVideoPaginate($this->lang, $orderBy, $pornstar);
     
             View::assign('__RECOMMENDCATES__', DataService::getOtherCategories());
             View::assign('pagination', $video['paginate']);
