@@ -53,9 +53,10 @@ class Crawler extends Command
             }
 
             sleep(10);
+            
             $categories = self::getCategories(true);
             foreach($categories as $category) {
-                $data = self::getPageVideos($category);
+                $data = self::getPageVideos($category, true);
                 foreach($data as $v) {
                     try {
                         var_dump(self::$qorSvc->addVideoInfo($v));
