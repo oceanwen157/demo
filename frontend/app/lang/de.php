@@ -19,5 +19,13 @@ return [
     'videos' => 'Videos',
     'popularVideos' => 'Beliebte Videos',
     'newVideos' => 'Neue Videos',
-    'topRatedVideos' => 'Top-bewertete Videos'
+    'topRatedVideos' => 'Top-bewertete Videos',
+    'hotCategories' => 'Heisse Kategorien',
+    'popularPornstars' => 'Beliebte Pornostars',
+    'charge' => 'Gebühr',
+    'close' => 'Schließen',
+    'listScaling' => 'Listenskalierung',
+    'contactUs' => 'Kontaktieren Sie uns',
+    'help' => 'Hilfe Einführung',
+    'on' => 'Ein',
 ];

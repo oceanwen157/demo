@@ -16,14 +16,8 @@
     <!-- 标签 end -->
 
     <div class="flex-grow-1 mobile:hidden flex flex-col gap-8">
-
         <!-- 标签2 start -->
         {include file="@components/xqbj-component-tags2" /}
         <!-- 标签2 end -->
-    
-        <!-- 标签2 start -->
-        {include file="@components/xqbj-component-tags2" /}
-        <!-- 标签2 end -->
-
     </div>
 </div>

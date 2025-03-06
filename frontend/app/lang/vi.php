@@ -19,5 +19,13 @@ return [
     'videos' => 'Video',
     'popularVideos' => 'Video nổi bật',
     'newVideos' => 'Video mới',
-    'topRatedVideos' => 'Video được đánh giá cao nhất'
+    'topRatedVideos' => 'Video được đánh giá cao nhất',
+    'hotCategories' => 'Danh mục nóng',
+    'popularPornstars' => 'Pornstars phổ biến',
+    'charge' => 'Phí',
+    'close' => 'Đóng',
+    'listScaling' => 'Thanh trải danh sách',
+    'contactUs' => 'Liên hệ với chúng tôi',
+    'help' => 'Giới thiệu trợ giúp',
+    'on' => 'Mở',
 ];

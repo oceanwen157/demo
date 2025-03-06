@@ -19,5 +19,13 @@ return [
     'videos' => 'Mga Video',
     'popularVideos' => 'Mga Sikat na Video',
     'newVideos' => 'Mga Bagong Video',
-    'topRatedVideos' => 'Mga Video na Pinangungunahan sa Rating'
+    'topRatedVideos' => 'Mga Video na Pinangungunahan sa Rating',
+    'hotCategories' => 'Mga Kategorya na Mainit',
+    'popularPornstars' => 'Mga Popular na Pornstar',
+    'charge' => 'Bayad',
+    'close' => 'Isara',
+    'listScaling' => 'Pag-scale ng Lista',
+    'contactUs' => 'Makipag-ugnayan sa Amin',
+    'help' => 'Pagpapakilala sa Tulong',
+    'on' => 'Buksan',
 ];

@@ -19,5 +19,13 @@ return [
     'videos' => 'Video',
     'popularVideos' => 'Video Populer',
     'newVideos' => 'Video Baru',
-    'topRatedVideos' => 'Video Teratas'
+    'topRatedVideos' => 'Video Teratas',
+    'hotCategories' => 'Kategori Panas',
+    'popularPornstars' => 'Pornstars Populer',
+    'charge' => 'Biaya',
+    'close' => 'Tutup',
+    'listScaling' => 'Skala Daftar',
+    'contactUs' => 'Hubungi Kami',
+    'help' => 'Pengantar Bantuan',
+    'on' => 'Terbuka',
 ];
