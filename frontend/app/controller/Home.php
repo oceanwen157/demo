@@ -166,7 +166,7 @@ class Home extends BaseController
 
     public function pornstarCates()
     {
-        $res = DataService::getAllPstars();
+        $res = DataService::getAllPstars($this->lang);
 
         View::assign('navTitle', 'Pornstars');
         View::assign('__ALLSTARS__', $res);
