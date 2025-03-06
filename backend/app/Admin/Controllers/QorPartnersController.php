@@ -82,7 +82,7 @@ class QorPartnersController extends AdminController
 
         $grid->filter(function ($filter) {
             $filter->equal('name', __('admin.Name'));
-            $filter->equal('route_path', __('Route path'));
+            $filter->equal('route_path', __('admin.Route path'));
         });
 
         return $grid;

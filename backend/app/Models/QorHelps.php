@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @OA\Schema (
  *      schema="QorHelps",
- *      required={"trans_status", "sort", "route_path", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "content_en", "content_cn", "content_tw", "content_ja", "content_ko", "content_ms", "content_th", "content_de", "content_vi", "content_id", "content_pt", "content_tlph", "create_at", "update_at"},
+ *      required={"trans_status", "sort", "route_path", "title_en", "title_cn", "title_tw", "title_ja", "title_ko", "title_ms", "title_th", "title_de", "title_vi", "title_id", "title_pt", "title_tlph", "create_at", "update_at"},
  *      @OA\Property(
  *          property="id",
  *          description="id",
@@ -230,8 +230,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $id
  * @property int $trans_status 翻译状态:0待翻译,1翻译中,2翻译完成
  * @property int $sort 排序:ASC
- * @property string $name 名称
- * @property string $logo LOGO
  * @property string $route_path 路由路径
  * @property string $title_en 标题-英文
  * @property string $title_cn 标题-简体中文
@@ -245,63 +243,37 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $title_id 标题-印尼文
  * @property string $title_pt 标题-葡萄牙文
  * @property string $title_tlph 标题-菲律宾文
- * @property string $hint_en 提示-英文
- * @property string $hint_cn 提示-简体中文
- * @property string $hint_tw 提示-繁体中文
- * @property string $hint_ja 提示-日文
- * @property string $hint_ko 提示-韩文
- * @property string $hint_ms 提示-马来文
- * @property string $hint_th 提示-泰文
- * @property string $hint_de 提示-德文
- * @property string $hint_vi 提示-越南文
- * @property string $hint_id 提示-印尼文
- * @property string $hint_pt 提示-葡萄牙文
- * @property string $hint_tlph 提示-菲律宾文
- * @property string|null $description_en 描述-英文
- * @property string|null $description_cn 描述-简体中文
- * @property string|null $description_tw 描述-繁体中文
- * @property string|null $description_ja 描述-日文
- * @property string|null $description_ko 描述-韩文
- * @property string|null $description_ms 描述-马来文
- * @property string|null $description_th 描述-泰文
- * @property string|null $description_de 描述-德文
- * @property string|null $description_vi 描述-越南文
- * @property string|null $description_id 描述-印尼文
- * @property string|null $description_pt 描述-葡萄牙文
- * @property string|null $description_tlph 描述-菲律宾文
+ * @property string|null $content_en 内容-英文
+ * @property string|null $content_cn 内容-简体中文
+ * @property string|null $content_tw 内容-繁体中文
+ * @property string|null $content_ja 内容-日文
+ * @property string|null $content_ko 内容-韩文
+ * @property string|null $content_ms 内容-马来文
+ * @property string|null $content_th 内容-泰文
+ * @property string|null $content_de 内容-德文
+ * @property string|null $content_vi 内容-越南文
+ * @property string|null $content_id 内容-印尼文
+ * @property string|null $content_pt 内容-葡萄牙文
+ * @property string|null $content_tlph 内容-菲律宾文
  * @property int $create_at 创建时间
  * @property int $update_at 更新时间
  * @method static \Illuminate\Database\Eloquent\Builder|QorHelps newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|QorHelps newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|QorHelps query()
+ * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereContentCn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereContentDe($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereContentEn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereContentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereContentJa($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereContentKo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereContentMs($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereContentPt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereContentTh($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereContentTlph($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereContentTw($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereContentVi($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereCreateAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereDescriptionCn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereDescriptionDe($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereDescriptionEn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereDescriptionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereDescriptionJa($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereDescriptionKo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereDescriptionMs($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereDescriptionPt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereDescriptionTh($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereDescriptionTlph($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereDescriptionTw($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereDescriptionVi($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereHintCn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereHintDe($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereHintEn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereHintId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereHintJa($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereHintKo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereHintMs($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereHintPt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereHintTh($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereHintTlph($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereHintTw($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereHintVi($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereLogo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereRoutePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereSort($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QorHelps whereTitleCn($value)
@@ -324,7 +296,7 @@ class QorHelps extends Model
 {
     use HasFactory;
 
-    public $table = 'qor_partners';
+    public $table = 'qor_helps';
 
     const CREATED_AT = 'create_at';
     const UPDATED_AT = 'update_at';
@@ -423,18 +395,20 @@ class QorHelps extends Model
         'title_id' => 'string|max:128',
         'title_pt' => 'string|max:128',
         'title_tlph' => 'string|max:128',
-        'content_en' => 'required|string|max:128',
-        'content_cn' => 'string|max:128',
-        'content_tw' => 'string|max:128',
-        'content_ja' => 'string|max:128',
-        'content_ko' => 'string|max:128',
-        'content_ms' => 'string|max:128',
-        'content_th' => 'string|max:128',
-        'content_de' => 'string|max:128',
-        'content_vi' => 'string|max:128',
-        'content_id' => 'string|max:128',
-        'content_pt' => 'string|max:128',
-        'content_tlph' => 'string|max:128',
+        'content_en' => 'required|nullable|string',
+        'content_cn' => 'nullable|string',
+        'content_tw' => 'nullable|string',
+        'content_ja' => 'nullable|string',
+        'content_ko' => 'nullable|string',
+        'content_ms' => 'nullable|string',
+        'content_th' => 'nullable|string',
+        'content_de' => 'nullable|string',
+        'content_vi' => 'nullable|string',
+        'content_id' => 'nullable|string',
+        'content_pt' => 'nullable|string',
+        'content_tlph' => 'nullable|string',
+        'create_at' => 'integer',
+        'update_at' => 'integer'
     ];
 
 
