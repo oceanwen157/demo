@@ -2,7 +2,7 @@
 
 <div class="cards-container">
     {foreach name="$pagination" item="e" key="i" }
-        <div class="rating-card card sub group rating-active {if $i == 2} paid {/if}">
+        <div class="rating-card card sub group rating-active {if $i == 2} paid {/if}" data-id="{$e.id}">
             <a class="item-link rate-link relative" href="{$e.play_url}" target="_blank" title="{$e.title_en}" tabindex="-1" rel="nofollow">
                 <img class="item-image" z-image-loader-url="{$e.cover_new}" loading="eager" alt="{$e.title_en}" />
 
@@ -15,8 +15,9 @@
 
                 <span class="item-meta-container">
                     <span class="badge rating-badge float-left">
-                        <span class="item-score score-positive flex gap-1 items-center">
-                            <i class="far fa-thumbs-up text-xsm"></i>{$i + 50}%
+                        <span class="item-score score-positive flex gap-1 items-center id="vote-score-{$e.id}">
+                            <i class="far fa-thumbs-up text-xsm"></i>
+                            <span class="vote-score">{$e.vote_num + 50}%</span>
                         </span>
                     </span>
                     <span class="badge float-right">
