@@ -6,21 +6,21 @@ use App\Services\TransService;
 use Illuminate\Console\Command;
 use Throwable;
 
-class Translate extends Command
+class TransBase extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'translate:do';
+    protected $signature = 'translate:base';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '将抓取的数据进行多语言翻译';
+    protected $description = '翻译后台管理的内容，包括合作伙伴和帮助中心';
 
     /**
      * Create a new command instance.
@@ -39,10 +39,10 @@ class Translate extends Command
      */
     public function handle()
     {
-        printf("do translate\n");
+        printf("do translate:base\n");
         try {
-            $serv = new TransService();
-            $serv->doTranslate();
+            TransService::transHelps();
+            TransService::transPartners();
         } catch (Throwable $e) {
             logException($e);
             printf("has error:%s\n", $e->getMessage());
