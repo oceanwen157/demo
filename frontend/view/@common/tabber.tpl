@@ -19,9 +19,9 @@
             <div class="footer-column">
                 <div id="site-links" class="flex flex-col gap-2 mobile:gap-4">
                     <h3 class="m-0">Support</h3>
-                    <a href="/help/常见问题" title="Frequently Asked Questions">FAQ</a>
-                    <a href="/help/帮助改进" title="Help Us Improve">Help Us Improve</a>
-                    <a href="/help/联系我们" title="Contact Us">Contact Us</a>
+                    <a href="/help/faq" title="{:getHelpTitleByRoute("faq")}">{:getHelpTitleByRoute("faq")}</a>
+                    <a href="/help/improve" title="{:getHelpTitleByRoute("improve")}">{:getHelpTitleByRoute("improve")}</a>
+                    <a href="/help/contact" title="{:getHelpTitleByRoute("contact")}">{:getHelpTitleByRoute("contact")}</a>
                 </div>
 
                 <div id="advertiser-links" class="flex flex-col gap-2 mobile:gap-4">
@@ -34,33 +34,33 @@
 
             <div id="legal-links" class="flex flex-col gap-2 mobile:gap-4">
                 <h3 class="m-0">Legal</h3>
-                <a class="anchor-link legal-link" href="/help/服务条款" title="Terms of Service"
+                <a class="anchor-link legal-link" href="/help/terms-service" title="{:getHelpTitleByRoute("terms-service")}"
                     target="_blank" rel="nofollow">
-                    Terms of Service
+                    {:getHelpTitleByRoute("terms-service")}
                 </a>
-                <a class="anchor-link legal-link" href="/help/隐私声明" title="Privacy Statement"
+                <a class="anchor-link legal-link" href="/help/privacy-statement" title="{:getHelpTitleByRoute("privacy-statement")}"
                     target="_blank" rel="nofollow">
-                    Privacy Statement
+                    {:getHelpTitleByRoute("privacy-statement")}
                 </a>
-                <a class="anchor-link legal-link" href="/help/删除声明"
-                    title="Notice and Action Policy" target="_blank" rel="nofollow">
-                    Notice and Action Policy (Link Removal)
+                <a class="anchor-link legal-link" href="/help/notice-action"
+                    title="{:getHelpTitleByRoute("notice-action")}" target="_blank" rel="nofollow">
+                    {:getHelpTitleByRoute("notice-action")}
                 </a>
-                <a class="anchor-link legal-link" href="/help/删除声明#DMCA" title="DMCA"
+                <a class="anchor-link legal-link" href="/help/dmca" title="{:getHelpTitleByRoute("dmca")}"
                     target="_blank" rel="nofollow">
-                    DMCA / Copyright
+                    {:getHelpTitleByRoute("dmca")}
                 </a>
-                <a class="anchor-link legal-link" href="/help/版权声明"
-                    title="Acceptable Content Policy" target="_blank" rel="nofollow">
-                    Acceptable Content Policy
+                <a class="anchor-link legal-link" href="/help/content-policy"
+                    title="{:getHelpTitleByRoute("content-policy")}" target="_blank" rel="nofollow">
+                    {:getHelpTitleByRoute("content-policy")}
                 </a>
-                <a class="anchor-link legal-link" href="/help/数字服务" title="Digital Services Act"
+                <a class="anchor-link legal-link" href="/help/digital" title="{:getHelpTitleByRoute("digital")}"
                     target="_blank" rel="nofollow">
-                    Digital Services Act
+                    {:getHelpTitleByRoute("digital")}
                 </a>
-                <a class="anchor-link legal-link" href="/help/豁免声明" target="_blank" rel="nofollow"
-                    title="18 U.S.C. 2257 Record-Keeping Requirements Compliance Statement">
-                    2257
+                <a class="anchor-link legal-link" href="/help/2257" target="_blank" rel="nofollow"
+                    title="{:getHelpTitleByRoute("2257")}">
+                    {:getHelpTitleByRoute("2257")}
                 </a>
             </div>
 

@@ -31,6 +31,7 @@ Route::group('', function() {
 
     Route::post('videorate', 'home/videorate');
 
+    Route::get('help/:route', 'help/detail')->pattern(['route' => '[\w\-]+']);
 
     Route::get('登陆', 'popup/登陆');
     Route::get('注册', 'popup/注册');

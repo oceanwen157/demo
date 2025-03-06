@@ -26,7 +26,8 @@
         "topthink/think-filesystem": "^1.0",
         "topthink/think-view": "^1.0",
         "predis/predis": "^2.3",
-        "kakuilan/php-helper": "^0.5.3"
+        "kakuilan/php-helper": "^0.5.3",
+        "voku/portable-utf8": "^6.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",

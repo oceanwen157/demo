@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\QorCategories;
+use App\Models\QorHelps;
 use App\Models\QorPartners;
 use App\Models\QorPstars;
 use App\Models\QorSources;
@@ -17,6 +18,7 @@ use Kph\Helpers\ValidateHelper;
 use sqhlib\Hanzi\HanziConvert;
 use DeepL\DeepLClient;
 use DeepL\DeepLException;
+use voku\helper\UTF8;
 use Throwable;
 
 /**
@@ -165,6 +167,11 @@ class TransService extends ServiceBase
         $chkTag = !empty($langTag) && in_array($langTag, array_keys(self::LANG_PAIR));
         $fieldName = "{$field}_{$langTag}";
         if ($chkTag && !empty($val) && isset($mod->$fieldName)) {
+            $len = mb_strlen($val);
+            if (in_array($field, ['title', 'hint']) && $len > 128) {
+                $val = mb_substr($val, 0, 128);
+            }
+
             $mod->$fieldName = $val;
         }
 
@@ -418,11 +425,75 @@ class TransService extends ServiceBase
 
 
     /**
+     * 翻译帮助中心的多语言字段(标题/内容)
+     * @return int
+     * @throws Throwable
+     */
+    public static function transHelps(): int
+    {
+        $res = 0;
+        $tags = self::getWaitTransTags();
+        $lastId = 0;
+        printf("transHelps begin: %s\n", date("Y-m-d H:i:s"));
+
+        while (true) {
+            $qry = QorHelps::query()->whereIn('trans_status', [0, 1]);
+            if ($lastId > 0) {
+                $qry->where('id', '<', $lastId);
+            }
+
+            $row = $qry->orderBy('id', 'desc')->first();
+            if (!$row) {
+                break;
+            }
+
+            printf("help id: %s\n", $row->id);
+            $lastId = $row->id;
+            $fields = ['title', 'content'];
+            foreach ($fields as $fld) {
+                $enField = "{$fld}_en";
+                $enValue = $row->$enField;;
+
+                foreach ($tags as $tag) {
+                    $field = "{$fld}_{$tag}";
+                    $value = $row->$field ?? '';
+                    $chkVal = UTF8::strip_tags($value);
+                    if (empty($value) || empty($chkVal)) {
+                        $valueTran = self::transWords($enValue, $tag, $fld);
+                        if (!empty($valueTran) && $valueTran != $value) {
+                            $row = self::modelSaveLangField($row, $tag, $valueTran, $fld);
+                        }
+                    }
+                }
+            }
+
+            $chkDone1 = self::checkModelFieldFull($row, 'title');
+            $chkDone2 = self::checkModelFieldFull($row, 'content');
+            $chkDone = $chkDone1 && $chkDone2;
+            printf("trans help id:%s res:%b\n", $row->id, $chkDone);
+            if ($chkDone) {
+                $res++;
+            }
+            $row->trans_status = $chkDone ? 2 : 1; //更新状态
+
+            DB::transaction(function () use (&$row) {
+                $row->save();
+            });
+        }
+
+        printf("transHelps done: %d\n", $res);
+
+        return $res;
+    }
+
+
+    /**
      * 执行翻译
      * @return void
      */
     public function doTranslate(): void
     {
+        self::transHelps();
         self::transPartners();
         self::transCategories();
         self::transPstars();
