@@ -3,10 +3,12 @@
 namespace App\Admin\Controllers;
 
 use App\Models\QorHelps;
+use App\Services\QorDataService;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\MessageBag;
 
 class QorHelpsController extends AdminController
 {
@@ -126,7 +128,7 @@ class QorHelpsController extends AdminController
         $form->number('sort', __('admin.Sort'));
         $form->text('route_path', __('admin.Route path'))->rules('required');
         $form->text('title_en', __('admin.Title en'))->rules('required');
-        $form->textarea('content_en', __('admin.Content en'))->rules('required');
+        $form->quill('content_en', __('admin.Content en'))->rules('required');
 
         $form->text('title_cn', __('admin.Title cn'));
         $form->text('title_tw', __('admin.Title tw'));
@@ -140,17 +142,47 @@ class QorHelpsController extends AdminController
         $form->text('title_pt', __('admin.Title pt'));
         $form->text('title_tlph', __('admin.Title tlph'));
 
-        $form->textarea('content_cn', __('admin.Content cn'));
-        $form->textarea('content_tw', __('admin.Content tw'));
-        $form->textarea('content_ja', __('admin.Content ja'));
-        $form->textarea('content_ko', __('admin.Content ko'));
-        $form->textarea('content_ms', __('admin.Content ms'));
-        $form->textarea('content_th', __('admin.Content th'));
-        $form->textarea('content_de', __('admin.Content de'));
-        $form->textarea('content_vi', __('admin.Content vi'));
-        $form->textarea('content_id', __('admin.Content id'));
-        $form->textarea('content_pt', __('admin.Content pt'));
-        $form->textarea('content_tlph', __('admin.Content tlph'));
+        $form->quill('content_cn', __('admin.Content cn'));
+        $form->quill('content_tw', __('admin.Content tw'));
+        $form->quill('content_ja', __('admin.Content ja'));
+        $form->quill('content_ko', __('admin.Content ko'));
+        $form->quill('content_ms', __('admin.Content ms'));
+        $form->quill('content_th', __('admin.Content th'));
+        $form->quill('content_de', __('admin.Content de'));
+        $form->quill('content_vi', __('admin.Content vi'));
+        $form->quill('content_id', __('admin.Content id'));
+        $form->quill('content_pt', __('admin.Content pt'));
+        $form->quill('content_tlph', __('admin.Content tlph'));
+
+        $form->saving(function (Form $form) {
+            $routePath = trim($form->route_path ?? '');
+
+            if (empty($routePath) || !QorDataService::checkRoute($routePath)) {
+                $error = new MessageBag([
+                    'title' => '提示',
+                    'message' => __('admin.Route path') . "只允许字母、数字、下划线、中划线",
+                ]);
+                return back()->with(compact('error'))->withInput();
+            }
+
+            //检查是否有相同的路由
+            $chkRow = QorHelps::where(['route_path' => $routePath])->first();
+            if ($chkRow && $chkRow->id != intval($form->model()->id)) {
+                $error = new MessageBag([
+                    'title' => '提示',
+                    'message' => "该" . __('admin..Route path') . " 已存在，请换一个",
+                ]);
+                return back()->with(compact('error'))->withInput();
+            }
+
+            $form->sort = intval($form->sort ?? 0);
+            $form->route_path = $routePath;
+
+            $form = QorDataService::trimFormMulTitle($form, 'title');
+            $form = QorDataService::trimFormMulTitle($form, 'content');
+            return $form;
+        });
+
 
         return $form;
     }
