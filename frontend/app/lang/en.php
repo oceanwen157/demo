@@ -19,5 +19,13 @@ return [
     'videos' => 'Videos',
     'popularVideos' => 'Popular videos',
     'newVideos' => 'New Videos',
-    'topRatedVideos' => 'Top Rated Videos'
+    'topRatedVideos' => 'Top Rated Videos',
+    'hotCategories' => 'Hot Categories',
+    'popularPornstars' => 'Popular Pornstars',
+    'charge' => 'Charge',
+    'close' => 'Close',
+    'listScaling' => 'List Scaling',
+    'contactUs' => 'Contact Us',
+    'help' => 'Help Introduction',
+    'on' => 'On',
 ];

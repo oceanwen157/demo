@@ -1,7 +1,7 @@
 <!-- 通用组件/tag -->
 <div class="popular-list">
     <h3 class="mb-0">
-        热门分类 A-Z
+        {$Think.lang.hotCategories} A-Z
     </h3>
     <ul class="category-group pt-4">
         {foreach name="__POPULARCATEGORIES__" item="e" key="i" }
@@ -30,7 +30,7 @@
 <!-- 通用组件/tag -->
 <div class="popular-list">
     <h3 class="mb-0">
-        流行明星 A-Z
+        {$Think.lang.popularPornstars} A-Z
     </h3>
     <ul class="category-group pt-4">
         {foreach name="__POPULARSTARS__" item="e" key="i" }

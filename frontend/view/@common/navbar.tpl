@@ -103,7 +103,7 @@
                                 <i class="far fa-dollar icon-start"></i>
                                 <span class="flex justify-between items-center w-full">
                                     <span class="flex flex-col text-left rtl:text-right">
-                                        收费<span class="setting-text">免费 &amp; 收费</span>
+                                        {$Think.lang.charge}<span class="setting-text">免费 &amp; {$Think.lang.charge}</span>
                                     </span>
                                     <i class="far fa-chevron-right icon-end"></i>
                                 </span>
@@ -113,10 +113,10 @@
                                 <i class="far fa-grid-2 icon-start"></i>
                                 <span class="flex justify-between items-center w-full">
                                     <span class="flex flex-col text-left rtl:text-right">
-                                        列表缩放
+                                        {$Think.lang.listScaling}
                                         <span class="opacity-50 text-sm font-normal">
-                                            <span class="toggle-on-label hidden">开</span>
-                                            <span class="toggle-off-label">关</span>
+                                            <span class="toggle-on-label hidden">{$Think.lang.on}</span>
+                                            <span class="toggle-off-label">{$Think.lang.close}</span>
                                         </span>
                                     </span>
                                     <span class="toggle flex pointer-events-none">
@@ -132,12 +132,12 @@
 
                             <a href="/help/常见问题" class="button button-text navigation-button" aria-label="FAQ">
                                 <i class="icon-start far fa-info-circle"></i>
-                                <span class="flex justify-between items-center w-full">帮助说明</span>
+                                <span class="flex justify-between items-center w-full">{$Think.lang.help}</span>
                             </a>
 
                             <a href="/help/联系我们" class="button button-text navigation-button" aria-label="Contact">
                                 <i class="icon-start far fa-comment"></i>
-                                <span class="flex justify-between items-center w-full">联系我们</span>
+                                <span class="flex justify-between items-center w-full">{$Think.lang.contactUs}</span>
                             </a>
                         </div>
                         <div class="stacked-panels">

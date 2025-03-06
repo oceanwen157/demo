@@ -19,5 +19,13 @@ return [
     'videos' => 'วิดีโอ',
     'popularVideos' => 'วิดีโอยอดนิยม',
     'newVideos' => 'วิดีโอใหม่',
-    'topRatedVideos' => 'วิดีโอที่ได้คะแนนสูงสุด'
+    'topRatedVideos' => 'วิดีโอที่ได้คะแนนสูงสุด',
+    'hotCategories' => 'หมวดหมู่ร้อน',
+    'popularPornstars' => 'ปอร์นสตาร์ที่นิยม',
+    'charge' => 'ค่าใช้จ่าย',
+    'close' => 'ปิด',
+    'listScaling' => 'การปรับขนาดรายการ',
+    'contactUs' => 'ติดต่อเรา',
+    'help' => 'แนะนำการช่วยเหลือ',
+    'on' => 'เปิด',
 ];
