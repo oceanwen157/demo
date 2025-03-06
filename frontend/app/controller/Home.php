@@ -45,6 +45,7 @@ class Home extends BaseController
         View::assign('pagination', $video['paginate']);
         View::assign('navTitle', $category);
         View::assign('checked', $orderBy);
+        View::assign('filter', $filters);
         View::assign('total', $video['total']);
 
         return View::fetch('@pages/home/主题');
@@ -65,6 +66,7 @@ class Home extends BaseController
         View::assign('pagination', $searchVideo['paginate']);
         View::assign('navTitle', $keyword);
         View::assign('checked', $orderBy);
+        View::assign('filter', $filters);
         View::assign('total', $searchVideo['total']);
 
         return View::fetch('@pages/home/主题');
@@ -83,6 +85,7 @@ class Home extends BaseController
 
         View::assign('navTitle', $navTitle);
         View::assign('checked', $orderBy);
+        View::assign('filter', $filters);
         View::assign('total', $popurVideo['total']);
 
         return View::fetch('@pages/home/主题');
@@ -101,6 +104,7 @@ class Home extends BaseController
 
         View::assign('navTitle', $navTitle);
         View::assign('checked', $orderBy);
+        View::assign('filter', $filters);
         View::assign('total', $newVideo['total']);
 
         return View::fetch('@pages/home/主题');
@@ -119,6 +123,7 @@ class Home extends BaseController
 
         View::assign('navTitle', $navTitle);
         View::assign('checked', $orderBy);
+        View::assign('filter', $filters);
         View::assign('total', $topRate['total']);
         
         
@@ -152,6 +157,7 @@ class Home extends BaseController
             View::assign('navTitle', $pornstar);
             View::assign('total', $video['total']);
             View::assign('checked', $orderBy);
+            View::assign('filter', $filters);
 
             return View::fetch('@pages/home/主题');
         }else{

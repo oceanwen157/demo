@@ -17,7 +17,7 @@
         "infyomlabs/adminlte-templates": "8.0.x-dev",
         "infyomlabs/laravel-generator": "8.0.x-dev",
         "infyomlabs/swagger-generator": "2.0",
-        "jaeger/querylist": "^4.2",
+        "jaeger/querylist": "V3.2.1",
         "jenssegers/agent": "^2.6",
         "kakuilan/swaggervel": "^0.0.3",
         "laravel-admin-ext/config": "^1.1",
