@@ -62,6 +62,29 @@
             e.stopPropagation();
 
             // TODO................................................................
+            const $button = $(e.currentTarget);
+            const $card = $button.closest('.rating-card');
+            const $voteScoreElement = $card.find('.vote-score');
+
+            let currentScoreText = $voteScoreElement.text().trim();
+            let currentScore = parseInt(currentScoreText.replace('%', ''), 10);
+
+            let newScore = currentScore + 1;
+
+            $voteScoreElement.text(`${newScore}%`);
+
+            $.ajax({
+                url: '/videorate',
+                type: 'POST',
+                data: { video_id: $card.data('id'), type: 'up' },
+                success: function (response) {
+                    console.log('点赞成功，后端已接收请求。');
+                },
+                error: function (xhr, status, error) {
+                    console.error('点赞请求出错：', error);
+                    $voteScoreElement.text(`${currentScore}%`);
+                }
+            });
 
             // 关闭弹窗
             closeRatePupop(e.currentTarget);
@@ -74,6 +97,29 @@
             e.stopPropagation();
 
             // TODO................................................................
+            const $button = $(e.currentTarget);
+            const $card = $button.closest('.rating-card');
+            const $voteScoreElement = $card.find('.vote-score');
+
+            let currentScoreText = $voteScoreElement.text().trim();
+            let currentScore = parseInt(currentScoreText.replace('%', ''), 10);
+
+            let newScore = currentScore - 1;
+
+            $voteScoreElement.text(`${newScore}%`);
+
+            $.ajax({
+                url: '/videorate',
+                type: 'POST',
+                data: { video_id: $card.data('id'), type: 'down' },
+                success: function (response) {
+                    console.log('点down成功，后端已接收请求。');
+                },
+                error: function (xhr, status, error) {
+                    console.error('点赞请求出错：', error);
+                    $voteScoreElement.text(`${currentScore}%`);
+                }
+            });
 
             // 关闭弹窗
             closeRatePupop(e.currentTarget);

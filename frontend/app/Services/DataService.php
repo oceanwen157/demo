@@ -671,6 +671,21 @@ class DataService extends ServiceBase
         ->where('route_path', $route)->find();
     }
 
+    public static function updateVideorate($videoId, $type)
+    {
+        if (!$videoId || !in_array($type, ['up', 'down'])) {
+            return false;
+        }
+
+        $increment = ($type === 'up') ? 1 : -1;
+
+        return Db::name('videos')
+        ->where('id', $videoId)
+        ->update([
+            'vote_num' => Db::raw('vote_num + ' . $increment),
+        ]);
+    }
+
     public static function getRedirectUrl($url)
     {
         $ch = curl_init();

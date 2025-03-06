@@ -7,6 +7,7 @@ use think\facade\View;
 use think\facade\App;
 use think\facade\Env;
 use think\facade\Request;
+use think\facade\Log;
 
 class Home extends BaseController
 {
@@ -124,9 +125,17 @@ class Home extends BaseController
         return View::fetch('@pages/home/主题');
     }
 
+    public function videorate()
+    {
+        $videoId = Request::post('video_id');
+        $type = Request::post('type');
+        
+        DataService::updateVideorate($videoId, $type);
+        return json(['status' => true, 'message' => '更新成功']);
+    }
+
     public function 主题()
     {
-        echo 123123;exit;
         return View::fetch('@pages/home/主题');
     }
 
