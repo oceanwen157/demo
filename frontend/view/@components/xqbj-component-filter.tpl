@@ -68,27 +68,27 @@
                                 <label class="menu-item" for="filter_advertiser_publish_date_0">全部</label>
                             </div>
                             <div class="radio filter_advertiser_publish_date_setting filter-setting">
-                                <input type="radio" id="filter_advertiser_publish_date_1" name="filter[publish_date]" value="1D">
+                                <input type="radio" id="filter_advertiser_publish_date_1" name="filter[publish_date]" {if !empty($filter.publish_date) && $filter.publish_date == '1D'}checked{/if} value="1D">
                                 <label class="menu-item" for="filter_advertiser_publish_date_1">过去 24 小时</label>
                             </div>
                             <div class="radio filter_advertiser_publish_date_setting filter-setting">
-                                <input type="radio" id="filter_advertiser_publish_date_2" name="filter[publish_date]" value="2D">
+                                <input type="radio" id="filter_advertiser_publish_date_2" name="filter[publish_date]"  {if !empty($filter.publish_date) && $filter.publish_date == '2D'}checked{/if} value="2D">
                                 <label class="menu-item" for="filter_advertiser_publish_date_2">过去 2 天</label>
                             </div>
                             <div class="radio filter_advertiser_publish_date_setting filter-setting">
-                                <input type="radio" id="filter_advertiser_publish_date_3" name="filter[publish_date]" value="7D">
+                                <input type="radio" id="filter_advertiser_publish_date_3" name="filter[publish_date]"  {if !empty($filter.publish_date) && $filter.publish_date == '7D'}checked{/if} value="7D">
                                 <label class="menu-item" for="filter_advertiser_publish_date_3">过去一周</label>
                             </div>
                             <div class="radio filter_advertiser_publish_date_setting filter-setting">
-                                <input type="radio" id="filter_advertiser_publish_date_4" name="filter[publish_date]" value="1M">
+                                <input type="radio" id="filter_advertiser_publish_date_4" name="filter[publish_date]"  {if !empty($filter.publish_date) && $filter.publish_date == '1M'}checked{/if} value="1M">
                                 <label class="menu-item" for="filter_advertiser_publish_date_4">过去一月</label>
                             </div>
                             <div class="radio filter_advertiser_publish_date_setting filter-setting">
-                                <input type="radio" id="filter_advertiser_publish_date_5" name="filter[publish_date]" value="3M">
+                                <input type="radio" id="filter_advertiser_publish_date_5" name="filter[publish_date]"  {if !empty($filter.publish_date) && $filter.publish_date == '3M'}checked{/if} value="3M">
                                 <label class="menu-item" for="filter_advertiser_publish_date_5">过去 3 个月</label>
                             </div>
                             <div class="radio filter_advertiser_publish_date_setting filter-setting">
-                                <input type="radio" id="filter_advertiser_publish_date_6" name="filter[publish_date]" value="1Y">
+                                <input type="radio" id="filter_advertiser_publish_date_6" name="filter[publish_date]"  {if !empty($filter.publish_date) && $filter.publish_date == '1Y'}checked{/if} value="1Y">
                                 <label class="menu-item" for="filter_advertiser_publish_date_6">去年</label>
                             </div>
                         </div>
@@ -125,36 +125,36 @@
                                 <label class="menu-item" for="filter_duration_0">All</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_1" name="filter[duration]" value="60">
+                                <input type="radio" id="filter_duration_1" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '60'}checked{/if} value="60">
                                 <label class="menu-item" for="filter_duration_1">1+ minute</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_2" name="filter[duration]" value="300">
+                                <input type="radio" id="filter_duration_2" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '300'}checked{/if} value="300">
                                 <label class="menu-item" for="filter_duration_2">5+ minutes</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_3" name="filter[duration]" value="600">
+                                <input type="radio" id="filter_duration_3" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '600'}checked{/if} value="600">
                                 <label class="menu-item" for="filter_duration_3">10+ minutes</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_4" name="filter[duration]" value="1200">
+                                <input type="radio" id="filter_duration_4" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '1200'}checked{/if} value="1200">
                                 <label class="menu-item" for="filter_duration_4">20+ minutes</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_5" name="filter[duration]" value="1800">
+                                <input type="radio" id="filter_duration_5" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '1800'}checked{/if} value="1800">
                                 <label class="menu-item" for="filter_duration_5">30+ minutes</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_6" name="filter[duration]" value="3600">
+                                <input type="radio" id="filter_duration_6" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '3600'}checked{/if} value="3600">
                                 <label class="menu-item" for="filter_duration_6">60+ minutes</label>
                             </div>
                             <hr class="divider-horizontal">
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_8" name="filter[duration]" value="0-600">
+                                <input type="radio" id="filter_duration_8" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '0-600'}checked{/if} value="0-600">
                                 <label class="menu-item" for="filter_duration_8">0-10 minutes</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_9" name="filter[duration]" value="0-1200">
+                                <input type="radio" id="filter_duration_9" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '0-1200'}checked{/if} value="0-1200">
                                 <label class="menu-item" for="filter_duration_9">0-20 minutes</label>
                             </div>
                         </div>
@@ -196,12 +196,12 @@
                         </div>
                         <div class="filter-options-partial-options filter-wrap">
                             <div class="radio filter_advertiser_site_setting filter-setting" data-value="All">
-                                <input type="radio" id="filter_advertiser_site_0" name="filter[advertiser_site]" value="all">
+                                <input type="radio" id="filter_advertiser_site_0" name="filter[advertiser_site]" checked="" value="all">
                                 <label class="menu-item" for="filter_advertiser_site_0">All</label>
                             </div>
                             {foreach name="__SOURCES__" item="e" key="i" }
                                 <div class="radio filter_advertiser_site_setting filter-setting"  data-value="{$e.title_en}">
-                                    <input type="radio" id="filter_advertiser_site_1" name="filter[advertiser_site]" value="{$e.title_en}">
+                                    <input type="radio" id="filter_advertiser_site_1" name="filter[advertiser_site]" {if !empty($filter.advertiser_site) && $filter.advertiser_site == $e.title_en}checked{/if}  value="{$e.title_en}">
                                     <label class="menu-item" for="filter_advertiser_site_1">{$e.title_en}</label>
                                 </div>
                             {/foreach}

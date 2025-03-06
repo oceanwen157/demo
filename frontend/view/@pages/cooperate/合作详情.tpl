@@ -6,13 +6,13 @@
         <h1 class="content-header-title">{$info.name}</h1>
         <div class="grid desktop:grid-cols-[350px_1fr] gap-8">
             <div class="flex flex-col rounded">
-                <a class="logo-container network-logo" href="{$info.route_path}" title="{$info.name}" target="_blank">
+                <a class="logo-container network-logo" href="/network/{$info.route_path}" title="{$info.name}" target="_blank">
                     <div class="logo-default">
                         <img class="" z-image-loader-url="{$info.logo}" loading="eager" alt="{$info.title_en}"/>
                     </div>
                 </a>
                 <div class="block w-full text-center m-0 text-md filter rounded-b p-2 network-button-container">
-                    <a href="{$info.route_path}" class="button button-secondary w-full h-full" target="_blank">
+                    <a href="/network/{$info.route_path}" class="button button-secondary w-full h-full" target="_blank">
                         {$info.hint_en }
                     </a>
                 </div>

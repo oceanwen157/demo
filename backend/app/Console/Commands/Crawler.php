@@ -32,7 +32,7 @@ class Crawler extends Command
     {
         ini_set('memory_limit', '-1');
 
-        self::addCates();
+        //self::addCates();
 
         try {
             $categories = self::getCategories();
@@ -44,6 +44,24 @@ class Crawler extends Command
                     } catch (\Exception $e) {
                         $this->error(sprintf(
                             "Failed to add video info. Data: %s, Error: %s",
+                            json_encode($v),
+                            $e->getMessage()
+                        ));
+                    }
+                }
+                sleep(1);
+            }
+
+            sleep(10);
+            $categories = self::getCategories(true);
+            foreach($categories as $category) {
+                $data = self::getPageVideos($category);
+                foreach($data as $v) {
+                    try {
+                        var_dump(self::$qorSvc->addVideoInfo($v));
+                    } catch (\Exception $e) {
+                        $this->error(sprintf(
+                            "Pornstar Failed to add video info. Data: %s, Error: %s",
                             json_encode($v),
                             $e->getMessage()
                         ));
