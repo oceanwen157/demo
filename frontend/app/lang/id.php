@@ -1,3 +1,23 @@
 <?php
 
-return [];
+return [
+    'home' => 'Beranda',
+    'category' => 'Kategori',
+    'categories' => 'Semua Kategori',
+    'allCategories' => 'Semua Kategori',
+    'pornstar' => 'Bintang Porno',
+    'pornstars' => 'Daftar Bintang Porno',
+    'allPornstar' => 'Semua Bintang Porno',
+    'ourNetwork' => 'Jaringan Kami',
+    'search' => 'Cari',
+    'homeHeaderTitle' => 'Kategori Video Seks Paling Populer',
+    'popularity' => 'Popularitas',
+    'date' => 'Tanggal',
+    'duration' => 'Durasi',
+    'rate' => 'Penilaian',
+    'source' => 'Sumber',
+    'videos' => 'Video',
+    'popularVideos' => 'Video Populer',
+    'newVideos' => 'Video Baru',
+    'topRatedVideos' => 'Video Teratas'
+];
