@@ -9,7 +9,7 @@
 
     <!-- 索引 start -->
     <div id="mobile-anchor-top" class="flex gap-2 flex-wrap py-4">
-        <a href="/category" class="button button-text">
+        <a href="/a-z" class="button button-text">
             分类
         </a>
         {foreach name="$keys" item="e" key="i" }
@@ -26,11 +26,11 @@
 
     <!--  -->
     <div class="desktop:hidden all-categories-button-container flex gap-2 justify-center">
-        <a href="/category" class="button button-secondary">
-            Categories
+        <a href="/a-z" class="button button-secondary">
+            {$Think.lang.categories}
         </a>
         <a href="/pornstar" class="button button-secondary">
-            Pornstars
+            {$Think.lang.pornstars}
         </a>
     </div>
     <!--  -->

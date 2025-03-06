@@ -29,8 +29,8 @@
 
     <!--  -->
     <div class="all-categories-button-container flex gap-2 justify-center">
-        <a href="/category" class="button button-secondary">Categories</a>
-        <a href="/pornstar" class="button button-secondary">Pornstars</a>
+        <a href="/a-z" class="button button-secondary">{$Think.lang.categories}</a>
+        <a href="/pornstar" class="button button-secondary">{$Think.lang.pornstars}</a>
     </div>
     <!--  -->
 </div>
