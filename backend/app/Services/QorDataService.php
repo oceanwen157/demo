@@ -185,10 +185,10 @@ class QorDataService extends ServiceBase
 
     public static function generateTimestamp(): int
     {
-        $currentTimestamp = time(); 
-        $fourYearsAgo = strtotime('-4 years'); 
-        
-        return rand($fourYearsAgo, $currentTimestamp); 
+        $currentTimestamp = time();
+        $fourYearsAgo = strtotime('-4 years');
+
+        return rand($fourYearsAgo, $currentTimestamp);
     }
 
 
@@ -582,22 +582,22 @@ class QorDataService extends ServiceBase
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        //curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
-        //curl_setopt($ch, CURLOPT_PROXY, "127.0.0.1");
-        //curl_setopt($ch, CURLOPT_PROXYPORT, 10808);
+        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+        curl_setopt($ch, CURLOPT_PROXY, "127.0.0.1");
+        curl_setopt($ch, CURLOPT_PROXYPORT, 10808);
 
         $response = curl_exec($ch);
         $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $errno = @curl_errno($ch);
         if ($errno) {
-            //var_dump('-----------------err:', $errno, $params);
+            var_dump('-----------------err:', $errno, $params);
             return [$code, ''];
         }
 
         @curl_close($ch);
         $resp = strval($response);
-        //var_dump('--------------curl req:', $url, $params);
-        //var_dump('--------------curl res:', $code, $resp);
+        var_dump('--------------curl req:', $url, $params);
+        var_dump('--------------curl res:', $code, $resp);
 
         return [$code, $resp];
     }

@@ -18,6 +18,7 @@ use Kph\Helpers\ValidateHelper;
 use sqhlib\Hanzi\HanziConvert;
 use DeepL\DeepLClient;
 use DeepL\DeepLException;
+use voku\helper\UTF8;
 use Throwable;
 
 /**
@@ -166,6 +167,11 @@ class TransService extends ServiceBase
         $chkTag = !empty($langTag) && in_array($langTag, array_keys(self::LANG_PAIR));
         $fieldName = "{$field}_{$langTag}";
         if ($chkTag && !empty($val) && isset($mod->$fieldName)) {
+            $len = mb_strlen($val);
+            if (in_array($field, ['title', 'hint']) && $len > 128) {
+                $val = mb_substr($val, 0, 128);
+            }
+
             $mod->$fieldName = $val;
         }
 
@@ -451,8 +457,8 @@ class TransService extends ServiceBase
                 foreach ($tags as $tag) {
                     $field = "{$fld}_{$tag}";
                     $value = $row->$field ?? '';
-
-                    if (empty($value)) {
+                    $chkVal = UTF8::strip_tags($value);
+                    if (empty($value) || empty($chkVal)) {
                         $valueTran = self::transWords($enValue, $tag, $fld);
                         if (!empty($valueTran) && $valueTran != $value) {
                             $row = self::modelSaveLangField($row, $tag, $valueTran, $fld);
@@ -487,6 +493,7 @@ class TransService extends ServiceBase
      */
     public function doTranslate(): void
     {
+        self::transHelps();
         self::transPartners();
         self::transCategories();
         self::transPstars();

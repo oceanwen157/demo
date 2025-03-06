@@ -41,17 +41,28 @@ location / {
 - 初始账号和密码 admin / admin
 
 #### 1.4 执行采集命令
-
+可以定时每24小时执行
 ```text
 cd backend
 php artisan crawler:run
 ```
 
 #### 1.5 执行翻译命令
-
+可以定时每1小时执行
 ```text
 cd backend
-php artisan translate:do
+
+#翻译基础信息，包括帮助中心、合作伙伴
+php artisan translate:base
+
+#翻译分类信息
+php artisan translate:cate
+
+#翻译明星信息
+php artisan translate:star
+
+#翻译视频信息
+php artisan translate:video
 ```
 
 ### 二、前台展示站
