@@ -180,24 +180,24 @@
         <div class="container flex">
             <div class="dropdown">
                 <a data-toggle="dropdown" class="anchor-link menu-item focus-visible:outline-0" href="#" aria-haspopup="true" aria-expanded="false">
-                    Videos<i class="icon-end far fa-chevron-down"></i>
+                    {$Think.lang.videos}<i class="icon-end far fa-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="all-videos">
                     <a class="anchor-link menu-item px-3 popular" href="/popular" target="_self">
-                        Popular videos
+                        {$Think.lang.popularVideos}
                     </a>
                     <a class="anchor-link menu-item px-3 new" href="/new" target="_self">
-                        New videos
+                        {$Think.lang.newVideos}New videos
                     </a>
                     <a class="anchor-link menu-item px-3 rating" href="/rating" target="_self">
-                        Top rated videos
+                        {$Think.lang.topRatedVideos}Top rated videos
                     </a>
                 </div>
             </div>
             <div class="dropdown">
                 <a data-toggle="dropdown" class="anchor-link menu-item focus-visible:outline-0" href="#"
                     aria-haspopup="true" aria-expanded="false">
-                    Categories<i class="icon-end far fa-chevron-down"></i>
+                    {$Think.lang.categories}<i class="icon-end far fa-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="all-categories">
                     {foreach name="__CATEGORIES__" item="e" key="i" }
@@ -206,13 +206,13 @@
                         </a>
                     {/foreach}
                     <a href="/a-z" class="button button-secondary flex mx-2" target="_self">
-                        All categories
+                        {$Think.lang.allCategories}
                     </a>
                 </div>
             </div>
             <div class="dropdown">
                 <a data-toggle="dropdown" class="anchor-link menu-item focus-visible:outline-0" href="#" aria-haspopup="true" aria-expanded="false">
-                    Pornstars<i class="icon-end far fa-chevron-down"></i>
+                    {$Think.lang.pornstars}<i class="icon-end far fa-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="all-categories">
                     {foreach name="__PORNSTARS__" item="e" key="i" }
@@ -222,12 +222,12 @@
                         </a>
                     {/foreach}
                     <a href="/pornstar" class="button button-secondary flex mx-2" target="_self">
-                        All pornstars
+                        {$Think.lang.allPornstars}
                     </a>
                 </div>
             </div>
             <a class="anchor-link menu-item" id="network" href="/network" target="_self">
-                Our network
+                {$Think.lang.ourNetwork}
             </a>
         </div>
     </nav>
@@ -282,7 +282,7 @@
                         {/if}
                     {/foreach}
                     <a href="/a-z" class="button button-secondary flex mx-2" target="_self">
-                        全部分类123
+                        全部分类
                     </a>
                 </div>
             </div>

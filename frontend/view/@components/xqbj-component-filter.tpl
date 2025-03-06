@@ -100,7 +100,7 @@
                 <div class="filter-dropdown content-filter-container whitespace-nowrap">
                     <div class="filter-title-container flex justify-between px-3 desktop:hidden">
                         <div class="filter-header-title m-0 font-medium mb-1 text-base">
-                            Duration
+                            {$Think.lang.duration}
                         </div>
                         <span
                             class="filter-reset-duration content-filter-reset-button mobile:text-[var(--primary-active-text)]">
@@ -112,7 +112,7 @@
                         data-dropdown-placement="bottom-end" class="chip dropdown-toggle mobile:hidden">
                         <span class="label">Duration</span>
                         <span class="sub-label hidden filter_duration_header content-filter-header menu-button" data-menu="filter_duration">
-                            Duration
+                            {$Think.lang.duration}
                         </span>
                         <i class="far icon-end fa-chevron-down"></i>
                     </button>
@@ -125,36 +125,36 @@
                                 <label class="menu-item" for="filter_duration_0">All</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_1" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '60'}checked{/if} value="60">
+                                <input type="radio" id="filter_duration_1" name="filter[duration]"  {if !empty($filter.duration) && $filter.duration == '60'}checked{/if} value="60">
                                 <label class="menu-item" for="filter_duration_1">1+ minute</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_2" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '300'}checked{/if} value="300">
+                                <input type="radio" id="filter_duration_2" name="filter[duration]"  {if !empty($filter.duration) && $filter.duration == '300'}checked{/if} value="300">
                                 <label class="menu-item" for="filter_duration_2">5+ minutes</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_3" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '600'}checked{/if} value="600">
+                                <input type="radio" id="filter_duration_3" name="filter[duration]"  {if !empty($filter.duration) && $filter.duration == '600'}checked{/if} value="600">
                                 <label class="menu-item" for="filter_duration_3">10+ minutes</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_4" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '1200'}checked{/if} value="1200">
+                                <input type="radio" id="filter_duration_4" name="filter[duration]"  {if !empty($filter.duration) && $filter.duration == '1200'}checked{/if} value="1200">
                                 <label class="menu-item" for="filter_duration_4">20+ minutes</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_5" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '1800'}checked{/if} value="1800">
+                                <input type="radio" id="filter_duration_5" name="filter[duration]"  {if !empty($filter.duration) && $filter.duration == '1800'}checked{/if} value="1800">
                                 <label class="menu-item" for="filter_duration_5">30+ minutes</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_6" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '3600'}checked{/if} value="3600">
+                                <input type="radio" id="filter_duration_6" name="filter[duration]"  {if !empty($filter.duration) && $filter.duration == '3600'}checked{/if} value="3600">
                                 <label class="menu-item" for="filter_duration_6">60+ minutes</label>
                             </div>
                             <hr class="divider-horizontal">
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_8" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '0-600'}checked{/if} value="0-600">
+                                <input type="radio" id="filter_duration_8" name="filter[duration]"  {if !empty($filter.duration) && $filter.duration == '0-600'}checked{/if} value="0-600">
                                 <label class="menu-item" for="filter_duration_8">0-10 minutes</label>
                             </div>
                             <div class="radio filter_duration_setting filter-setting">
-                                <input type="radio" id="filter_duration_9" name="filter[duration]"  {if !empty($filter.publish_date) && $filter.duration == '0-1200'}checked{/if} value="0-1200">
+                                <input type="radio" id="filter_duration_9" name="filter[duration]"  {if !empty($filter.duration) && $filter.duration == '0-1200'}checked{/if} value="0-1200">
                                 <label class="menu-item" for="filter_duration_9">0-20 minutes</label>
                             </div>
                         </div>
@@ -165,7 +165,7 @@
                 <div class="filter-dropdown content-filter-container whitespace-nowrap">
                     <div class="filter-title-container flex justify-between px-3 desktop:hidden">
                         <div class="filter-header-title m-0 font-medium mb-1 text-base">
-                            Source
+                            {$Think.lang.source}
                         </div>
                         <span class="filter-reset-advertiser_site content-filter-reset-button mobile:text-[var(--primary-active-text)]">
                             <i class="far fa-times mobile:hidden"></i>
@@ -174,9 +174,9 @@
                     </div>
 
                     <button type="button" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" data-dropdown-placement="bottom-end" class="chip dropdown-toggle mobile:hidden">
-                        <span class="label">Source</span>
+                        <span class="label">{$Think.lang.source}</span>
                         <span class="sub-label hidden filter_advertiser_site_header content-filter-header menu-button" data-menu="filter_advertiser_site">
-                            Source
+                            {$Think.lang.source}
                         </span>
                         <i class="far icon-end fa-chevron-down"></i>
                     </button>
