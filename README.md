@@ -1,7 +1,10 @@
 ## 说明
 
 项目分为管理后台站点（backend目录）和前台展示站点（frontend目录），两个站点共用一个数据库.  
-PHP 版本为 7.3或7.4，需composer、mysql和redis。
+PHP 版本为 7.3或7.4，需composer、mysql和redis。  
+**注意：**  
+因为管理后台要上传图片到前台站，部署时两个站必须在同一目录下，即保持当前backend和frontend不动。
+
 
 ### 一、管理后台站
 
