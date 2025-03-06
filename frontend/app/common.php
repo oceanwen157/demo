@@ -3,6 +3,7 @@
 use think\model\Collection;
 use think\Model;
 use app\model\Helps;
+use voku\helper\UTF8;
 
 /**
  * 获取当前语言标识
@@ -55,8 +56,9 @@ function getLangValueByField($mod, string $fieldPrefix = 'title'): string
 
     $fieldValue = $chk1 ? ($mod->$fieldName ?? '') : ($mod[$fieldName] ?? '');
     $fieldValue = trim($fieldValue);
+    $chkTxt = trim(UTF8::strip_tags($fieldValue));
 
-    if (empty($fieldValue)) {
+    if (empty($fieldValue) || empty($chkTxt)) {
         $res = $defaultValue;
     } else {
         $res = $fieldValue;

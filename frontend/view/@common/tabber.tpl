@@ -42,9 +42,9 @@
                     target="_blank" rel="nofollow">
                     {:getHelpTitleByRoute("privacy-statement")}
                 </a>
-                <a class="anchor-link legal-link" href="/help/remove-statement"
-                    title="{:getHelpTitleByRoute("remove-statement")}" target="_blank" rel="nofollow">
-                    {:getHelpTitleByRoute("remove-statement")}
+                <a class="anchor-link legal-link" href="/help/notice-action"
+                    title="{:getHelpTitleByRoute("notice-action")}" target="_blank" rel="nofollow">
+                    {:getHelpTitleByRoute("notice-action")}
                 </a>
                 <a class="anchor-link legal-link" href="/help/dmca" title="{:getHelpTitleByRoute("dmca")}"
                     target="_blank" rel="nofollow">
