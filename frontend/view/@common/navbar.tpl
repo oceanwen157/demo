@@ -49,6 +49,7 @@
             <!-- 多语言 end -->
 
             <!-- 性取向 start -->
+            <!-- 
             <button type="button" class="button button-text" title="Orientation" data-settings="Orientation" aria-haspopup="true" aria-expanded="false" data-dropdown-placement="bottom-end">
                 <i class="icon-start far fa-venus-mars"></i>
             </button>
@@ -87,6 +88,7 @@
                     </div>
                 </div>
             </div>
+            -->
             <!-- 性取向 end -->
 
             <!-- 结构性 start -->
