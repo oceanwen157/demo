@@ -57,6 +57,7 @@ class Crawler extends Command
             return false;
         }
 
+        sleep(60);
         $subject = ($subject == 'pornstar') ? true : false;
         $categories = self::getCategories($mold);
 
