@@ -18,7 +18,7 @@ class Crawler extends Command
 
     const MAX_CONCURRENT_REQUESTS = 10;
 
-    protected $signature = 'crawler:run';
+    protected $signature = 'crawler:run {mold} {--subject=}';
 
     private static $qorSvc;
 
@@ -32,44 +32,10 @@ class Crawler extends Command
     {
         ini_set('memory_limit', '-1');
 
-        //self::addCates();
-
+        $mold = $this->argument('mold');
+        $subject = $this->option('subject');
         try {
-            $categories = self::getCategories();
-            foreach($categories as $category) {
-                $data = self::getPageVideos($category);
-                foreach($data as $v) {
-                    try {
-                        var_dump(self::$qorSvc->addVideoInfo($v));
-                    } catch (\Exception $e) {
-                        $this->error(sprintf(
-                            "Failed to add video info. Data: %s, Error: %s",
-                            json_encode($v),
-                            $e->getMessage()
-                        ));
-                    }
-                }
-                sleep(1);
-            }
-
-            sleep(10);
-            
-            $categories = self::getCategories(true);
-            foreach($categories as $category) {
-                $data = self::getPageVideos($category, true);
-                foreach($data as $v) {
-                    try {
-                        var_dump(self::$qorSvc->addVideoInfo($v));
-                    } catch (\Exception $e) {
-                        $this->error(sprintf(
-                            "Pornstar Failed to add video info. Data: %s, Error: %s",
-                            json_encode($v),
-                            $e->getMessage()
-                        ));
-                    }
-                }
-                sleep(1);
-            }
+            self::handleData($mold, $subject);
         } catch (\Exception $e) {
             $this->error("Exception caught:\n");
             $this->error("Message: " . $e->getMessage() . "\n");
@@ -79,6 +45,36 @@ class Crawler extends Command
         }
 
         self::$qorSvc::updateImages();
+    }
+
+    private static function handleData($mold, $subject) {
+        if (!$subject && $mold == 'cates') {
+            self::addCates();
+            return true;
+        }
+
+        if ($mold != 'video') {
+            return false;
+        }
+
+        $subject = ($subject == 'pornstar') ? true : false;
+        $categories = self::getCategories($mold);
+
+        foreach($categories as $category) {
+            $data = self::getPageVideos($category, true);
+            foreach($data as $v) {
+                try {
+                    self::$qorSvc->addVideoInfo($v);
+                } catch (\Exception $e) {
+                    $this->error(sprintf(
+                        "Pornstar Failed to add video info. Data: %s, Error: %s",
+                        json_encode($v),
+                        $e->getMessage()
+                    ));
+                }
+            }
+            sleep(1);
+        }
     }
 
     private static function addCates()
