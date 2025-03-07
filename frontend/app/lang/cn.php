@@ -8,7 +8,7 @@ return [
     'pornstar' => '色情明星',
     'pornstars' => '色情明星列表',
     'allPornstar' => '所有色情明星',
-    'ourNetwork' => '我们的网络',
+    'ourNetwork' => '合作伙伴',
     'search' => '搜索',
     'homeHeaderTitle' => '最受欢迎的性爱视频类别',
     'popularity' => '受欢迎程度',
