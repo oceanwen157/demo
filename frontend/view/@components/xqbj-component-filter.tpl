@@ -201,8 +201,8 @@
                             </div>
                             {foreach name="__SOURCES__" item="e" key="i" }
                                 <div class="radio filter_advertiser_site_setting filter-setting"  data-value="{$e.title_en}">
-                                    <input type="radio" id="filter_advertiser_site_1" name="filter[advertiser_site]" {if !empty($filter.advertiser_site) && $filter.advertiser_site == $e.title_en}checked{/if}  value="{$e.title_en}">
-                                    <label class="menu-item" for="filter_advertiser_site_1">{$e.title_en}</label>
+                                    <input type="radio" id="filter_advertiser_site_{$e.id}" name="filter[advertiser_site]" {if !empty($filter.advertiser_site) && $filter.advertiser_site == $e.title_en}checked{/if}  value="{$e.title_en}">
+                                    <label class="menu-item" for="filter_advertiser_site_{$e.id}">{$e.title_en}</label>
                                 </div>
                             {/foreach}
                         </div>
