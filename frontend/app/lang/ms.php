@@ -28,5 +28,9 @@ return [
     'contactUs' => 'Hubungi Kami',
     'help' => 'Pengenalan Bantuan',
     'on' => 'Buka',
+    'parents' => 'Ibu Bapa',
+    'support' => 'Sokongan',
+    'advertisers' => 'Pengiklan',
+    'legal' => 'Perundangan',
 ];
 

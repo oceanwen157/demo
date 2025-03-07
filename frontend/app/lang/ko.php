@@ -28,5 +28,9 @@ return [
     'contactUs' => '연락하기',
     'help' => '도움말 소개',
     'on' => '켜짐',
+    'parents' => '부모님',
+    'support' => '지원',
+    'advertisers' => '광고주',
+    'legal' => '법률',
 ];
 

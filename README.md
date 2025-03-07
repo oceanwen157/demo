@@ -44,7 +44,18 @@ location / {
 可以定时每24小时执行
 ```text
 cd backend
-php artisan crawler:run
+
+抓取所有分类+明星
+php artisan crawler:run cates &
+
+抓取分类下的视频
+php artisan crawler:run video --subject=category &
+
+抓取明星下的视频
+php artisan crawler:run  --subject=pornstar &
+
+图片异步队列
+php artisan queue:work --queue=default --daemon &
 ```
 
 #### 1.5 执行翻译命令

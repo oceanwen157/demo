@@ -28,4 +28,8 @@ return [
     'contactUs' => '联系我们',
     'help' => '帮助介绍',
     'on' => '开',
+    'parents' => '父母',
+    'support' => '支持',
+    'advertisers' => '广告商',
+    'legal' => '法律',
 ];

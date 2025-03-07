@@ -28,4 +28,8 @@ return [
     'contactUs' => 'Hubungi Kami',
     'help' => 'Pengantar Bantuan',
     'on' => 'Terbuka',
+    'parents' => 'Orang Tua',
+    'support' => 'Dukungan',
+    'advertisers' => 'Pengiklan',
+    'legal' => 'Hukum',
 ];

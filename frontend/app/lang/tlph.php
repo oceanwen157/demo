@@ -28,4 +28,8 @@ return [
     'contactUs' => 'Makipag-ugnayan sa Amin',
     'help' => 'Pagpapakilala sa Tulong',
     'on' => 'Buksan',
+    'parents' => 'Mga Magulang',
+    'support' => 'Suporta',
+    'advertisers' => 'Mga Advertiser',
+    'legal' => 'Legal',
 ];

@@ -28,4 +28,9 @@ return [
     'contactUs' => 'Contact Us',
     'help' => 'Help Introduction',
     'on' => 'On',
+    'parents' => 'Parents',
+    'support' => 'Support',
+    'advertisers' => 'Advertisers',
+    'legal' => 'Legal',
+
 ];

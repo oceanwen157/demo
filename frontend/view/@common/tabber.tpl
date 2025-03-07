@@ -18,14 +18,14 @@
 
             <div class="footer-column">
                 <div id="site-links" class="flex flex-col gap-2 mobile:gap-4">
-                    <h3 class="m-0">Support</h3>
+                    <h3 class="m-0">{$Think.lang.support}</h3>
                     <a href="/help/faq" title="{:getHelpTitleByRoute("faq")}">{:getHelpTitleByRoute("faq")}</a>
                     <a href="/help/improve" title="{:getHelpTitleByRoute("improve")}">{:getHelpTitleByRoute("improve")}</a>
                     <a href="/help/contact" title="{:getHelpTitleByRoute("contact")}">{:getHelpTitleByRoute("contact")}</a>
                 </div>
 
                 <div id="advertiser-links" class="flex flex-col gap-2 mobile:gap-4">
-                    <h3 class="m-0">Advertisers</h3>
+                    <h3 class="m-0">{$Think.lang.advertisers}</h3>
                     <a class="anchor-link" href="https://tubetraffic.com/" target="_blank" title="Buy Traffic / Get Listed">
                         Buy Traffic / Get Listed
                     </a>
@@ -33,7 +33,7 @@
             </div>
 
             <div id="legal-links" class="flex flex-col gap-2 mobile:gap-4">
-                <h3 class="m-0">Legal</h3>
+                <h3 class="m-0">{$Think.lang.legal}</h3>
                 <a class="anchor-link legal-link" href="/help/terms-service" title="{:getHelpTitleByRoute("terms-service")}"
                     target="_blank" rel="nofollow">
                     {:getHelpTitleByRoute("terms-service")}
@@ -65,7 +65,7 @@
             </div>
 
             <div id="rta-asacp-links" class="mobile:col-span-2 flex flex-col gap-2">
-                <h3 class="m-0">Parents</h3>
+                <h3 class="m-0">{$Think.lang.parents}</h3>
                 Qorno.com uses the "Restricted To Adults" (RTA) website label to better enable parental
                 filtering.
                 Protect your children from adult content and block access to this site by using parental
@@ -89,7 +89,7 @@
         <div class="text-center">
             <p class="mt-2 inline-block">
                 © 2025
-                <a href="/" title="Qorno.com - Home page">Qorno.com</a>.
+                <a href="/" title="xxxxx.com - Home page">Qorno.com</a>.
                 All rights reserved.
             </p>
         </div>

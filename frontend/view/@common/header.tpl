@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover" />
     <meta name="referrer" content="same-origin">
-    <title>{:strtolower(request()->action())} - {:strtolower(request()->controller())}</title>
+    <title>{$Think.lang.home}</title>
 
     <!-- 引入样式文件 start -->
     <link rel="stylesheet" href="__ROOT_PATH__/__base/css/index.css" />

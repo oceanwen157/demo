@@ -28,4 +28,8 @@ return [
     'contactUs' => 'Contate-nos',
     'help' => 'Introdução à Ajuda',
     'on' => 'Ligado',
+    'parents' => 'Pais',
+    'support' => 'Suporte',
+    'advertisers' => 'Anunciantes',
+    'legal' => 'Legal',
 ];

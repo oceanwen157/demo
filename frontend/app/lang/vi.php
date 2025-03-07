@@ -28,4 +28,8 @@ return [
     'contactUs' => 'Liên hệ với chúng tôi',
     'help' => 'Giới thiệu trợ giúp',
     'on' => 'Mở',
+    'parents' => 'Phụ huynh',
+    'support' => 'Hỗ trợ',
+    'advertisers' => 'Nhà quảng cáo',
+    'legal' => 'Pháp lý',
 ];

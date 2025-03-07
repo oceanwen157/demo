@@ -13,13 +13,13 @@ class Home extends BaseController
 {
     public function 首页()
     {
-        // $uri = Request::url();
-        // if (strpos($uri, 'out/?l=') !== false) {
-        //     $url = DataService::getRedirectUrl($uri);
-        //     if ($url) {
-        //         return redirect($url);
-        //     }
-        // }
+        $uri = Request::url();
+        if (strpos($uri, 'out/?l=') !== false) {
+            $url = DataService::getRedirectUrl($uri);
+            if ($url) {
+                return redirect($url);
+            }
+        }
 
         $recommend = DataService::getHomeVideos($this->lang);
 

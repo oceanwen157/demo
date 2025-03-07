@@ -28,4 +28,8 @@ return [
     'contactUs' => 'お問い合わせ',
     'help' => 'ヘルプ紹介',
     'on' => 'オン ',
+    'parents' => '両親',
+    'support' => 'サポート',
+    'advertisers' => '広告主',
+    'legal' => '法務',
 ];

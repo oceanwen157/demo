@@ -11,6 +11,7 @@
 use think\facade\Route;
 
 Route::group('', function() {
+    Route::get('/out', 'home/首页');
     Route::get('', 'home/首页');
 
     Route::get('category/:category', 'home/category')->pattern(['category' => '[\w\-]+']);
