@@ -207,39 +207,4 @@ class Home extends BaseController
         $data = $this->listdata;
         return json($data);
     }
-
-    public function test()
-    {
-        $api    = 'https://get-sign-test.yesebo.net/';
-        $app    = 'cccc';
-        $key    = 'mz0vAJKSIMtXk1uF';
-        $params = [
-            'app_name'  => $app,
-            'timestamp' => time(),
-        ];
-        $sign   = self::generateSignature($params, $key);
-        $url    = "{$api}getConfigValue?" . http_build_query($params, '', '&') . '&sign=' . $sign;
-        $cont   = @file_get_contents($url);
-        $res    = @json_decode($cont, true);
-
-        var_dump($res);exit;
-
-        return trim(($res['img_url'] ?? ''), '/');
-    }
-
-    public static function generateSignature(array $params, string $sign_key) {
-        // 确保必需的参数存在
-        if (!isset($params['app_name'], $params['timestamp'])) {
-            throw new \InvalidArgumentException('Missing required parameters.');
-        }
-
-        // 将参数按照字母顺序排序
-        ksort($params);
-
-        // 拼接字符串
-        $stringToSign = http_build_query($params, '', '&') . $sign_key;
-
-        // 使用哈希算法生成签名（例如 SHA256）
-        return hash('sha256', $stringToSign);
-    }
 }
