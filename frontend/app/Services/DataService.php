@@ -767,5 +767,51 @@ class DataService extends ServiceBase
         }
     }
 
+    public static function getImgSite()
+    {
+        $key = __FUNCTION__ .'__url__';
+        $url = Cache::store('redis')->get($key);
+        if (!empty($url)) {
+            return $url;
+        }
+
+        $api    = env('image.sign_api');
+        $key    = env('image.sign_key');
+        $app    = env('image.app_name');
+        $imgUrl = env('image.img_url');
+        
+        $params = [
+            'app_name'  => $app,
+            'timestamp' => time(),
+        ];
+        $sign   = self::generateSignature($params, $key);
+        $url    = "{$api}getConfigValue?" . http_build_query($params, '', '&') . '&sign=' . $sign;
+        $cont   = @file_get_contents($url);
+        $res    = @json_decode($cont, true);
+
+        $url = trim(($res['img_url'] ?? ''), '/');
+        if (!empty($url)) {
+            Cache::store('redis')->set($key, $url, 7200);
+            return $url;
+        }
+
+        return $imgUrl;
+    }
+
+    public static function generateSignature(array $params, string $sign_key) {
+        // 确保必需的参数存在
+        if (!isset($params['app_name'], $params['timestamp'])) {
+            return '';
+        }
+
+        // 将参数按照字母顺序排序
+        ksort($params);
+
+        // 拼接字符串
+        $stringToSign = http_build_query($params, '', '&') . $sign_key;
+
+        // 使用哈希算法生成签名（例如 SHA256）
+        return hash('sha256', $stringToSign);
+    }
 
 }

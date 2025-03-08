@@ -4,7 +4,7 @@
     {foreach name="$pagination" item="e" key="i" }
         <div class="rating-card card sub group rating-active {if $i == 2} paid {/if}" data-id="{$e.id}">
             <a class="item-link rate-link relative" href="{$e.play_url}" target="_blank" title="{$e.title_en}" tabindex="-1" rel="nofollow">
-                <img class="item-image" z-image-loader-url="{$e.cover_new}" loading="eager" alt="{$e.title_en}" />
+                <img class="item-image" z-image-loader-url="{$imgSite}{$e.cover_new}" loading="eager" alt="{$e.title_en}" />
 
                 {if $i == 2}
                     <span class="item-premium-container">

@@ -1590,8 +1590,8 @@ abstract class BaseController
     //         win.base_url = "' . Request::domain() . '";
     //     })(document, window);
     // </script>';
-
     View::assign('currentLang', getCurrentLangTag());
+    View::assign('imgSite', DataService::getImgSite());
 
     View::assign('__LANGUAGES__', DataService::getLanguages());
     View::assign('__SOURCES__', DataService::getSources($this->lang));
